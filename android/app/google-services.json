@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "725106298543",
+    "project_id": "palantir-34aa7",
+    "storage_bucket": "palantir-34aa7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:725106298543:android:5ae2445574a29ba5990e5a",
+        "android_client_info": {
+          "package_name": "com.example.palantir_ips"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "725106298543-6aqf623qhu6jtmgf3pca8fvjsc2svb3i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyByXZUK_mXEDwjKCJZh4ulCz3cMRLfqKj4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "725106298543-6aqf623qhu6jtmgf3pca8fvjsc2svb3i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
