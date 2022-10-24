@@ -16,25 +16,28 @@ class _HomePageState extends State<HomePage> {
 
   final user = FirebaseAuth.instance.currentUser!;
 
-  List<String> docIDs = [];
+  String userDocReference = '';
+  List<String> buildingDocReference = [];
+  List<String> floorDocReference = [];
 
   //Get IDs
   Future getDocID() async{
-    await FirebaseFirestore.instance.collection('Users').get().then(
+    print('User: ' + user.email!);
+    await FirebaseFirestore.instance.collection('Users')
+        .where('email', isEqualTo: user.email!)
+        .get()
+        .then(
       (snapshot) => snapshot.docs.forEach(
         (element) {
           print(element.reference);
-          docIDs.add(element.reference.id);
+          userDocReference = element.reference.id;
         }
       ),
     );
+
+    print(userDocReference);
   }
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +56,11 @@ class _HomePageState extends State<HomePage> {
         elevation: 10,
         actions: [
           GestureDetector(
-            child: Icon(Icons.logout_rounded),
+            child: Icon(
+              Icons.logout_rounded,
+              color: const Color(0xffB62B37),
+              size: 40,
+            ),
             onTap: (){
               FirebaseAuth.instance.signOut();
             },
@@ -113,12 +120,12 @@ class _HomePageState extends State<HomePage> {
                   builder: (context, snapshot) {
                     //Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
                     return ListView.builder(
-                        itemCount: docIDs.length,
+                        itemCount: 1,
                         itemBuilder: (context, index) {
                           return Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: ListTile(
-                              title: GetUserName(documentId: docIDs[index], email:user.email!),
+                              title: GetUserName(documentId: userDocReference, email:user.email!),
                             ),
                           );
                         }

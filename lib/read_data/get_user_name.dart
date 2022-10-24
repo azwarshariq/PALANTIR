@@ -19,11 +19,12 @@ class GetUserName extends StatelessWidget {
         {
           if (snapshot.connectionState == ConnectionState.done) {
             Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
+            List<dynamic> listOfBuildings = data['listOfBuildings'];
             if(data['email'] == this.email) {
               return Text(
-                '${data['firstName']} ${data['lastName']}' +
+                'Welcome, ${data['firstName']} ${data['lastName']}' +
                     '\n Mapped Buildings:\n' +
-                    '${data['listOfBuildings']}',
+                    '${listOfBuildings}',
                 style: GoogleFonts.raleway(
                   color: const Color(0xffB62B37),
                   fontWeight: FontWeight.w200,
