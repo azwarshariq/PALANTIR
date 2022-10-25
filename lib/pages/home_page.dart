@@ -18,6 +18,14 @@ class _HomePageState extends State<HomePage> {
 
   final user = FirebaseAuth.instance.currentUser!;
 
+  userObject userInstance = new userObject(
+      '',
+      '',
+      '-',
+      '',
+      0
+  );
+
   String userDocReference = '';
 
   //Get IDs
@@ -45,7 +53,7 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         // Show credentials
         title: Text(
-          user.email!,
+          'Welcome back, ' + userInstance.firstName,
           style: GoogleFonts.raleway(
             color: const Color(0xffB62B37),
             fontWeight: FontWeight.w200,
@@ -73,15 +81,36 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Expanded(
+              child: FutureBuilder(
+                future: getDocID(),
+                builder: (context, snapshot) {
+                  return ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    itemCount: 1,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ListTile(
+                          title: GetUserName(documentId: userDocReference!, email:user.email!, userInstance: userInstance,),
+                        ),
+                      );
+                    }
+                  );
+                }
+              ),
+            ),
+
             SizedBox(height:30,),
 
             // Button to proceed as Mapper
             ElevatedButton(
               onPressed: () => Navigator.of(context)
-                .push(
-                MaterialPageRoute(
-                  builder: (context) => AddBuilding()
-                )
+                  .push(
+                  MaterialPageRoute(
+                      builder: (context) => AddBuilding()
+                  )
               ),
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFFCD4F69),
@@ -112,27 +141,6 @@ class _HomePageState extends State<HomePage> {
                   fontWeight: FontWeight.w200,
                   fontSize: 20,
                 ),
-              ),
-            ),
-
-            Expanded(
-              child: FutureBuilder(
-                future: getDocID(),
-                builder: (context, snapshot) {
-                  return ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    itemCount: 1,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ListTile(
-                          title: GetUserName(documentId: userDocReference!, email:user.email!),
-                        ),
-                      );
-                    }
-                  );
-                }
               ),
             ),
 

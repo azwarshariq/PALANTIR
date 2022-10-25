@@ -12,8 +12,15 @@ class _building {
 class GetUserName extends StatelessWidget {
   final String documentId;
   final String email;
+  userObject userInstance = new userObject(
+      '',
+      '',
+      '',
+      '',
+      0
+  );
 
-  GetUserName({required this.documentId, required this.email});
+  GetUserName({required this.documentId, required this.email, required this.userInstance});
 
   List<String> buildingDocReference = [];
 
@@ -50,7 +57,7 @@ class GetUserName extends StatelessWidget {
             if (snapshot.connectionState == ConnectionState.done) {
               Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
 
-              final userInstance = new userObject(
+              userInstance.setValues(
                 documentId,
                 data['email'],
                 data['firstName'],
@@ -64,8 +71,7 @@ class GetUserName extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      'Welcome, ${userInstance.firstName} ${userInstance.lastName}\n'
-                      + 'You\'ve mapped the following buildings:',
+                      'You\'ve mapped the following buildings:',
                       style: GoogleFonts.raleway(
                         color: const Color(0xffB62B37),
                         fontWeight: FontWeight.w200,

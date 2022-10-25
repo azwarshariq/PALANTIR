@@ -12,4 +12,13 @@ class userObject {
    this.lastName = lastName;
    this.age = age;
   }
+
+  void setValues(referenceId, emailAddress, firstName, lastName, age){
+    this.referenceId = referenceId;
+    this.emailAddress = emailAddress;
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.age = age;
+  }
+
 }
