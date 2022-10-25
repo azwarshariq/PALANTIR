@@ -22,9 +22,13 @@ class GetUserName extends StatelessWidget {
               (element) {
             print(element.reference);
             buildingDocReference.add(element.reference.id);
-          }
-      ),
-    );
+            }
+          ),
+        );
+    print('Building References:');
+    for(int i=0; i<2; i++){
+      print(buildingDocReference[i]);
+    }
   }
 
   @override
@@ -40,18 +44,17 @@ class GetUserName extends StatelessWidget {
             if (snapshot.connectionState == ConnectionState.done) {
               Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
 
-              List buildings = data['listOfBuildings'];
-
               if(data['email'] == this.email) {
                 return Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      'Welcome, ${data['firstName']} ${data['lastName']}',
+                      'Welcome, ${data['firstName']} ${data['lastName']}\n'
+                      + 'You\'ve mapped the following buildings:',
                       style: GoogleFonts.raleway(
                         color: const Color(0xffB62B37),
                         fontWeight: FontWeight.w200,
-                        fontSize: 20,
+                        fontSize: 25,
                       ),
                     ),
 
@@ -62,7 +65,7 @@ class GetUserName extends StatelessWidget {
                           return ListView.builder(
                             scrollDirection: Axis.vertical,
                             shrinkWrap: true,
-                            itemCount: buildings.length,
+                            itemCount: buildingDocReference.length,
                             itemBuilder: (context, index) {
                               return Padding(
                                 padding: const EdgeInsets.all(8.0),
