@@ -5,6 +5,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:palantir_ips/pages/add_building.dart';
 import 'package:palantir_ips/read_data/get_user_name.dart';
 
+import '../classes/user_class.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 

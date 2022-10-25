@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:palantir_ips/pages/splash_screen.dart';
 import 'auth/main_page.dart';
-import '';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

@@ -2,6 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:palantir_ips/read_data/get_buildings.dart';
+import 'package:palantir_ips/pages/home_page.dart';
+import '../classes/user_class.dart';
+
+class _building {
+  List<String> referenceIds = [];
+}
 
 class GetUserName extends StatelessWidget {
   final String documentId;
@@ -44,12 +50,21 @@ class GetUserName extends StatelessWidget {
             if (snapshot.connectionState == ConnectionState.done) {
               Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
 
+              final userInstance = new userObject(
+                documentId,
+                data['email'],
+                data['firstName'],
+                data['lastName'],
+                data['age']
+              );
+
               if(data['email'] == this.email) {
+
                 return Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      'Welcome, ${data['firstName']} ${data['lastName']}\n'
+                      'Welcome, ${userInstance.firstName} ${userInstance.lastName}\n'
                       + 'You\'ve mapped the following buildings:',
                       style: GoogleFonts.raleway(
                         color: const Color(0xffB62B37),
@@ -70,7 +85,7 @@ class GetUserName extends StatelessWidget {
                               return Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: ListTile(
-                                  title: GetBuildings(buildingId: buildingDocReference[index]!),
+                                  title: GetBuildings(buildingId: buildingDocReference[index]),
                                 ),
                               );
                             }
