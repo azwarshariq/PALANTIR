@@ -17,23 +17,26 @@ class _MyUploadScreenState extends State<UploadScreen> {
   Widget build(BuildContext context) {
     final double height = MediaQuery.of(context).size.height;
     List<String> items = ["Floor 1", "Floor 2", "Floor 3", "Floor 4"];
-    String? value;
-    String? newValue;
+    String? dropDownValue;
     final Storage storage = Storage();
 
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor:const Color(0xff100D49),
-          elevation: 10,
-        ),
-        backgroundColor:const Color(0xff100D49),
-        body: Container(
-            padding: const EdgeInsets.only(left: 60, right: 40, top: 0),
-            child: Form(
-              child: Center(
-                // Select Floor
-
-                child: Column(children: [
+      appBar: AppBar(
+        backgroundColor: const Color(0xff100D49),
+        elevation: 10,
+        shadowColor: const Color(0xffB62B37),
+      ),
+      backgroundColor:const Color(0xff100D49),
+      body: Container(
+        padding: const EdgeInsets.only(left: 60, right: 40, top: 0),
+        child: Form(
+          child: Center(
+            // Select Floor
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children:
+                [
                   const SizedBox(height: 120),
 
                   const Text(
@@ -49,15 +52,8 @@ class _MyUploadScreenState extends State<UploadScreen> {
                   ),
 
                   DropdownButton(
-                    hint: const Text(
-                      "Choose Floor",
-                      style: TextStyle(
-                          fontSize: 25,
-                          color: const Color(0xFFCD4F69),
-                      ),
-                    ),
-                    value: value,
-
+                    value: dropDownValue,
+                    borderRadius: BorderRadius.circular(10),
                     items: items.map((items) {
                       return DropdownMenuItem(
                         value: items,
@@ -67,12 +63,24 @@ class _MyUploadScreenState extends State<UploadScreen> {
                         ),
                       );
                     }).toList(),
-                    onChanged: (newValue) => setState(() => value = newValue),
 
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        dropDownValue = newValue!;
+                      });
+                    },
+                    hint: Text(
+                      "Choose Floor",
+                      style: TextStyle(
+                        fontSize: 25,
+                        color: const Color(0xFFCD4F69),
+                      ),
+                    ),
                     icon: const Padding(
                       //Icon at tail, arrow bottom is default icon
-                        padding: EdgeInsets.only(left: 20),
-                        child: Icon(Icons.arrow_circle_down_sharp)),
+                      padding: EdgeInsets.only(left: 20),
+                      child: Icon(Icons.arrow_circle_down_sharp)
+                    ),
 
                     iconEnabledColor: const Color(0xFFCD4F69), //Icon color
                     style: TextStyle(
@@ -126,6 +134,7 @@ class _MyUploadScreenState extends State<UploadScreen> {
                               const SnackBar(
                                   content: Text('No file selected!')));
                         }
+
                         final path = file!.path;
                         final name = file.name;
 
@@ -133,15 +142,17 @@ class _MyUploadScreenState extends State<UploadScreen> {
                         print("Name: " + name);
 
                         storage
-                            .uploadFile(path, name)
-                            .then((value) => print('Done'));
+                          .uploadFile(path, name)
+                          .then((value) => print('Done'));
                       },
                     ),
                   ),
-                ]),
+                ]
               ),
-            )
+            ),
+          ),
         )
+      )
     );
   }
 }

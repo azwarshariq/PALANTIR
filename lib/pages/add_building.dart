@@ -24,16 +24,18 @@ class _AddBuildingState extends State<AddBuilding> {
     final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
     return Scaffold(
-        key: _scaffoldKey,
-        appBar: AppBar(
-          backgroundColor:const Color(0xff100D49),
-          elevation: 10,
-        ),
+      key: _scaffoldKey,
+      appBar: AppBar(
         backgroundColor:const Color(0xff100D49),
-        body: Container(
-          padding: const EdgeInsets.only(left: 40, right: 40),
-          child: Form(
-            key: formKey, //key for form
+        elevation: 10,
+        shadowColor: const Color(0xffB62B37),
+      ),
+      backgroundColor:const Color(0xff100D49),
+      body: Container(
+        padding: const EdgeInsets.only(left: 40, right: 40),
+        child: Form(
+          key: formKey, //key for form
+          child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -52,9 +54,11 @@ class _AddBuildingState extends State<AddBuilding> {
                       color: const Color(0xffB62B37),
                   ),
                 ),
+
                 SizedBox(
                   height: height * 0.05,
                 ),
+
                 TextFormField(
                   decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(
@@ -149,16 +153,17 @@ class _AddBuildingState extends State<AddBuilding> {
                   backgroundColor:const Color(0xFFCD4F69),
                   foregroundColor: Colors.white,
                   onPressed: () => Navigator.of(context)
-                      .push(
-                      MaterialPageRoute(
-                        builder: (context) => UploadScreen(),
-                      )
+                    .push(
+                    MaterialPageRoute(
+                      builder: (context) => UploadScreen(),
+                    )
                   ),
                 ),
               ],
             ),
           ),
-        )
+        ),
+      )
     );
   }
 }

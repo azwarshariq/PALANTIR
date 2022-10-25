@@ -17,8 +17,6 @@ class _HomePageState extends State<HomePage> {
   final user = FirebaseAuth.instance.currentUser!;
 
   String userDocReference = '';
-  List<String> buildingDocReference = [];
-  List<String> floorDocReference = [];
 
   //Get IDs
   Future getDocID() async{
@@ -54,6 +52,7 @@ class _HomePageState extends State<HomePage> {
         ),
         backgroundColor:const Color(0xff100D49),
         elevation: 10,
+        shadowColor: const Color(0xffB62B37),
         actions: [
           GestureDetector(
             child: Icon(
@@ -69,74 +68,75 @@ class _HomePageState extends State<HomePage> {
       ),
       backgroundColor: const Color(0xff100D49),
       body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(height:30,),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(height:30,),
 
-              // Button to proceed as Mapper
-              ElevatedButton(
-                onPressed: () => Navigator.of(context)
-                  .push(
-                  MaterialPageRoute(
-                    builder: (context) => AddBuilding()
-                  )
-                ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFFCD4F69),
-                ),
-                child: Text(
-                  'Proceed As Mapper',
-                  style: GoogleFonts.raleway(
-                    color: Colors.white60,
-                    fontWeight: FontWeight.w200,
-                    fontSize: 20,
-                  ),
+            // Button to proceed as Mapper
+            ElevatedButton(
+              onPressed: () => Navigator.of(context)
+                .push(
+                MaterialPageRoute(
+                  builder: (context) => AddBuilding()
+                )
+              ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFFCD4F69),
+              ),
+              child: Text(
+                'Proceed As Mapper',
+                style: GoogleFonts.raleway(
+                  color: Colors.white60,
+                  fontWeight: FontWeight.w200,
+                  fontSize: 20,
                 ),
               ),
+            ),
 
-              SizedBox(height:30,),
+            SizedBox(height:30,),
 
-              // Button to proceed as User
-              ElevatedButton(
-                onPressed: null,
+            // Button to proceed as User
+            ElevatedButton(
+              onPressed: null,
 
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFFCD4F69),
-                ),
-                child: Text(
-                  'Proceed As User',
-                  style: GoogleFonts.raleway(
-                    color: Colors.white60,
-                    fontWeight: FontWeight.w200,
-                    fontSize: 20,
-                  ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFFCD4F69),
+              ),
+              child: Text(
+                'Proceed As User',
+                style: GoogleFonts.raleway(
+                  color: Colors.white60,
+                  fontWeight: FontWeight.w200,
+                  fontSize: 20,
                 ),
               ),
+            ),
 
-              Expanded(
-                child: FutureBuilder(
-                  future: getDocID(),
-                  builder: (context, snapshot) {
-                    //Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
-                    return ListView.builder(
-                        itemCount: 1,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: ListTile(
-                              title: GetUserName(documentId: userDocReference, email:user.email!),
-                            ),
-                          );
-                        }
-                    );
-                  }
-                ),
+            Expanded(
+              child: FutureBuilder(
+                future: getDocID(),
+                builder: (context, snapshot) {
+                  return ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    itemCount: 1,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ListTile(
+                          title: GetUserName(documentId: userDocReference!, email:user.email!),
+                        ),
+                      );
+                    }
+                  );
+                }
               ),
+            ),
 
-              SizedBox(height:30,),
-            ],
-          )
+            SizedBox(height:30,),
+          ],
+        )
       ),
     );
   }

@@ -44,6 +44,7 @@ dependencies:
   firebase_storage: ^10.3.11
   cloud_firestore: ^3.5.1
   firebase_core_platform_interface: ^4.5.1
+  popup_card: ^0.1.0
 
 dev_dependencies:
   flutter_test:
