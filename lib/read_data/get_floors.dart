@@ -1,13 +1,37 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
+import '../classes/router_class.dart';
+import '../classes/building_class.dart';
 import '../classes/floor_class.dart';
+import '../classes/user_class.dart';
 
 class GetFloors extends StatelessWidget {
   final String floorId;
 
-  GetFloors({required this.floorId});
+  userObject userInstance = new userObject(
+      '',
+      '',
+      '',
+      '',
+      0
+  );
+
+  List<buildingObject> buildingInstances = [];
+
+  List<floorObject> floorInstances = [];
+
+  List<routerObject> routerInstances = [];
+
+  GetFloors(
+      {
+        required this.floorId,
+        required this.userInstance,
+        required this.buildingInstances,
+        required this.floorInstances,
+        required this.routerInstances
+      }
+    );
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +50,22 @@ class GetFloors extends StatelessWidget {
                 data['buildingRef'],
                 data['numRouters']
             );
+
+            floorInstances.add(floorInstance);
+
+            print("User: " + userInstance.firstName);
+            print("Buildings:");
+            for (int i=0; i<buildingInstances.length; i++){
+              print("-> " + buildingInstances[i].buildingName);
+            }
+            print("Floors:");
+            for (int i=0; i<floorInstances.length; i++){
+              print("-> " + floorInstances[i].floorName);
+            }
+            print("Routers:");
+            for (int i=0; i<routerInstances.length; i++){
+              print("-> " + routerInstances[i].routerName);
+            }
 
             return Column(
               mainAxisSize: MainAxisSize.min,

@@ -10,4 +10,11 @@ class buildingObject {
     this.userRef = userRef;
     this.numFloors = numFloors;
   }
+
+  void setValues(referenceId, buildingName, userRef, numFloors){
+    this.referenceId = referenceId;
+    this.buildingName = buildingName;
+    this.userRef = userRef;
+    this.numFloors = numFloors;
+  }
 }

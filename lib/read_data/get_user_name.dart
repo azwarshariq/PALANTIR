@@ -3,15 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:palantir_ips/read_data/get_buildings.dart';
 import 'package:palantir_ips/pages/home_page.dart';
+import '../classes/router_class.dart';
+import '../classes/building_class.dart';
+import '../classes/floor_class.dart';
 import '../classes/user_class.dart';
-
-class _building {
-  List<String> referenceIds = [];
-}
 
 class GetUserName extends StatelessWidget {
   final String documentId;
+
   final String email;
+
   userObject userInstance = new userObject(
       '',
       '',
@@ -20,7 +21,22 @@ class GetUserName extends StatelessWidget {
       0
   );
 
-  GetUserName({required this.documentId, required this.email, required this.userInstance});
+  List<buildingObject> buildingInstances = [];
+
+  List<floorObject> floorInstances = [];
+
+  List<routerObject> routerInstances = [];
+
+  GetUserName(
+    {
+      required this.documentId,
+      required this.email,
+      required this.userInstance,
+      required this.buildingInstances,
+      required this.floorInstances,
+      required this.routerInstances
+    }
+  );
 
   List<String> buildingDocReference = [];
 
@@ -71,7 +87,8 @@ class GetUserName extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      'You\'ve mapped the following buildings:',
+                      'Hello, ${userInstance.firstName} \nYou\'ve mapped the following buildings:',
+                      textAlign: TextAlign.center,
                       style: GoogleFonts.raleway(
                         color: const Color(0xffB62B37),
                         fontWeight: FontWeight.w200,
@@ -91,7 +108,13 @@ class GetUserName extends StatelessWidget {
                               return Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: ListTile(
-                                  title: GetBuildings(buildingId: buildingDocReference[index]),
+                                  title: GetBuildings(
+                                    buildingId: buildingDocReference[index],
+                                    userInstance: userInstance,
+                                    buildingInstances: buildingInstances,
+                                    floorInstances: floorInstances,
+                                    routerInstances: routerInstances,
+                                  ),
                                 ),
                               );
                             }

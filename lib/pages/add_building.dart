@@ -5,19 +5,108 @@ import 'package:flutter/services.dart';
 import 'package:palantir_ips/pages/upload_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class Building {
-  String buildingName = " ";
-  int numFloors = 0;
-}
+import '../classes/building_class.dart';
+import '../classes/floor_class.dart';
+import '../classes/router_class.dart';
+import '../classes/user_class.dart';
+
+
 
 class AddBuilding extends StatefulWidget {
+
+  AddBuilding({
+    super.key,
+    required this.userInstance,
+    required this.buildingInstances,
+    required this.floorInstances,
+    required this.routerInstances
+  });
+
+  userObject userInstance = new userObject(
+      '',
+      '',
+      '-',
+      '',
+      0
+  );
+
+  List<buildingObject> buildingInstances = [];
+
+  List<floorObject> floorInstances = [];
+
+  List<routerObject> routerInstances = [];
+
   @override
-  _AddBuildingState createState() => _AddBuildingState();
+  State<AddBuilding> createState() => _AddBuildingState(
+      this.userInstance,
+      this.buildingInstances,
+      this.floorInstances,
+      this.routerInstances
+  );
 }
 
 class _AddBuildingState extends State<AddBuilding> {
+
+  _AddBuildingState(
+      this.userInstance,
+      this.buildingInstances,
+      this.floorInstances,
+      this.routerInstances
+      );
+
+  final _NameController = TextEditingController();
+  final _numFloorsController = TextEditingController();
+  final _userRefController = TextEditingController();
+
+  Future addBuildingInfo() async {
+    final buildingInstance = new buildingObject(
+        buildingId,
+
+    );
+
+    buildingInstances.add(buildingInstance);
+
+    //Add User details
+      addBuildingDetails(
+        _NameController.text.trim(),
+        int.parse(_numFloorsController.text.trim()),
+        _userRefController.text.trim(),
+      );
+
+      Navigator.of(context).pop();
+    }
+  final newBuildingID;
+  userObject userInstance = new userObject(
+      '',
+      '',
+      '-',
+      '',
+      0
+  );
+
+  List<buildingObject> buildingInstances = [];
+
+  List<floorObject> floorInstances = [];
+
+  List<routerObject> routerInstances = [];
+
   final formKey = GlobalKey<FormState>(); //key for form
+
   String name = "";
+
+  CollectionReference Buildings = FirebaseFirestore.instance.collection('Buildings');
+
+
+  Future addBuildingDetails(String Name, int numFloors, String userRef) async {
+    await FirebaseFirestore.instance.collection('Buildings')
+      .addDoc({
+        'Name': Name,
+        'numFloors': numFloors,
+        'userRef': userRef,
+      }
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final double height = MediaQuery.of(context).size.height;
@@ -60,6 +149,7 @@ class _AddBuildingState extends State<AddBuilding> {
                 ),
 
                 TextFormField(
+                  controller: _NameController,
                   decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.white60),
@@ -73,14 +163,6 @@ class _AddBuildingState extends State<AddBuilding> {
                     fillColor: Colors.white60,
                     filled: true,
                   ),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return "Enter correct name";
-                    } else {
-                      Building().buildingName = value;
-                      return null;
-                    }
-                  },
                 ),
 
                 SizedBox(
@@ -88,6 +170,7 @@ class _AddBuildingState extends State<AddBuilding> {
                 ),
 
                 TextFormField(
+                  controller: _numFloorsController,
                   keyboardType: TextInputType.number,
                   inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
                   decoration: InputDecoration(
@@ -103,14 +186,6 @@ class _AddBuildingState extends State<AddBuilding> {
                     fillColor: Colors.white60,
                     filled: true,
                   ),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return "Enter a valid number";
-                    } else {
-                      Building().numFloors = int.parse(value);
-                      return null;
-                    }
-                  },
                 ),
 
                 SizedBox(
@@ -132,16 +207,7 @@ class _AddBuildingState extends State<AddBuilding> {
                       child: Icon(Icons.save),
                       backgroundColor:const Color(0xFFCD4F69),
                       foregroundColor: Colors.white,
-                      onPressed: () {
-                        if (formKey.currentState!.validate()) {
-                          final snackBar =
-                          SnackBar(content: Text('Submitting Data'));
-
-                          FirebaseFirestore.instance
-                              .collection('buildingDetails')
-                              .add({Building().buildingName: Building().numFloors});
-                        }
-                      },
+                      onPressed: addBuildingInfo,
                     ),
                   ],
                 ),

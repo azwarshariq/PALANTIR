@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:palantir_ips/pages/edit_demo_screen.dart';
 import 'package:palantir_ips/pages/edit_screen.dart';
 import 'upload_screen.dart';
 
@@ -75,7 +76,7 @@ class _ViewScreenState extends State<ViewScreen> {
                           splashRadius: 45,
                           onPressed: ()  => Navigator.of(context).push(
                               MaterialPageRoute(
-                                  builder: (context) => EditScreen())),
+                                  builder: (context) => EditDemoScreen())),
                         ),
                       ),
                     ],

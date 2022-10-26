@@ -73,9 +73,12 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   assets:
+    - assets/floorplan.jpeg
     - google_fonts/
     - images/PALANTIR logo.png
     - images/1.png
+    - images/step1.jpeg
+    - images/step2.jpeg
 
   # To add assets to your application, add an assets section, like this:
   # assets:

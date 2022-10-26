@@ -2,6 +2,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dropdown_search/dropdown_search.dart';
+import 'package:palantir_ips/pages/edit_demo_screen.dart';
 import 'package:palantir_ips/pages/view_screen.dart';
 import 'package:palantir_ips/pages/storage_service.dart';
 import 'package:flutter/material.dart';
@@ -117,15 +118,14 @@ class _MyEditRedirectScreenState extends State<EditRedirectScreen> {
                         splashColor: const Color(0xDACD4F69),
                         splashRadius: 45,
                         onPressed: () {
-                          /*
+
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (context) => ViewScreen(
-                                selectedImage: file.path,
+                              builder: (context) => EditDemoScreen(
                               ),
                             ),
                           );
-                          */
+
                         },
                       ),
                     ),

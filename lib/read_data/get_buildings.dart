@@ -1,14 +1,39 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:palantir_ips/read_data/get_floors.dart';
 import 'package:google_fonts/google_fonts.dart';
-
+import '../classes/router_class.dart';
 import '../classes/building_class.dart';
-import 'get_floors.dart';
+import '../classes/floor_class.dart';
+import '../classes/user_class.dart';
 
 class GetBuildings extends StatelessWidget {
   final String buildingId;
 
-  GetBuildings({required this.buildingId});
+  userObject userInstance = new userObject(
+      '',
+      '',
+      '',
+      '',
+      0
+  );
+
+  List<buildingObject> buildingInstances = [];
+
+  List<floorObject> floorInstances = [];
+
+  List<routerObject> routerInstances = [];
+
+
+  GetBuildings(
+      {
+        required this.buildingId,
+        required this.userInstance,
+        required this.buildingInstances,
+        required this.floorInstances,
+        required this.routerInstances
+      }
+    );
 
   List<String> floorDocReference = [];
 
@@ -51,6 +76,8 @@ class GetBuildings extends StatelessWidget {
               data['numFloors']
             );
 
+            buildingInstances.add(buildingInstance);
+
             return Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -76,7 +103,13 @@ class GetBuildings extends StatelessWidget {
                               return Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: ListTile(
-                                  title: GetFloors(floorId: floorDocReference[index]),
+                                  title: GetFloors(
+                                    floorId: floorDocReference[index],
+                                    userInstance: userInstance,
+                                    buildingInstances: buildingInstances,
+                                    floorInstances: floorInstances,
+                                    routerInstances: routerInstances,
+                                  ),
                                 ),
                               );
                             }

@@ -2,9 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:palantir_ips/pages/add_building.dart';
+import 'package:palantir_ips/classes/building_class.dart';
+import 'package:palantir_ips/pages/controller_screen.dart';
 import 'package:palantir_ips/read_data/get_user_name.dart';
-
+import '../classes/floor_class.dart';
+import '../classes/router_class.dart';
 import '../classes/user_class.dart';
 
 class HomePage extends StatefulWidget {
@@ -25,6 +27,12 @@ class _HomePageState extends State<HomePage> {
       '',
       0
   );
+
+  List<buildingObject> buildingInstances = [];
+
+  List<floorObject> floorInstances = [];
+
+  List<routerObject> routerInstances = [];
 
   String userDocReference = '';
 
@@ -53,7 +61,7 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         // Show credentials
         title: Text(
-          'Welcome back, ' + userInstance.firstName,
+          'Welcome back',
           style: GoogleFonts.raleway(
             color: const Color(0xffB62B37),
             fontWeight: FontWeight.w200,
@@ -93,7 +101,14 @@ class _HomePageState extends State<HomePage> {
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: ListTile(
-                          title: GetUserName(documentId: userDocReference!, email:user.email!, userInstance: userInstance,),
+                          title: GetUserName(
+                            documentId: userDocReference!,
+                            email:user.email!,
+                            userInstance: userInstance,
+                            buildingInstances: buildingInstances,
+                            floorInstances: floorInstances,
+                            routerInstances: routerInstances,
+                          ),
                         ),
                       );
                     }
@@ -101,16 +116,34 @@ class _HomePageState extends State<HomePage> {
                 }
               ),
             ),
+/*
+            Text(
+              'User: ' + userInstance.firstName + ' ' + userInstance.lastName
+              + '\nBuildings: ${buildingInstances.length}'
+              + '\nFloors: ${floorInstances.length}'
+              + '\nRouters: ${routerInstances.length}',
 
+              style: GoogleFonts.raleway(
+                color: const Color(0xffB62B37),
+                fontWeight: FontWeight.w200,
+                fontSize: 20,
+              ),
+            ),
+*/
             SizedBox(height:30,),
 
             // Button to proceed as Mapper
             ElevatedButton(
               onPressed: () => Navigator.of(context)
-                  .push(
-                  MaterialPageRoute(
-                      builder: (context) => AddBuilding()
+                .push(
+                MaterialPageRoute(
+                  builder: (context) => Controller(
+                    userInstance: userInstance,
+                    buildingInstances: buildingInstances,
+                    floorInstances: floorInstances,
+                    routerInstances: routerInstances,
                   )
+                )
               ),
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFFCD4F69),
