@@ -60,8 +60,10 @@ class _AddBuildingState extends State<AddBuilding> {
 
   Future addBuildingInfo() async {
     final buildingInstance = new buildingObject(
-        buildingId,
-
+      _NameController.text.trim(),
+      _NameController.text.trim(),
+      _userRefController.text.trim(),
+      int.parse(_numFloorsController.text.trim()),
     );
 
     buildingInstances.add(buildingInstance);
@@ -73,9 +75,9 @@ class _AddBuildingState extends State<AddBuilding> {
         _userRefController.text.trim(),
       );
 
-      Navigator.of(context).pop();
     }
-  final newBuildingID;
+
+
   userObject userInstance = new userObject(
       '',
       '',
@@ -99,12 +101,14 @@ class _AddBuildingState extends State<AddBuilding> {
 
   Future addBuildingDetails(String Name, int numFloors, String userRef) async {
     await FirebaseFirestore.instance.collection('Buildings')
-      .addDoc({
-        'Name': Name,
-        'numFloors': numFloors,
-        'userRef': userRef,
-      }
-    );
+        .doc(Name) // <-- Document ID
+        .set({
+          'Name': Name,
+          'numFloors': numFloors,
+          'userRef': userRef
+        }) // <-- Your data
+        .then((_) => print('Added'))
+        .catchError((error) => print('Add failed: $error'));
   }
 
   @override
