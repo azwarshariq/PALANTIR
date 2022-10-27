@@ -68,140 +68,149 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        // Show credentials
-        title: Text(
-          'Welcome back',
-          style: GoogleFonts.raleway(
-            color: const Color(0xffB62B37),
-            fontWeight: FontWeight.w200,
-            fontSize: 20,
-          ),
-        ),
-        backgroundColor:const Color(0xff100D49),
-        elevation: 10,
-        shadowColor: const Color(0xffB62B37),
-        actions: [
-          GestureDetector(
-            child: Icon(
-              Icons.logout_rounded,
-              color: const Color(0xffB62B37),
-              size: 40,
-            ),
-            onTap: (){
-              FirebaseAuth.instance.signOut();
-            },
-          )
-        ],
-      ),
-      backgroundColor: const Color(0xff100D49),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Expanded(
-              child: FutureBuilder(
-                future: getDocID(),
-                builder: (context, snapshot) {
-                  return ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    itemCount: 1,
-                    itemBuilder: (context, index) {
-                      try{
-                        return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: ListTile(
-                            title: GetUserName(
-                              documentId: userDocReference,
-                              email: user.email!,
-                              userInstance: userInstance,
-                              buildingInstances: buildingInstances,
-                              floorInstances: floorInstances,
-                              routerInstances: routerInstances,
-                            ),
-                          ),
-                        );
-                      }catch(e){
-                        return Text(
-                          '${e}',
-                          style: GoogleFonts.raleway(
-                            color: const Color(0xffB62B37),
-                            fontWeight: FontWeight.w200,
-                            fontSize: 20,
-                          ),
-                        );
-                      };
-                    }
-                  );
-                }
-              ),
-            ),
-/*
-            Text(
-              'User: ' + userInstance.firstName + ' ' + userInstance.lastName
-              + '\nBuildings: ${buildingInstances.length}'
-              + '\nFloors: ${floorInstances.length}'
-              + '\nRouters: ${routerInstances.length}',
-
-              style: GoogleFonts.raleway(
-                color: const Color(0xffB62B37),
-                fontWeight: FontWeight.w200,
-                fontSize: 20,
-              ),
-            ),
-*/
-            SizedBox(height:30,),
-
-            // Button to proceed as Mapper
-            ElevatedButton(
-              onPressed: () => Navigator.of(context)
-                .push(
-                MaterialPageRoute(
-                  builder: (context) => Controller(
-                    userInstance: userInstance,
-                    buildingInstances: buildingInstances,
-                    floorInstances: floorInstances,
-                    routerInstances: routerInstances,
-                  )
-                )
-              ),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFCD4F69),
-              ),
-              child: Text(
-                'Proceed As Mapper',
-                style: GoogleFonts.raleway(
-                  color: Colors.white60,
-                  fontWeight: FontWeight.w200,
-                  fontSize: 20,
-                ),
-              ),
-            ),
-
-            SizedBox(height:30,),
-
-            // Button to proceed as User
-            ElevatedButton(
-              onPressed: null,
-
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFCD4F69),
-              ),
-              child: Text(
-                'Proceed As User',
-                style: GoogleFonts.raleway(
-                  color: Colors.white60,
-                  fontWeight: FontWeight.w200,
-                  fontSize: 20,
-                ),
-              ),
-            ),
-
-            SizedBox(height:30,),
-          ],
+    return Container(
+      constraints: const BoxConstraints.expand(),
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage("assets/Home Page.png"),
+          fit: BoxFit.cover
         )
+      ),
+      child: Scaffold(
+        appBar: AppBar(
+          // Show credentials
+          title: Text(
+            'Welcome back',
+            style: GoogleFonts.raleway(
+              color: const Color(0xffB62B37),
+              fontWeight: FontWeight.w200,
+              fontSize: 20,
+            ),
+          ),
+          backgroundColor:const Color(0xff100D49),
+          elevation: 10,
+          shadowColor: const Color(0xffB62B37),
+          actions: [
+            GestureDetector(
+              child: Icon(
+                Icons.logout_rounded,
+                color: const Color(0xffB62B37),
+                size: 40,
+              ),
+              onTap: (){
+                FirebaseAuth.instance.signOut();
+              },
+            )
+          ],
+        ),
+        backgroundColor: const Color(0xff100D49),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(
+                child: FutureBuilder(
+                  future: getDocID(),
+                  builder: (context, snapshot) {
+                    return ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemCount: 1,
+                      itemBuilder: (context, index) {
+                        try{
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ListTile(
+                              title: GetUserName(
+                                documentId: userDocReference,
+                                email: user.email!,
+                                userInstance: userInstance,
+                                buildingInstances: buildingInstances,
+                                floorInstances: floorInstances,
+                                routerInstances: routerInstances,
+                              ),
+                            ),
+                          );
+                        }catch(e){
+                          return Text(
+                            '${e}',
+                            style: GoogleFonts.raleway(
+                              color: const Color(0xffB62B37),
+                              fontWeight: FontWeight.w200,
+                              fontSize: 20,
+                            ),
+                          );
+                        };
+                      }
+                    );
+                  }
+                ),
+              ),
+/*
+              Text(
+                'User: ' + userInstance.firstName + ' ' + userInstance.lastName
+                + '\nBuildings: ${buildingInstances.length}'
+                + '\nFloors: ${floorInstances.length}'
+                + '\nRouters: ${routerInstances.length}',
+
+                style: GoogleFonts.raleway(
+                  color: const Color(0xffB62B37),
+                  fontWeight: FontWeight.w200,
+                  fontSize: 20,
+                ),
+              ),
+*/
+              SizedBox(height:30,),
+
+              // Button to proceed as Mapper
+              ElevatedButton(
+                onPressed: () => Navigator.of(context)
+                  .push(
+                  MaterialPageRoute(
+                    builder: (context) => Controller(
+                      userInstance: userInstance,
+                      buildingInstances: buildingInstances,
+                      floorInstances: floorInstances,
+                      routerInstances: routerInstances,
+                    )
+                  )
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFFCD4F69),
+                ),
+                child: Text(
+                  'Proceed As Mapper',
+                  style: GoogleFonts.raleway(
+                    color: Colors.white60,
+                    fontWeight: FontWeight.w200,
+                    fontSize: 20,
+                  ),
+                ),
+              ),
+
+              SizedBox(height:30,),
+
+              // Button to proceed as User
+              ElevatedButton(
+                onPressed: null,
+
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFFCD4F69),
+                ),
+                child: Text(
+                  'Proceed As User',
+                  style: GoogleFonts.raleway(
+                    color: Colors.white60,
+                    fontWeight: FontWeight.w200,
+                    fontSize: 20,
+                  ),
+                ),
+              ),
+
+              SizedBox(height:30,),
+            ],
+          )
+        ),
       ),
     );
   }

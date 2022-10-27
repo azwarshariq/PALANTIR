@@ -79,6 +79,9 @@ flutter:
     - images/1.png
     - images/step1.jpeg
     - images/step2.jpeg
+    - assets/images/Home Page.png
+    - assets/images/Splash Screen.png
+    - assets/images/Controller.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:
