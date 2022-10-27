@@ -22,16 +22,16 @@ class _LoginPageState extends State<LoginPage> {
       context: context,
       builder: (context) {
         return Center(
-            child: CircularProgressIndicator(
-              color: const Color(0xffB62B37),
-            )
+          child: CircularProgressIndicator(
+            color: const Color(0xffB62B37),
+          )
         );
       }
     );
     
     await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: _emailController.text.trim(),
-        password: _passwordController.text.trim(),
+      email: _emailController.text.trim(),
+      password: _passwordController.text.trim(),
     );
 
     Navigator.of(context).pop();

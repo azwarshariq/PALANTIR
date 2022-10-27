@@ -40,17 +40,30 @@ class GetBuildings extends StatelessWidget {
   //Get IDs
   Future getFloorDocID() async{
     print('Building Reference: ' + buildingId);
-    await FirebaseFirestore.instance.collection('Floors')
-        .where('buildingRef', isEqualTo: this.buildingId!)
-        .get()
-        .then(
-          (snapshot) => snapshot.docs.forEach(
-              (element) {
-            print(element.reference);
-            floorDocReference.add(element.reference.id);
-          }
-      ),
-    );
+
+    try{
+      await FirebaseFirestore.instance.collection('Floors')
+          .where('buildingRef', isEqualTo: this.buildingId!)
+          .get()
+          .then(
+            (snapshot) => snapshot.docs.forEach(
+                (element) {
+              print(element.reference);
+              floorDocReference.add(element.reference.id);
+            }
+        ),
+      );
+    } catch(e) {
+      return Text(
+        'Loading...',
+        style: GoogleFonts.raleway(
+          color: const Color(0xffB62B37),
+          fontWeight: FontWeight.w200,
+          fontSize: 20,
+        ),
+      );
+    };
+
     print('Floor References:');
     for(int i=0; i<2; i++){
       print(floorDocReference[i]);

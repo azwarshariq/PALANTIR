@@ -39,17 +39,28 @@ class _HomePageState extends State<HomePage> {
   //Get IDs
   Future getDocID() async{
     print('User: ' + user.email!);
-    await FirebaseFirestore.instance.collection('Users')
-        .where('email', isEqualTo: user.email!)
-        .get()
-        .then(
-      (snapshot) => snapshot.docs.forEach(
-        (element) {
-          print(element.reference);
-          userDocReference = element.reference.id;
-        }
-      ),
-    );
+    try {
+      await FirebaseFirestore.instance.collection('Users')
+          .where('email', isEqualTo: user.email!)
+          .get()
+          .then(
+            (snapshot) => snapshot.docs.forEach(
+                (element) {
+              print(element.reference);
+              userDocReference = element.reference.id;
+            }
+        ),
+      );
+    } catch(e) {
+      return Text(
+        'Loading...',
+        style: GoogleFonts.raleway(
+          color: const Color(0xffB62B37),
+          fontWeight: FontWeight.w200,
+          fontSize: 20,
+        ),
+      );
+    };
 
     print(userDocReference);
   }
@@ -102,8 +113,8 @@ class _HomePageState extends State<HomePage> {
                         padding: const EdgeInsets.all(8.0),
                         child: ListTile(
                           title: GetUserName(
-                            documentId: userDocReference!,
-                            email:user.email!,
+                            documentId: userDocReference,
+                            email: user.email!,
                             userInstance: userInstance,
                             buildingInstances: buildingInstances,
                             floorInstances: floorInstances,

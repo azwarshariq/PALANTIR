@@ -4,7 +4,7 @@ class routerObject {
   String floorRef = '';
   String MACAddress = '';
 
-  buildingObject(referenceId, routerName, floorRef, MAC){
+  routerObject(referenceId, routerName, floorRef, MAC){
     this.referenceId = referenceId;
     this.routerName = routerName;
     this.floorRef = floorRef;

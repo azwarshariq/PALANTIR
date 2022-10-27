@@ -5,6 +5,7 @@ import '../classes/router_class.dart';
 import '../classes/building_class.dart';
 import '../classes/floor_class.dart';
 import '../classes/user_class.dart';
+import 'get_routers.dart';
 
 class GetFloors extends StatelessWidget {
   final String floorId;
@@ -32,6 +33,41 @@ class GetFloors extends StatelessWidget {
         required this.routerInstances
       }
     );
+
+  List<String> routerDocReference = [];
+
+  //Get IDs
+  Future getRouterDocID() async{
+    print('Floor Reference: ' + floorId);
+
+    try{
+      await FirebaseFirestore.instance.collection('Routers')
+          .where('buildingRef', isEqualTo: this.floorId!)
+          .get()
+          .then(
+            (snapshot) => snapshot.docs.forEach(
+                (element) {
+              print(element.reference);
+              routerDocReference.add(element.reference.id);
+            }
+        ),
+      );
+    } catch(e) {
+      return Text(
+        'Loading...',
+        style: GoogleFonts.raleway(
+          color: const Color(0xffB62B37),
+          fontWeight: FontWeight.w200,
+          fontSize: 20,
+        ),
+      );
+    };
+
+    print('Router References:');
+    for(int i=0; i<2; i++){
+      print(routerDocReference[i]);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,28 +115,34 @@ class GetFloors extends StatelessWidget {
                     fontSize: 20,
                   ),
                 ),
-/*
+
                 Flexible(
                   child: FutureBuilder(
-                      future: getRouterDocID(),
-                      builder: (context, snapshot) {
-                        return ListView.builder(
-                            scrollDirection: Axis.vertical,
-                            shrinkWrap: true,
-                            itemCount: routerDocReference.length,
-                            itemBuilder: (context, index) {
-                              return Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: ListTile(
-                                  title: GetFloors(routerId: routerDocReference[index]),
-                                ),
-                              );
-                            }
-                        );
-                      }
+                    future: getRouterDocID(),
+                    builder: (context, snapshot) {
+                      return ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        shrinkWrap: true,
+                        itemCount: routerDocReference.length,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ListTile(
+                              title: GetRouters(
+                                routerId: routerDocReference[index],
+                                userInstance: userInstance,
+                                buildingInstances: buildingInstances,
+                                floorInstances: floorInstances,
+                                routerInstances: routerInstances,
+                              ),
+                            ),
+                          );
+                        }
+                      );
+                    }
                   ),
                 ),
-*/
+
               ],
             );
           }
