@@ -42,7 +42,7 @@ class GetFloors extends StatelessWidget {
 
     try{
       await FirebaseFirestore.instance.collection('Routers')
-          .where('buildingRef', isEqualTo: this.floorId!)
+          .where('floorRef', isEqualTo: this.floorId!)
           .get()
           .then(
             (snapshot) => snapshot.docs.forEach(
@@ -106,22 +106,12 @@ class GetFloors extends StatelessWidget {
             return Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                  '${floorInstance.floorName},' +
-                      ' with ${floorInstance.numRouters} routers',
-                  style: GoogleFonts.raleway(
-                    color: const Color(0xffB62B37),
-                    fontWeight: FontWeight.w200,
-                    fontSize: 20,
-                  ),
-                ),
-
                 Flexible(
                   child: FutureBuilder(
                     future: getRouterDocID(),
                     builder: (context, snapshot) {
                       return ListView.builder(
-                        scrollDirection: Axis.horizontal,
+                        scrollDirection: Axis.vertical,
                         shrinkWrap: true,
                         itemCount: routerDocReference.length,
                         itemBuilder: (context, index) {
@@ -148,11 +138,11 @@ class GetFloors extends StatelessWidget {
           }
           else {
             return Text(
-              'Loading...',
+              '',
               style: GoogleFonts.raleway(
                 color: const Color(0xffB62B37),
                 fontWeight: FontWeight.w200,
-                fontSize: 20,
+                fontSize: 5,
               ),
             );
           }

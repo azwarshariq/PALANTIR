@@ -95,8 +95,7 @@ class GetBuildings extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  '${buildingInstance.buildingName},' +
-                  ' which has ${buildingInstance.numFloors} floors:',
+                  '${buildingInstance.buildingName},',
                   style: GoogleFonts.raleway(
                     color: const Color(0xffB62B37),
                     fontWeight: FontWeight.w200,

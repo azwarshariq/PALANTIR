@@ -70,25 +70,16 @@ class GetRouters extends StatelessWidget {
             return Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                  '${routerInstance.routerName},' +
-                      ' with MAC ${routerInstance.MACAddress}',
-                  style: GoogleFonts.raleway(
-                    color: const Color(0xffB62B37),
-                    fontWeight: FontWeight.w200,
-                    fontSize: 20,
-                  ),
-                ),
               ],
             );
           }
           else {
             return Text(
-              'Loading...',
+              '',
               style: GoogleFonts.raleway(
                 color: const Color(0xffB62B37),
                 fontWeight: FontWeight.w200,
-                fontSize: 20,
+                fontSize: 5,
               ),
             );
           }

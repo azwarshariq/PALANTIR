@@ -109,19 +109,30 @@ class _HomePageState extends State<HomePage> {
                     shrinkWrap: true,
                     itemCount: 1,
                     itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ListTile(
-                          title: GetUserName(
-                            documentId: userDocReference,
-                            email: user.email!,
-                            userInstance: userInstance,
-                            buildingInstances: buildingInstances,
-                            floorInstances: floorInstances,
-                            routerInstances: routerInstances,
+                      try{
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ListTile(
+                            title: GetUserName(
+                              documentId: userDocReference,
+                              email: user.email!,
+                              userInstance: userInstance,
+                              buildingInstances: buildingInstances,
+                              floorInstances: floorInstances,
+                              routerInstances: routerInstances,
+                            ),
                           ),
-                        ),
-                      );
+                        );
+                      }catch(e){
+                        return Text(
+                          '${e}',
+                          style: GoogleFonts.raleway(
+                            color: const Color(0xffB62B37),
+                            fontWeight: FontWeight.w200,
+                            fontSize: 20,
+                          ),
+                        );
+                      };
                     }
                   );
                 }
