@@ -56,7 +56,7 @@ class _HomePageState extends State<HomePage> {
         'Loading...',
         style: GoogleFonts.raleway(
           color: const Color(0xffB62B37),
-          fontWeight: FontWeight.w200,
+          fontWeight: FontWeight.w300,
           fontSize: 20,
         ),
       );
@@ -82,20 +82,21 @@ class _HomePageState extends State<HomePage> {
           title: Text(
             'Welcome back',
             style: GoogleFonts.raleway(
-              color: const Color(0xffB62B37),
+              color: const Color(0xff100D49),
               fontWeight: FontWeight.w200,
-              fontSize: 20,
+              fontSize: 25,
             ),
           ),
-          backgroundColor:const Color(0xff100D49),
+          backgroundColor: const Color(0xffB62B37),
           elevation: 10,
-          shadowColor: const Color(0xffB62B37),
+          toolbarOpacity: 0.9,
+          shadowColor: const Color(0xff100D49),
           actions: [
             GestureDetector(
               child: Icon(
                 Icons.logout_rounded,
-                color: const Color(0xffB62B37),
-                size: 40,
+                color: const Color(0xff100D49),
+                size: 36,
               ),
               onTap: (){
                 FirebaseAuth.instance.signOut();
@@ -103,7 +104,7 @@ class _HomePageState extends State<HomePage> {
             )
           ],
         ),
-        backgroundColor: const Color(0xff100D49),
+        backgroundColor: Colors.black54,
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -176,7 +177,13 @@ class _HomePageState extends State<HomePage> {
                   )
                 ),
                 style: ElevatedButton.styleFrom(
+                  animationDuration: const Duration(seconds: 1),
+                  shape: RoundedRectangleBorder(
+                    //to set border radius to button
+                      borderRadius: BorderRadius.circular(20)
+                  ),
                   backgroundColor: const Color(0xFFCD4F69),
+                  shadowColor: Color(0xFFCD4F69),
                 ),
                 child: Text(
                   'Proceed As Mapper',
@@ -195,7 +202,12 @@ class _HomePageState extends State<HomePage> {
                 onPressed: null,
 
                 style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    //to set border radius to button
+                      borderRadius: BorderRadius.circular(20)
+                  ),
                   backgroundColor: const Color(0xFFCD4F69),
+                  shadowColor: Color(0xFFCD4F69),
                 ),
                 child: Text(
                   'Proceed As User',

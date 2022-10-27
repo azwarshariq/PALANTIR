@@ -98,8 +98,8 @@ class GetBuildings extends StatelessWidget {
                   '${buildingInstance.buildingName},',
                   style: GoogleFonts.raleway(
                     color: const Color(0xffB62B37),
-                    fontWeight: FontWeight.w200,
-                    fontSize: 20,
+                    fontWeight: FontWeight.w300,
+                    fontSize: 30,
                   ),
                 ),
 

@@ -20,7 +20,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: '>=2.18.2 <3.0.0'
+  sdk: '>=2.18.2 '
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -35,16 +35,18 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   splashscreen:
-  firebase_auth: ^3.3.14
+  firebase_auth: ^4.1.0
   google_fonts:
   image_gallery_saver: '^1.7.1'
   image_picker: ^0.8.6
   dropdown_search: ^5.0.3
-  firebase_core: ^1.24.0
-  firebase_storage: ^10.3.11
-  cloud_firestore: ^3.5.1
+  firebase_core: ^2.1.1
+  firebase_storage: ^11.0.3
+  cloud_firestore: ^4.0.3
   firebase_core_platform_interface: ^4.5.1
   popup_card: ^0.1.0
+  _flutterfire_internals: ^1.0.6
+
 
 dev_dependencies:
   flutter_test:
@@ -53,7 +55,7 @@ dev_dependencies:
   flutter_launcher_icons: "^0.9.0"
 
 flutter_icons:
-  image_path: "icon/PALANTIR logo.png"
+  image_path: "icon/logo.png"
   android: true
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -73,15 +75,16 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   assets:
+    - icon/logo.png
     - assets/floorplan.jpeg
     - google_fonts/
     - images/PALANTIR logo.png
     - images/1.png
     - images/step1.jpeg
     - images/step2.jpeg
-    - assets/images/Home Page.png
-    - assets/images/Splash Screen.png
-    - assets/images/Controller.png
+    - assets/Home Page.png
+    - assets/Splash Screen.png
+    - assets/Controller.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:
