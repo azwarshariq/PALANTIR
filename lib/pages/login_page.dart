@@ -7,14 +7,21 @@ class LoginPage extends StatefulWidget {
   final VoidCallback showRegisterPage;
   const LoginPage({Key? key, required this.showRegisterPage}) : super(key: key);
 
+
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
-
 class _LoginPageState extends State<LoginPage> {
   //Text Controllers
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  bool _passwordVisible = false;
+
+
+  @override
+  void initState() {
+    _passwordVisible = false;
+  }
 
   Future signIn() async {
     
@@ -99,6 +106,11 @@ class _LoginPageState extends State<LoginPage> {
                         hintText: 'email@xyz.com',
                         fillColor: Colors.grey[200],
                         filled: true,
+                        prefixIcon: Icon(
+                          Icons.person,
+                          size: 24,
+                          color:const Color(0xFFCD4F69),
+                        ),
                       ),
                     ),
                   ),
@@ -110,9 +122,11 @@ class _LoginPageState extends State<LoginPage> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25.0),
                     child: TextField(
-                      obscureText: true,
+                      obscureText: !_passwordVisible,
+                      keyboardType: TextInputType.visiblePassword,
                       controller: _passwordController,
                       decoration: InputDecoration(
+                        floatingLabelBehavior: FloatingLabelBehavior.never,
                         enabledBorder: OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.white60),
                             borderRadius: BorderRadius.circular(12)
@@ -124,6 +138,26 @@ class _LoginPageState extends State<LoginPage> {
                         hintText: 'password',
                         fillColor: Colors.grey[200],
                         filled: true,
+                        prefixIcon: Icon(
+                          Icons.lock_rounded,
+                          size: 24,
+                          color:const Color(0xFFCD4F69),
+                        ),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            // Based on passwordVisible state choose the icon
+                            _passwordVisible
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                            color:const Color(0xFFCD4F69),
+                          ),
+                          onPressed: () {
+                            // Update the state i.e. toggle the state of passwordVisible variable
+                            setState(() {
+                              _passwordVisible = !_passwordVisible;
+                            });
+                          },
+                        ),
                       ),
                     ),
                   ),

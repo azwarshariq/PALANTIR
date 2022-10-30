@@ -19,6 +19,13 @@ class _RegisterPageState extends State<RegisterPage> {
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
   final _ageController = TextEditingController();
+  bool _passwordVisible = false;
+
+
+  @override
+  void initState() {
+    _passwordVisible = false;
+  }
 
   Future signUp() async {
     if (passwordConfirmed()) {
@@ -215,7 +222,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 25.0),
                       child: TextField(
-                        obscureText: true,
+                        obscureText: !_passwordVisible,
                         controller: _passwordController,
                         decoration: InputDecoration(
                           enabledBorder: OutlineInputBorder(
@@ -229,6 +236,21 @@ class _RegisterPageState extends State<RegisterPage> {
                           hintText: 'password',
                           fillColor: Colors.grey[200],
                           filled: true,
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              // Based on passwordVisible state choose the icon
+                              _passwordVisible
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              color:const Color(0xFFCD4F69),
+                            ),
+                            onPressed: () {
+                              // Update the state i.e. toggle the state of passwordVisible variable
+                              setState(() {
+                                _passwordVisible = !_passwordVisible;
+                              });
+                            },
+                          ),
                         ),
                       ),
                     ),
