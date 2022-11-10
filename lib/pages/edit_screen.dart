@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'dart:math' as math;
 import 'package:popup_card/popup_card.dart';
 
+import 'collect_data_screen.dart';
 import 'hero_dialog_route.dart';
+
+//Delete Room, Stairs and Elevator function is incomplete
 
 class EditScreen extends StatefulWidget {
   const EditScreen({Key? key}) : super(key: key);
@@ -132,6 +136,28 @@ class _EditScreenState extends State<EditScreen> {
                                       color: Color(0xffB62B37),
                                     ),
                                   ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.15,
+                              ),
+                              CircleAvatar(
+                                //Add Button
+                                radius: 35.0,
+                                backgroundColor: const Color(0xFFCD4F69),
+                                child: IconButton(
+                                  icon: Icon(Icons.arrow_circle_right_rounded),
+                                  color: Color.fromARGB(255, 255, 254, 254),
+                                  iconSize: 30,
+                                  splashColor: const Color(0xDACD4F69),
+                                  splashRadius: 45,
+                                  onPressed: () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) => CollectDataScreen(),
+                                      ),
+                                    );
+                                  },
                                 ),
                               ),
                             ],
@@ -346,7 +372,8 @@ class _PopUpItemBodyState extends State<PopUpItemBody> {
                       onPressed: () => {
                         if (xVar == 0)
                           {print("zero")}
-                        else if(initialTypeValue == "Router")
+                        else
+                        if(initialTypeValue == "Router")
                           {
                             if (routerName == "")
                               {
@@ -527,8 +554,6 @@ class _PopUpItemBodyState extends State<PopUpItemBody> {
                               color: Colors.white,
                               fontWeight: FontWeight.w500)),
                     ),
-
-                    Text(type[3]),
                   ],
                 ),
               ),
