@@ -22,8 +22,16 @@ int xyAxis = 100;
 int value = 0;
 String mac = "";
 String routerName = "";
+String roomID = "";
+String stairsID = "";
+String elevatorID = "";
+String typeID = "";
 List<String> macAddress = [];
 List<String> routers = [];
+List<String> rooms = [];
+List<String> stairs = [];
+List<String> elevators = [];
+List<String> types = [];
 
 class _EditScreenState extends State<EditScreen> {
   Offset? _tapPosition;
@@ -170,6 +178,10 @@ class PopUpItemBody extends StatefulWidget {
 const String _heroAddMacAddress = 'add-mac-hero';
 
 class _PopUpItemBodyState extends State<PopUpItemBody> {
+
+  String initialTypeValue = 'Router';
+  var type = ['Router', 'Room', 'Stairs', 'Elevator'];
+
   void updateName(value) {
     setState(() {
       routerName = value;
@@ -179,6 +191,24 @@ class _PopUpItemBodyState extends State<PopUpItemBody> {
   void updateMac(value) {
     setState(() {
       mac = value;
+    });
+  }
+
+  void updateRoom(value) {
+    setState(() {
+      roomID = value;
+    });
+  }
+
+  void updateStairs(value) {
+    setState(() {
+      stairsID = value;
+    });
+  }
+
+  void updateElevator(value) {
+    setState(() {
+      elevatorID = value;
     });
   }
 
@@ -202,6 +232,32 @@ class _PopUpItemBodyState extends State<PopUpItemBody> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
+                    DropdownButton(
+                      value: initialTypeValue,
+                      icon: const Icon(Icons.keyboard_arrow_down),
+                      items: type.map((String items) {
+                        return DropdownMenuItem(
+                          value: items,
+                          child: Text(
+                            items,
+                            style: const TextStyle(
+                                color: Colors.black, fontSize: 18),
+                          ),
+                        );
+                      }).toList(),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          initialTypeValue = newValue!;
+                        });
+                      },
+                      dropdownColor: Colors.white60,
+                    ),
+                    const Divider(
+                      color: Colors.white,
+                      thickness: 0.2,
+                    ),
+
+                    initialTypeValue == "Router" ?
                     TextFormField(
                       textAlign: TextAlign.center,
                       maxLines: 1,
@@ -214,11 +270,54 @@ class _PopUpItemBodyState extends State<PopUpItemBody> {
                         border: InputBorder.none,
                       ),
                       cursorColor: Color.fromARGB(0, 0, 0, 0),
-                    ),
+                    ):
+                    initialTypeValue == "Room" ?
+                    TextFormField(
+                      textAlign: TextAlign.center,
+                      maxLines: 1,
+                      autofocus: true,
+                      onChanged: (value) {
+                        updateRoom(value);
+                      },
+                      decoration: const InputDecoration(
+                        hintText: 'Enter Room ID e.g Room1',
+                        border: InputBorder.none,
+                      ),
+                      cursorColor: Color.fromARGB(0, 0, 0, 0),
+                    ):
+                    initialTypeValue == "Stairs" ?
+                    TextFormField(
+                      textAlign: TextAlign.center,
+                      maxLines: 1,
+                      autofocus: true,
+                      onChanged: (value) {
+                        updateStairs(value);
+                      },
+                      decoration: const InputDecoration(
+                        hintText: 'Enter Stairs ID e.g S1',
+                        border: InputBorder.none,
+                      ),
+                      cursorColor: Color.fromARGB(0, 0, 0, 0),
+                    ):
+                    initialTypeValue == "Elevator" ?
+                    TextFormField(
+                      textAlign: TextAlign.center,
+                      maxLines: 1,
+                      autofocus: true,
+                      onChanged: (value) {
+                        updateElevator(value);
+                      },
+                      decoration: const InputDecoration(
+                        hintText: 'Enter Elevator ID e.g E1',
+                        border: InputBorder.none,
+                      ),
+                      cursorColor: Color.fromARGB(0, 0, 0, 0),
+                    ):
                     const Divider(
                       color: Colors.white,
                       thickness: 0.2,
                     ),
+                    initialTypeValue == "Router" ?
                     TextFormField(
                       textAlign: TextAlign.center,
                       maxLines: 1,
@@ -231,75 +330,205 @@ class _PopUpItemBodyState extends State<PopUpItemBody> {
                         border: InputBorder.none,
                       ),
                       cursorColor: Color.fromARGB(0, 0, 0, 0),
+                    ):
+                    const Divider(
+                      color: Colors.white,
+                      thickness: 0.5,
                     ),
                     const Divider(
                       color: Colors.white,
-                      thickness: 0.2,
+                      thickness: 0.5,
                     ),
+
+
                     ElevatedButton(
+
                       onPressed: () => {
                         if (xVar == 0)
                           {print("zero")}
-                        else if (mac == "")
+                        else if(initialTypeValue == "Router")
                           {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text('Please enter MAC address'))),
+                            if (routerName == "")
+                              {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content: Text('Please enter router ID'))),
+                              }
+                            else if (mac == "")
+                              {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content: Text('Please enter MAC address'))),
+                              }
+
+                            else
+                              {
+                                check = false,
+                                for (int i = 0; i < macAddress.length; i++)
+                                  {
+                                    if (mac == macAddress[i])
+                                      {
+                                        check = true,
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                            const SnackBar(
+                                                content: Text(
+                                                    'MAC Address already exists'))),
+                                      }
+                                    else if (routerName == routers[i])
+                                      {
+                                        check = true,
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                            const SnackBar(
+                                                content: Text(
+                                                    'Router ID already exists'))),
+                                      }
+                                  },
+                                if (check == false)
+                                  {
+                                    Navigator.pop(context),
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(
+                                            content:
+                                            Text('Router Successfully Added'))),
+                                    print(mac),
+                                    print(xVar),
+                                    print(yVar),
+                                    macAddress.add(mac),
+                                    routers.add(routerName),
+                                    types.add("Router"),
+                                    mac = "",
+                                    routerName = "",
+                                  }
+                              }
                           }
-                        else if (routerName == "")
+                        else if(initialTypeValue == "Room")
                             {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                      content: Text('Please enter router ID'))),
-                            }
-                          else
-                            {
-                              check = false,
-                              for (int i = 0; i < macAddress.length; i++)
+                              if (roomID == "")
                                 {
-                                  if (mac == macAddress[i])
-                                    {
-                                      check = true,
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                          const SnackBar(
-                                              content: Text(
-                                                  'MAC Address already exists'))),
-                                    }
-                                  else if (routerName == routers[i])
-                                    {
-                                      check = true,
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                          const SnackBar(
-                                              content: Text(
-                                                  'Router ID already exists'))),
-                                    }
-                                },
-                              if (check == false)
-                                {
-                                  Navigator.pop(context),
                                   ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
-                                          content:
-                                          Text('Router Successfully Added'))),
-                                  print(mac),
-                                  print(xVar),
-                                  print(yVar),
-                                  macAddress.add(mac),
-                                  routers.add(routerName),
-                                  mac = "",
-                                  routerName = "",
+                                          content: Text('Please enter room ID'))),
+                                }
+                              else
+                                {
+                                  check = false,
+                                  for (int i = 0; i < rooms.length; i++)
+                                    {
+                                      if (roomID == rooms[i])
+                                        {
+                                          check = true,
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                              const SnackBar(
+                                                  content: Text(
+                                                      'Room ID already exists'))),
+                                        }
+                                    },
+                                  if (check == false)
+                                    {
+                                      Navigator.pop(context),
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                          const SnackBar(
+                                              content:
+                                              Text('Room Successfully Added'))),
+                                      print(mac),
+                                      print(xVar),
+                                      print(yVar),
+                                      rooms.add(roomID),
+                                      types.add("Room"),
+                                      roomID = "",
+                                    }
                                 }
                             }
+
+                          else if(initialTypeValue == "Stairs")
+                              {
+                                if (stairsID == "")
+                                  {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(
+                                            content: Text('Please enter stairs ID'))),
+                                  }
+                                else
+                                  {
+                                    check = false,
+                                    for (int i = 0; i < stairs.length; i++)
+                                      {
+                                        if (stairsID == stairs[i])
+                                          {
+                                            check = true,
+                                            ScaffoldMessenger.of(context).showSnackBar(
+                                                const SnackBar(
+                                                    content: Text(
+                                                        'Stairs ID already exists'))),
+                                          }
+                                      },
+                                    if (check == false)
+                                      {
+                                        Navigator.pop(context),
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                            const SnackBar(
+                                                content:
+                                                Text('Stairs Successfully Added'))),
+                                        print(mac),
+                                        print(xVar),
+                                        print(yVar),
+                                        stairs.add(stairsID),
+                                        types.add("Stairs"),
+                                        stairsID = "",
+                                      }
+                                  }
+                              }
+                            else if(initialTypeValue == "Elevator")
+                                {
+                                  if (elevatorID == "")
+                                    {
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                          const SnackBar(
+                                              content: Text('Please enter elevator ID'))),
+                                    }
+                                  else
+                                    {
+                                      check = false,
+                                      for (int i = 0; i < elevators.length; i++)
+                                        {
+                                          if (elevatorID == elevators[i])
+                                            {
+                                              check = true,
+                                              ScaffoldMessenger.of(context).showSnackBar(
+                                                  const SnackBar(
+                                                      content: Text(
+                                                          'Elevator ID already exists'))),
+                                            }
+                                        },
+                                      if (check == false)
+                                        {
+                                          Navigator.pop(context),
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                              const SnackBar(
+                                                  content:
+                                                  Text('Elevator Successfully Added'))),
+                                          print(mac),
+                                          print(xVar),
+                                          print(yVar),
+                                          elevators.add(elevatorID),
+                                          types.add("Elevator"),
+                                          elevatorID = "",
+                                        }
+                                    }
+                                }
+
                       },
                       style: ElevatedButton.styleFrom(
                           backgroundColor: Color(0xffB62B37) // Background color
                       ),
-                      child: const Text("Add Router",
+                      child: const Text("Add",
                           style: TextStyle(
                               fontSize: 17,
                               color: Colors.white,
                               fontWeight: FontWeight.w500)),
                     ),
+
+                    Text(type[3]),
                   ],
                 ),
               ),
@@ -331,9 +560,24 @@ class _PopUpItemBodyRouterState extends State<PopUpItemBodyRouter> {
         child: ListView.builder(
           itemBuilder: (BuildContext, index) {
             return Card(
-              child: ListTile(
-                title: Text("ID: ${routers[index]}"),
-                subtitle: Text("MAC: ${macAddress[index]}"),
+              child:
+              ListTile(
+                title: Text("${types[index]}:"),
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: 7,
+                    ),
+                    types[index] == "Router"?
+                    Text("ID: ${routers[index]} \nMAC: ${macAddress[index]}"):
+                    types[index] == "Room"?
+                    Text("ID: ${rooms[index]}"):
+                    types[index] == "Stairs"?
+                    Text("ID: ${stairs[index]}"):
+                    Text("ID: ${elevators[index]}")
+                  ],
+                ),
                 trailing: GestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () {
@@ -357,12 +601,14 @@ class _PopUpItemBodyRouterState extends State<PopUpItemBodyRouter> {
                   ),
                 ),
               ),
+
             );
           },
           itemCount: routers.length,
           shrinkWrap: true,
           padding: EdgeInsets.all(5),
           scrollDirection: Axis.vertical,
+
         ),
       ),
     );
