@@ -1,12 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'dart:math' as math;
-import 'package:popup_card/popup_card.dart';
-
 import 'collect_data_screen.dart';
 import 'hero_dialog_route.dart';
-
-//Delete Room, Stairs and Elevator function is incomplete
 
 class EditScreen extends StatefulWidget {
   const EditScreen({Key? key}) : super(key: key);
@@ -39,6 +33,7 @@ List<String> types = [];
 
 class _EditScreenState extends State<EditScreen> {
   Offset? _tapPosition;
+  String _value = "";
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -116,15 +111,7 @@ class _EditScreenState extends State<EditScreen> {
                               SizedBox(
                                 width: MediaQuery.of(context).size.width * 0.15,
                               ),
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.of(context)
-                                      .push(HeroDialogRoute(builder: (context) {
-                                    return PopUpItemBodyRouter();
-                                  }));
-                                },
-                                child: Hero(
-                                  tag: 'btn3',
+                              PopupMenuButton(
                                   child: Material(
                                     color: Color.fromARGB(198, 255, 255, 255),
                                     elevation: 2,
@@ -136,8 +123,55 @@ class _EditScreenState extends State<EditScreen> {
                                       color: Color(0xffB62B37),
                                     ),
                                   ),
-                                ),
+                                  onSelected: (value) {
+                                    setState(() {
+                                      _value = value;
+                                      if (_value == "router"){
+                                        Navigator.of(context)
+                                            .push(HeroDialogRoute(builder: (context) {
+                                          return PopUpItemBodyRouter();
+                                        }));
+                                      }
+                                      else if (_value == "room"){
+                                        Navigator.of(context)
+                                            .push(HeroDialogRoute(builder: (context) {
+                                          return PopUpItemBodyRoom();
+                                        }));
+                                      }
+                                      else if (_value == "stairs"){
+                                        Navigator.of(context)
+                                            .push(HeroDialogRoute(builder: (context) {
+                                          return PopUpItemBodyStairs();
+                                        }));
+                                      }
+                                      else if (_value == "elevator"){
+                                        Navigator.of(context)
+                                            .push(HeroDialogRoute(builder: (context) {
+                                          return PopUpItemBodyElevator();
+                                        }));
+                                      }
+                                    });
+                                  },
+                                  itemBuilder:(context) => [
+                                    PopupMenuItem(
+                                      child: Text("Router"),
+                                      value: "router",
+                                    ),
+                                    PopupMenuItem(
+                                      child: Text("Room"),
+                                      value: "room",
+                                    ),
+                                    PopupMenuItem(
+                                      child: Text("Stairs"),
+                                      value: "stairs",
+                                    ),
+                                    PopupMenuItem(
+                                      child: Text("Elevator"),
+                                      value: "elevator",
+                                    ),
+                                  ]
                               ),
+
                               SizedBox(
                                 width: MediaQuery.of(context).size.width * 0.15,
                               ),
@@ -370,104 +404,109 @@ class _PopUpItemBodyState extends State<PopUpItemBody> {
                     ElevatedButton(
 
                       onPressed: () => {
-                        if (xVar == 0)
-                          {print("zero")}
-                        else
-                        if(initialTypeValue == "Router")
+                        if (xVar == 0 || yVar == 0)
                           {
-                            if (routerName == "")
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text('Please tap on screen to select x and y coordinates!'))),
+                          }
+                        else
+                          {
+                            if(initialTypeValue == "Router")
                               {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                        content: Text('Please enter router ID'))),
-                              }
-                            else if (mac == "")
-                              {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                        content: Text('Please enter MAC address'))),
-                              }
-
-                            else
-                              {
-                                check = false,
-                                for (int i = 0; i < macAddress.length; i++)
+                                if (routerName == "")
                                   {
-                                    if (mac == macAddress[i])
-                                      {
-                                        check = true,
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                            const SnackBar(
-                                                content: Text(
-                                                    'MAC Address already exists'))),
-                                      }
-                                    else if (routerName == routers[i])
-                                      {
-                                        check = true,
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                            const SnackBar(
-                                                content: Text(
-                                                    'Router ID already exists'))),
-                                      }
-                                  },
-                                if (check == false)
-                                  {
-                                    Navigator.pop(context),
                                     ScaffoldMessenger.of(context).showSnackBar(
                                         const SnackBar(
-                                            content:
-                                            Text('Router Successfully Added'))),
-                                    print(mac),
-                                    print(xVar),
-                                    print(yVar),
-                                    macAddress.add(mac),
-                                    routers.add(routerName),
-                                    types.add("Router"),
-                                    mac = "",
-                                    routerName = "",
+                                            content: Text('Please enter router ID'))),
+                                  }
+                                else if (mac == "")
+                                  {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(
+                                            content: Text('Please enter MAC address'))),
+                                  }
+
+                                else
+                                  {
+                                    check = false,
+                                    for (int i = 0; i < macAddress.length; i++)
+                                      {
+                                        if (mac == macAddress[i])
+                                          {
+                                            check = true,
+                                            ScaffoldMessenger.of(context).showSnackBar(
+                                                const SnackBar(
+                                                    content: Text(
+                                                        'MAC Address already exists'))),
+                                          }
+                                        else if (routerName == routers[i])
+                                          {
+                                            check = true,
+                                            ScaffoldMessenger.of(context).showSnackBar(
+                                                const SnackBar(
+                                                    content: Text(
+                                                        'Router ID already exists'))),
+                                          }
+                                      },
+                                    if (check == false)
+                                      {
+                                        Navigator.pop(context),
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                            const SnackBar(
+                                                content:
+                                                Text('Router Successfully Added'))),
+                                        print(mac),
+                                        print(xVar),
+                                        print(yVar),
+                                        macAddress.add(mac),
+                                        routers.add(routerName),
+                                        types.add("Router"),
+                                        mac = "",
+                                        routerName = "",
+                                      }
                                   }
                               }
-                          }
-                        else if(initialTypeValue == "Room")
-                            {
-                              if (roomID == "")
-                                {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                          content: Text('Please enter room ID'))),
-                                }
-                              else
-                                {
-                                  check = false,
-                                  for (int i = 0; i < rooms.length; i++)
-                                    {
-                                      if (roomID == rooms[i])
-                                        {
-                                          check = true,
-                                          ScaffoldMessenger.of(context).showSnackBar(
-                                              const SnackBar(
-                                                  content: Text(
-                                                      'Room ID already exists'))),
-                                        }
-                                    },
-                                  if (check == false)
-                                    {
-                                      Navigator.pop(context),
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                          const SnackBar(
-                                              content:
-                                              Text('Room Successfully Added'))),
-                                      print(mac),
-                                      print(xVar),
-                                      print(yVar),
-                                      rooms.add(roomID),
-                                      types.add("Room"),
-                                      roomID = "",
-                                    }
-                                }
-                            }
+                            else if(initialTypeValue == "Room")
+                              {
+                                if (roomID == "")
+                                  {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(
+                                            content: Text('Please enter room ID'))),
+                                  }
+                                else
+                                  {
+                                    check = false,
+                                    for (int i = 0; i < rooms.length; i++)
+                                      {
+                                        if (roomID == rooms[i])
+                                          {
+                                            check = true,
+                                            ScaffoldMessenger.of(context).showSnackBar(
+                                                const SnackBar(
+                                                    content: Text(
+                                                        'Room ID already exists'))),
+                                          }
+                                      },
+                                    if (check == false)
+                                      {
+                                        Navigator.pop(context),
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                            const SnackBar(
+                                                content:
+                                                Text('Room Successfully Added'))),
+                                        print(xVar),
+                                        print(yVar),
+                                        print(roomID),
+                                        rooms.add(roomID),
+                                        types.add("Room"),
+                                        roomID = "",
+                                      }
+                                  }
+                              }
 
-                          else if(initialTypeValue == "Stairs")
+                            else if(initialTypeValue == "Stairs")
                               {
                                 if (stairsID == "")
                                   {
@@ -496,7 +535,6 @@ class _PopUpItemBodyState extends State<PopUpItemBody> {
                                             const SnackBar(
                                                 content:
                                                 Text('Stairs Successfully Added'))),
-                                        print(mac),
                                         print(xVar),
                                         print(yVar),
                                         stairs.add(stairsID),
@@ -506,45 +544,47 @@ class _PopUpItemBodyState extends State<PopUpItemBody> {
                                   }
                               }
                             else if(initialTypeValue == "Elevator")
-                                {
-                                  if (elevatorID == "")
-                                    {
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                          const SnackBar(
-                                              content: Text('Please enter elevator ID'))),
-                                    }
-                                  else
-                                    {
-                                      check = false,
-                                      for (int i = 0; i < elevators.length; i++)
-                                        {
-                                          if (elevatorID == elevators[i])
-                                            {
-                                              check = true,
-                                              ScaffoldMessenger.of(context).showSnackBar(
-                                                  const SnackBar(
-                                                      content: Text(
-                                                          'Elevator ID already exists'))),
-                                            }
-                                        },
-                                      if (check == false)
-                                        {
-                                          Navigator.pop(context),
-                                          ScaffoldMessenger.of(context).showSnackBar(
-                                              const SnackBar(
-                                                  content:
-                                                  Text('Elevator Successfully Added'))),
-                                          print(mac),
-                                          print(xVar),
-                                          print(yVar),
-                                          elevators.add(elevatorID),
-                                          types.add("Elevator"),
-                                          elevatorID = "",
-                                        }
-                                    }
-                                }
-
+                              {
+                                if (elevatorID == "")
+                                  {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(
+                                            content: Text('Please enter elevator ID'))),
+                                  }
+                                else
+                                  {
+                                    check = false,
+                                    for (int i = 0; i < elevators.length; i++)
+                                      {
+                                        if (elevatorID == elevators[i])
+                                          {
+                                            check = true,
+                                            ScaffoldMessenger.of(context).showSnackBar(
+                                                const SnackBar(
+                                                    content: Text(
+                                                        'Elevator ID already exists'))),
+                                          }
+                                      },
+                                    if (check == false)
+                                      {
+                                        Navigator.pop(context),
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                            const SnackBar(
+                                                content:
+                                                Text('Elevator Successfully Added'))),
+                                        print(xVar),
+                                        print(yVar),
+                                        elevators.add(elevatorID),
+                                        types.add("Elevator"),
+                                        elevatorID = "",
+                                      }
+                                  }
+                              }
+                          }
                       },
+
+
+
                       style: ElevatedButton.styleFrom(
                           backgroundColor: Color(0xffB62B37) // Background color
                       ),
@@ -566,41 +606,33 @@ class _PopUpItemBodyState extends State<PopUpItemBody> {
 }
 
 class PopUpItemBodyRouter extends StatefulWidget {
-  const PopUpItemBodyRouter({
-    Key? key,
-  }) : super(key: key);
+  PopUpItemBodyRouter({
+    Key? key}) : super(key: key);
 
   @override
   State<PopUpItemBodyRouter> createState() => _PopUpItemBodyRouterState();
 }
-
 const String _heroDeleteMacAddress = 'delete-mac-hero';
-
 class _PopUpItemBodyRouterState extends State<PopUpItemBodyRouter> {
+
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(32.0),
         child: ListView.builder(
-          itemBuilder: (BuildContext, index) {
+          itemBuilder: (BuildContext context, int index) {
             return Card(
               child:
               ListTile(
-                title: Text("${types[index]}:"),
+                title: Text("ID: ${routers[index]}"),
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(
                       height: 7,
                     ),
-                    types[index] == "Router"?
-                    Text("ID: ${routers[index]} \nMAC: ${macAddress[index]}"):
-                    types[index] == "Room"?
-                    Text("ID: ${rooms[index]}"):
-                    types[index] == "Stairs"?
-                    Text("ID: ${stairs[index]}"):
-                    Text("ID: ${elevators[index]}")
+                    Text("MAC: ${macAddress[index]}")
                   ],
                 ),
                 trailing: GestureDetector(
@@ -630,6 +662,176 @@ class _PopUpItemBodyRouterState extends State<PopUpItemBodyRouter> {
             );
           },
           itemCount: routers.length,
+          shrinkWrap: true,
+          padding: EdgeInsets.all(5),
+          scrollDirection: Axis.vertical,
+
+        ),
+      ),
+    );
+  }
+}
+
+
+class PopUpItemBodyRoom extends StatefulWidget {
+  PopUpItemBodyRoom({
+    Key? key}) : super(key: key);
+
+  @override
+  State<PopUpItemBodyRoom> createState() => _PopUpItemBodyRoomState();
+}
+class _PopUpItemBodyRoomState extends State<PopUpItemBodyRoom> {
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(32.0),
+        child: ListView.builder(
+          itemBuilder: (BuildContext context, int index) {
+            return Card(
+              child:
+              ListTile(
+                title: Text("ID: ${rooms[index]}"),
+                trailing: GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: () {
+                    rooms.remove(rooms[index]);
+                    Navigator.pop(context, '/');
+
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text('Room Successfully Deleted!')));
+                  },
+                  child: Material(
+                    color: Color.fromARGB(198, 255, 255, 255),
+                    elevation: 2,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(32)),
+                    child: const Icon(
+                      Icons.delete,
+                      size: 40,
+                      color: Color(0xffB62B37),
+                    ),
+                  ),
+                ),
+              ),
+
+            );
+          },
+          itemCount: rooms.length,
+          shrinkWrap: true,
+          padding: EdgeInsets.all(5),
+          scrollDirection: Axis.vertical,
+
+        ),
+      ),
+    );
+  }
+}
+
+
+class PopUpItemBodyStairs extends StatefulWidget {
+  PopUpItemBodyStairs({
+    Key? key}) : super(key: key);
+
+  @override
+  State<PopUpItemBodyStairs> createState() => _PopUpItemBodyStairsState();
+}
+class _PopUpItemBodyStairsState extends State<PopUpItemBodyStairs> {
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(32.0),
+        child: ListView.builder(
+          itemBuilder: (BuildContext context, int index) {
+            return Card(
+              child:
+              ListTile(
+                title: Text("ID: ${stairs[index]}"),
+                trailing: GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: () {
+                    stairs.remove(stairs[index]);
+                    Navigator.pop(context, '/');
+
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text('Stairs Successfully Deleted!')));
+                  },
+                  child: Material(
+                    color: Color.fromARGB(198, 255, 255, 255),
+                    elevation: 2,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(32)),
+                    child: const Icon(
+                      Icons.delete,
+                      size: 40,
+                      color: Color(0xffB62B37),
+                    ),
+                  ),
+                ),
+              ),
+
+            );
+          },
+          itemCount: stairs.length,
+          shrinkWrap: true,
+          padding: EdgeInsets.all(5),
+          scrollDirection: Axis.vertical,
+
+        ),
+      ),
+    );
+  }
+}
+
+class PopUpItemBodyElevator extends StatefulWidget {
+  PopUpItemBodyElevator({
+    Key? key}) : super(key: key);
+
+  @override
+  State<PopUpItemBodyElevator> createState() => _PopUpItemBodyElevatorState();
+}
+class _PopUpItemBodyElevatorState extends State<PopUpItemBodyElevator> {
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(32.0),
+        child: ListView.builder(
+          itemBuilder: (BuildContext context, int index) {
+            return Card(
+              child:
+              ListTile(
+                title: Text("ID: ${elevators[index]}"),
+                trailing: GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: () {
+                    elevators.remove(elevators[index]);
+                    Navigator.pop(context, '/');
+
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text('Elevator Successfully Deleted!')));
+                  },
+                  child: Material(
+                    color: Color.fromARGB(198, 255, 255, 255),
+                    elevation: 2,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(32)),
+                    child: const Icon(
+                      Icons.delete,
+                      size: 40,
+                      color: Color(0xffB62B37),
+                    ),
+                  ),
+                ),
+              ),
+
+            );
+          },
+          itemCount: elevators.length,
           shrinkWrap: true,
           padding: EdgeInsets.all(5),
           scrollDirection: Axis.vertical,
