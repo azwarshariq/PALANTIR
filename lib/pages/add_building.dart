@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -54,30 +55,74 @@ class _AddBuildingState extends State<AddBuilding> {
       this.routerInstances
       );
 
+  String userRef = "";
   final _NameController = TextEditingController();
   final _numFloorsController = TextEditingController();
-  final _userRefController = TextEditingController();
 
   Future addBuildingInfo() async {
+    // Getting user id through currently logged in email
+    // We need it to access the relevant buildings
+    await FirebaseFirestore.instance.collection('Users')
+        .where('email', isEqualTo:FirebaseAuth.instance.currentUser!.email)
+        .get()
+        .then(
+          (snapshot) => snapshot.docs.forEach(
+              (element) {
+            print(element.reference);
+            this.userRef = element.reference.id;
+            print(userRef);
+          }
+      ),
+    );
+
+    // To create a new Building, Floor, Room, or Router we'll follow three steps
+
+    // 1. Creating a Building Instance in our Class
     final buildingInstance = new buildingObject(
       _NameController.text.trim(),
       _NameController.text.trim(),
-      _userRefController.text.trim(),
+      this.userRef,
       int.parse(_numFloorsController.text.trim()),
     );
 
+    // 2. Adding the created Building class instance into list of buildingInstances
     buildingInstances.add(buildingInstance);
 
-    //Add User details
-      addBuildingDetails(
+    // 3. Creating new Buildings Collection document (using name as id)
+    addBuildingDocument(
+      _NameController.text.trim(),
+      int.parse(_numFloorsController.text.trim()),
+      this.userRef,
+    );
+
+    // Creating (numFloors) number of floors in a loop
+    // referenceId is going to be as BuildingFloor i
+    // Name will be Floor i
+    // numRouters for now will be 0
+    for (int i=1; i<=int.parse(_numFloorsController.text.trim()); i++){
+      // 1. Creating a floor instance for our class
+      final floorInstance = new floorObject(
+        _NameController.text.trim() + 'Floor ' + i.toString(),
+        'Floor ' + i.toString(),
         _NameController.text.trim(),
-        int.parse(_numFloorsController.text.trim()),
-        _userRefController.text.trim(),
+        0
       );
 
+      // 2. Adding the created Floor class instance into list of buildingInstances
+      floorInstances.add(floorInstance);
+
+      // 3. Creating a new Floors collection document
+      addFloorDocument(
+        _NameController.text.trim(),
+        'Floor '+ i.toString(),
+        _NameController.text.trim(),
+        0
+      );
     }
 
+  }
 
+  //Initialise the all Instances of classes being used in this page
   userObject userInstance = new userObject(
       '',
       '',
@@ -85,30 +130,35 @@ class _AddBuildingState extends State<AddBuilding> {
       '',
       0
   );
-
   List<buildingObject> buildingInstances = [];
-
   List<floorObject> floorInstances = [];
-
   List<routerObject> routerInstances = [];
 
   final formKey = GlobalKey<FormState>(); //key for form
-
   String name = "";
 
-  CollectionReference Buildings = FirebaseFirestore.instance.collection('Buildings');
-
-
-  Future addBuildingDetails(String Name, int numFloors, String userRef) async {
+  Future addBuildingDocument(String Name, int numFloors, String userRef) async {
     await FirebaseFirestore.instance.collection('Buildings')
-        .doc(Name) // <-- Document ID
-        .set({
-          'Name': Name,
-          'numFloors': numFloors,
-          'userRef': userRef
+    .doc(Name) // <-- Document ID
+    .set({
+        'Name': Name,
+        'numFloors': numFloors,
+        'userRef': userRef
         }) // <-- Your data
-        .then((_) => print('Added'))
-        .catchError((error) => print('Add failed: $error'));
+    .then((_) => print('Added Building ' + Name + ' with userRef ' + userRef))
+    .catchError((error) => print('Add failed: $error'));
+  }
+
+  Future addFloorDocument(String buildingName, String Name, String buildingRef, int numRouters) async {
+    await FirebaseFirestore.instance.collection('Floors')
+    .doc(buildingName + Name) // <-- Document ID
+    .set({
+        'floorName': Name,
+        'buildingRef': buildingRef,
+        'numRouters': numRouters
+      }) // <-- Your data
+    .then((_) => print('Added ' + Name + ' with buildingRef ' + buildingRef))
+    .catchError((error) => print('Add failed: $error'));
   }
 
   @override
@@ -186,7 +236,7 @@ class _AddBuildingState extends State<AddBuilding> {
                         borderSide: BorderSide(color: const Color(0xffB62B37)),
                         borderRadius: BorderRadius.circular(12)
                     ),
-                    hintText:  "Enter the number of floors it has",
+                    hintText: "Enter the number of floors it has",
                     fillColor: Colors.white60,
                     filled: true,
                   ),
@@ -207,6 +257,7 @@ class _AddBuildingState extends State<AddBuilding> {
                         color:const Color(0xffB62B37),
                       ),
                     ),
+
                     FloatingActionButton(
                       child: Icon(Icons.save),
                       backgroundColor:const Color(0xFFCD4F69),
