@@ -46,6 +46,7 @@ dependencies:
   firebase_core_platform_interface: ^4.5.1
   popup_card: ^0.1.0
   _flutterfire_internals: ^1.0.6
+  wifi_scan: ^0.4.0+1
 
 
 dev_dependencies:
