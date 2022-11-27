@@ -4,19 +4,86 @@ import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:palantir_ips/pages/edit_demo_screen.dart';
 import 'package:palantir_ips/pages/edit_screen.dart';
+import '../classes/building_class.dart';
+import '../classes/floor_class.dart';
+import '../classes/router_class.dart';
+import '../classes/user_class.dart';
 import 'upload_screen.dart';
 
 class ViewScreen extends StatefulWidget {
-  ViewScreen({Key? key, required this.selectedImage, this.file})
-      : super(key: key);
+  ViewScreen({
+    Key? key,
+    required this.selectedImage,
+    this.file,
+    required this.userInstance,
+    required this.buildingInstances,
+    required this.floorInstances,
+    required this.routerInstances,
+    required this.currentBuilding
+  }):super(key: key);
   final XFile? file;
   final String selectedImage;
 
+  userObject userInstance = new userObject(
+      '',
+      '',
+      '-',
+      '',
+      0
+  );
+
+  buildingObject currentBuilding = new buildingObject(
+      "",
+      "",
+      "",
+      0
+  );
+
+  List<buildingObject> buildingInstances = [];
+
+  List<floorObject> floorInstances = [];
+
+  List<routerObject> routerInstances = [];
+
   @override
-  _ViewScreenState createState() => _ViewScreenState();
+  _ViewScreenState createState() => _ViewScreenState(
+      this.userInstance,
+      this.buildingInstances,
+      this.floorInstances,
+      this.routerInstances,
+      this.currentBuilding
+  );
 }
 
 class _ViewScreenState extends State<ViewScreen> {
+
+  _ViewScreenState(
+    this.userInstance,
+    this.buildingInstances,
+    this.floorInstances,
+    this.routerInstances,
+    this.currentBuilding
+  );
+
+  userObject userInstance = new userObject(
+      '',
+      '',
+      '-',
+      '',
+      0
+  );
+
+  buildingObject currentBuilding = new buildingObject(
+      "",
+      "",
+      "",
+      0
+  );
+
+  List<buildingObject> buildingInstances = [];
+  List<floorObject> floorInstances = [];
+  List<routerObject> routerInstances = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,9 +123,15 @@ class _ViewScreenState extends State<ViewScreen> {
                           iconSize: 40,
                           splashColor: const Color(0xFFCD4F69),
                           splashRadius: 45,
-                          onPressed: () => Navigator.of(context).push(
+                          onPressed:() => Navigator.of(context).push(
                               MaterialPageRoute(
-                                  builder: (context) => UploadScreen())),
+                                  builder: (context) => UploadScreen(
+                                      userInstance: this.userInstance,
+                                      buildingInstances: this.buildingInstances,
+                                      floorInstances: this.floorInstances,
+                                      routerInstances: this.routerInstances,
+                                      currentBuilding: this.currentBuilding
+                                  ))),
                         ),
                       ),
 
@@ -75,8 +148,16 @@ class _ViewScreenState extends State<ViewScreen> {
                           splashColor: const Color(0xFFCD4F69),
                           splashRadius: 45,
                           onPressed: ()  => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (context) => EditDemoScreen())),
+                            MaterialPageRoute(
+                              builder: (context) => EditDemoScreen(
+                                  userInstance: this.userInstance,
+                                  buildingInstances: this.buildingInstances,
+                                  floorInstances: this.floorInstances,
+                                  routerInstances: this.routerInstances,
+                                  currentBuilding: this.currentBuilding
+                              )
+                            )
+                          ),
                         ),
                       ),
                     ],

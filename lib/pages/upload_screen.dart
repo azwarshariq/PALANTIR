@@ -1,28 +1,120 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:palantir_ips/pages/view_screen.dart';
 import 'package:palantir_ips/pages/storage_service.dart';
 import 'package:flutter/material.dart';
+import '../classes/building_class.dart';
+import '../classes/floor_class.dart';
+import '../classes/router_class.dart';
+import '../classes/user_class.dart';
 
 class UploadScreen extends StatefulWidget {
-  const UploadScreen({Key? key}) : super(key: key);
+
+  UploadScreen({
+    super.key,
+    required this.userInstance,
+    required this.buildingInstances,
+    required this.floorInstances,
+    required this.routerInstances,
+    required this.currentBuilding
+  });
+  userObject userInstance = new userObject(
+    '',
+    '',
+    '-',
+    '',
+    0
+  );
+  buildingObject currentBuilding = new buildingObject(
+    "",
+    "",
+    "",
+    0
+  );
+  List<buildingObject> buildingInstances = [];
+  List<floorObject> floorInstances = [];
+  List<routerObject> routerInstances = [];
+
 
   @override
-  _MyUploadScreenState createState() => _MyUploadScreenState();
+  _MyUploadScreenState createState() => _MyUploadScreenState(
+      this.userInstance,
+      this.buildingInstances,
+      this.floorInstances,
+      this.routerInstances,
+      this.currentBuilding
+  );
 }
 
 class _MyUploadScreenState extends State<UploadScreen> {
-  String dropdownvalue = 'Floor 1';
+
+  _MyUploadScreenState(
+    this.userInstance,
+    this.buildingInstances,
+    this.floorInstances,
+    this.routerInstances,
+    this.currentBuilding
+    );
+
+  userObject userInstance = new userObject(
+      '',
+      '',
+      '-',
+      '',
+      0
+  );
+  buildingObject currentBuilding = new buildingObject(
+      "",
+      "",
+      "",
+      0
+  );
+  List<buildingObject> buildingInstances = [];
+  List<floorObject> floorInstances = [];
+  List<routerObject> routerInstances = [];
+
+  Future addBuildingInfo(String floorName, String floorPlan) async {
+    // Getting Floor using it's document id (buildingName+floorName)
+    // We need it to access the relevant floor
+    // In which we can add the name of the floorPlan image as stored in Storage
+    await FirebaseFirestore.instance.collection('Floors')
+      .doc(currentBuilding.buildingName + floorName)
+      .update({'floorPlan' : floorPlan}) // <-- Updated data
+      .then((_) => print('Added image path to Floor document'))
+      .catchError((error) => print('Update failed: $error'));
+
+    // Making the relevant change in the class objects
+    for (int i=0; i<floorInstances.length; i++){
+      if (floorInstances[i].floorName == floorName){
+        floorInstances[i].floorPlan == floorPlan;
+      }
+    }
+  }
+    List<DropdownMenuItem<String>> get dropdownItems{
+    List<DropdownMenuItem<String>> menuItems = [];
+    for (int i=0; i<floorInstances.length; i++){
+      if (floorInstances[i].buildingRef == currentBuilding.buildingName){
+        menuItems.add(
+          DropdownMenuItem(
+            child: Text(
+              floorInstances[i].floorName,
+              style: const TextStyle(
+                color: Colors.white60,
+                fontSize: 18
+              ),
+            ),
+            value: floorInstances[i].floorName
+          )
+        );
+      }
+    }
+    return menuItems;
+  }
+
+  String dropdownValue = 'Ground Floor';
+
   final Storage storage = Storage();
 
-  var items = [
-    'Floor 1',
-    'Floor 2',
-    'Floor 3',
-    'Floor 4',
-    'Floor 5',
-  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,31 +138,26 @@ class _MyUploadScreenState extends State<UploadScreen> {
                         color: const Color(0xffB62B37),
                       ),
                     ),
+
                     const SizedBox(
                       height: 30,
                       width: 220,
                     ),
+
                     DropdownButton(
-                      value: dropdownvalue,
-                      icon: const Icon(Icons.keyboard_arrow_down),
-                      items: items.map((String items) {
-                        return DropdownMenuItem(
-                          value: items,
-                          child: Text(
-                            items,
-                            style: const TextStyle(
-                                color: Colors.white60, fontSize: 18),
-                          ),
-                        );
-                      }).toList(),
+                      value: dropdownValue,
+                      icon: const Icon(Icons.arrow_drop_down_circle_outlined),
+                      items: dropdownItems,
                       onChanged: (String? newValue) {
                         setState(() {
-                          dropdownvalue = newValue!;
+                          dropdownValue = newValue!;
                         });
                       },
                       dropdownColor: Colors.white60,
                     ),
+
                     const SizedBox(height: 200),
+
                     const Text(
                       "Upload Image",
                       style: TextStyle(
@@ -78,7 +165,9 @@ class _MyUploadScreenState extends State<UploadScreen> {
                         color: const Color(0xffB62B37),
                       ),
                     ),
+
                     const SizedBox(height: 30),
+
                     CircleAvatar(
                       //Add Button
                       radius: 35.0,
@@ -98,6 +187,11 @@ class _MyUploadScreenState extends State<UploadScreen> {
                             MaterialPageRoute(
                               builder: (context) => ViewScreen(
                                 selectedImage: file.path,
+                                userInstance: this.userInstance,
+                                buildingInstances: this.buildingInstances,
+                                floorInstances: this.floorInstances,
+                                routerInstances: this.routerInstances,
+                                currentBuilding: this.currentBuilding
                               ),
                             ),
                           );
@@ -106,9 +200,14 @@ class _MyUploadScreenState extends State<UploadScreen> {
                         if (file == null) {
                           // ignore: use_build_context_synchronously
                           ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                  content: Text('No file selected!')));
+                            const SnackBar(
+                              content: Text(
+                                'No file selected!'
+                              )
+                            )
+                          );
                         }
+
                         final path = file!.path;
                         final name = file.name;
 
@@ -116,9 +215,8 @@ class _MyUploadScreenState extends State<UploadScreen> {
                         print("Name: " + name);
 
                         storage
-                            .uploadFile(path, name)
-                            .then((value) => print('Done'));
-
+                          .uploadFile(path, name)
+                          .then((value) => print('Done'));
                         },
                       ),
                     ),

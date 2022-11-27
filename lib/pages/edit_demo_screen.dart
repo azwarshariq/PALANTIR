@@ -1,18 +1,85 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../classes/building_class.dart';
+import '../classes/floor_class.dart';
+import '../classes/router_class.dart';
+import '../classes/user_class.dart';
 import 'edit_screen.dart';
 
 class EditDemoScreen extends StatefulWidget {
-  const EditDemoScreen({
+
+  EditDemoScreen({
     super.key,
+    required this.userInstance,
+    required this.buildingInstances,
+    required this.floorInstances,
+    required this.routerInstances,
+    required this.currentBuilding
   });
 
+  userObject userInstance = new userObject(
+      '',
+      '',
+      '-',
+      '',
+      0
+  );
+
+  buildingObject currentBuilding = new buildingObject(
+      "",
+      "",
+      "",
+      0
+  );
+
+  List<buildingObject> buildingInstances = [];
+
+  List<floorObject> floorInstances = [];
+
+  List<routerObject> routerInstances = [];
+
   @override
-  State<EditDemoScreen> createState() => _EditDemoScreenState();
+  State<EditDemoScreen> createState() => _EditDemoScreenState(
+    this.userInstance,
+    this.buildingInstances,
+    this.floorInstances,
+    this.routerInstances,
+    this.currentBuilding
+  );
 }
 
 class _EditDemoScreenState extends State<EditDemoScreen> {
+
+  _EditDemoScreenState(
+    this.userInstance,
+    this.buildingInstances,
+    this.floorInstances,
+    this.routerInstances,
+    this.currentBuilding
+  );
+
+  userObject userInstance = new userObject(
+      '',
+      '',
+      '-',
+      '',
+      0
+  );
+
+  buildingObject currentBuilding = new buildingObject(
+      "",
+      "",
+      "",
+      0
+  );
+
+  List<buildingObject> buildingInstances = [];
+
+  List<floorObject> floorInstances = [];
+
+  List<routerObject> routerInstances = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -120,7 +187,13 @@ class _EditDemoScreenState extends State<EditDemoScreen> {
                             onPressed: () {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
-                                  builder: (context) => EditScreen(),
+                                  builder: (context) => EditScreen(
+                                      userInstance: this.userInstance,
+                                      buildingInstances: this.buildingInstances,
+                                      floorInstances: this.floorInstances,
+                                      routerInstances: this.routerInstances,
+                                      currentBuilding: this.currentBuilding
+                                  ),
                                 ),
                               );
                             },

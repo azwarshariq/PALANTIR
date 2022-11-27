@@ -58,6 +58,7 @@ class _AddBuildingState extends State<AddBuilding> {
   String userRef = "";
   final _NameController = TextEditingController();
   final _numFloorsController = TextEditingController();
+  buildingObject buildingInstance = new buildingObject("", "", "", 0);
 
   Future addBuildingInfo() async {
     // Getting user id through currently logged in email
@@ -78,7 +79,7 @@ class _AddBuildingState extends State<AddBuilding> {
     // To create a new Building, Floor, Room, or Router we'll follow three steps
 
     // 1. Creating a Building Instance in our Class
-    final buildingInstance = new buildingObject(
+    this.buildingInstance.setValues(
       _NameController.text.trim(),
       _NameController.text.trim(),
       this.userRef,
@@ -99,25 +100,50 @@ class _AddBuildingState extends State<AddBuilding> {
     // referenceId is going to be as BuildingFloor i
     // Name will be Floor i
     // numRouters for now will be 0
-    for (int i=1; i<=int.parse(_numFloorsController.text.trim()); i++){
-      // 1. Creating a floor instance for our class
-      final floorInstance = new floorObject(
-        _NameController.text.trim() + 'Floor ' + i.toString(),
-        'Floor ' + i.toString(),
-        _NameController.text.trim(),
-        0
-      );
+    for (int i=0; i<int.parse(_numFloorsController.text.trim()); i++){
+      // 0th Floor is Ground, rest are numbered
+      if(i == 0){
+        // 1. Creating a floor instance for our class
+        final floorInstance = new floorObject(
+            _NameController.text.trim() + 'Ground Floor',
+            'Ground Floor',
+            _NameController.text.trim(),
+            0,
+            ''
+        );
 
-      // 2. Adding the created Floor class instance into list of buildingInstances
-      floorInstances.add(floorInstance);
+        // 2. Adding the created Floor class instance into list of buildingInstances
+        floorInstances.add(floorInstance);
 
-      // 3. Creating a new Floors collection document
-      addFloorDocument(
-        _NameController.text.trim(),
-        'Floor '+ i.toString(),
-        _NameController.text.trim(),
-        0
-      );
+        // 3. Creating a new Floors collection document
+        addFloorDocument(
+            _NameController.text.trim(),
+            'Ground Floor',
+            _NameController.text.trim(),
+            0
+        );
+      }
+      else {
+        // 1. Creating a floor instance for our class
+        final floorInstance = new floorObject(
+            _NameController.text.trim() + 'Floor ' + i.toString(),
+            'Floor ' + i.toString(),
+            _NameController.text.trim(),
+            0,
+            ''
+        );
+
+        // 2. Adding the created Floor class instance into list of buildingInstances
+        floorInstances.add(floorInstance);
+
+        // 3. Creating a new Floors collection document
+        addFloorDocument(
+            _NameController.text.trim(),
+            'Floor '+ i.toString(),
+            _NameController.text.trim(),
+            0
+        );
+      }
     }
 
   }
@@ -155,7 +181,8 @@ class _AddBuildingState extends State<AddBuilding> {
     .set({
         'floorName': Name,
         'buildingRef': buildingRef,
-        'numRouters': numRouters
+        'numRouters': numRouters,
+        'floorPlan' : ''
       }) // <-- Your data
     .then((_) => print('Added ' + Name + ' with buildingRef ' + buildingRef))
     .catchError((error) => print('Add failed: $error'));
@@ -276,7 +303,13 @@ class _AddBuildingState extends State<AddBuilding> {
                   onPressed: () => Navigator.of(context)
                     .push(
                     MaterialPageRoute(
-                      builder: (context) => UploadScreen(),
+                      builder: (context) => UploadScreen(
+                        userInstance: this.userInstance,
+                        buildingInstances: this.buildingInstances,
+                        floorInstances: this.floorInstances,
+                        routerInstances: this.routerInstances,
+                        currentBuilding: this.buildingInstance
+                      ),
                     )
                   ),
                 ),

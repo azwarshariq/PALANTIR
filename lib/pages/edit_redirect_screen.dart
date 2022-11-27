@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dropdown_search/dropdown_search.dart';
@@ -7,14 +6,82 @@ import 'package:palantir_ips/pages/view_screen.dart';
 import 'package:palantir_ips/pages/storage_service.dart';
 import 'package:flutter/material.dart';
 
+import '../classes/building_class.dart';
+import '../classes/floor_class.dart';
+import '../classes/router_class.dart';
+import '../classes/user_class.dart';
+
 class EditRedirectScreen extends StatefulWidget {
-  const EditRedirectScreen({Key? key}) : super(key: key);
+  EditRedirectScreen({
+    super.key,
+    required this.userInstance,
+    required this.buildingInstances,
+    required this.floorInstances,
+    required this.routerInstances,
+    required this.currentBuilding
+  });
+
+  userObject userInstance = new userObject(
+      '',
+      '',
+      '-',
+      '',
+      0
+  );
+
+  buildingObject currentBuilding = new buildingObject(
+      "",
+      "",
+      "",
+      0
+  );
+
+  List<buildingObject> buildingInstances = [];
+
+  List<floorObject> floorInstances = [];
+
+  List<routerObject> routerInstances = [];
 
   @override
-  _MyEditRedirectScreenState createState() => _MyEditRedirectScreenState();
+  _MyEditRedirectScreenState createState() => _MyEditRedirectScreenState(
+      this.userInstance,
+      this.buildingInstances,
+      this.floorInstances,
+      this.routerInstances,
+      this.currentBuilding
+  );
 }
 
 class _MyEditRedirectScreenState extends State<EditRedirectScreen> {
+  _MyEditRedirectScreenState(
+      this.userInstance,
+      this.buildingInstances,
+      this.floorInstances,
+      this.routerInstances,
+      this.currentBuilding
+  );
+
+  userObject userInstance = new userObject(
+      '',
+      '',
+      '-',
+      '',
+      0
+  );
+
+  buildingObject currentBuilding = new buildingObject(
+      "",
+      "",
+      "",
+      0
+  );
+
+  List<buildingObject> buildingInstances = [];
+
+  List<floorObject> floorInstances = [];
+
+  List<routerObject> routerInstances = [];
+
   String initialFloorValue = 'Floor 1';
   String initialBuildingValue = 'Fast';
   final Storage storage = Storage();
@@ -122,7 +189,12 @@ class _MyEditRedirectScreenState extends State<EditRedirectScreen> {
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (context) => EditDemoScreen(
-                              ),
+                                  userInstance: this.userInstance,
+                                  buildingInstances: this.buildingInstances,
+                                  floorInstances: this.floorInstances,
+                                  routerInstances: this.routerInstances,
+                                  currentBuilding: this.currentBuilding
+                              )
                             ),
                           );
 

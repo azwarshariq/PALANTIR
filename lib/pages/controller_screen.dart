@@ -72,6 +72,7 @@ class _ControllerState extends State<Controller> {
               fit: BoxFit.cover
           )
       ),
+
       child: Scaffold(
         appBar: AppBar(
           title: Text(
@@ -82,11 +83,13 @@ class _ControllerState extends State<Controller> {
               fontSize: 30,
             ),
           ),
+
           backgroundColor: const Color(0xffB62B37),
           elevation: 10,
           toolbarOpacity: 0.9,
           shadowColor: const Color(0xff100D49),
         ),
+
         backgroundColor: Colors.black54,
         body: Container(
           padding: const EdgeInsets.only(left: 60, right: 40, top: 0),
@@ -134,7 +137,7 @@ class _ControllerState extends State<Controller> {
                   ),
                 ),
               )
-              ),
+            ),
 
             //--------------------------------------------------------------------------
             const SizedBox(
@@ -156,12 +159,17 @@ class _ControllerState extends State<Controller> {
                       padding: const EdgeInsets.all(20),
                       shadowColor: Color(0xFFCD4F69),
                     ),
-                    onPressed: () => Navigator.of(context)
+                    onPressed:/* () => Navigator.of(context)
                         .push(
                         MaterialPageRoute(
-                            builder: (context) => UploadRedirectScreen()
+                            builder: (context) => UploadRedirectScreen(
+                              userInstance: this.userInstance,
+                              buildingInstances: this.buildingInstances,
+                              floorInstances: this.floorInstances,
+                              routerInstances: this.routerInstances,
+                            )
                         )
-                    ),
+                    )*/ null,
                     child: Text(
                       "Upload Floor Plan",
                       style: GoogleFonts.raleway(
@@ -169,12 +177,15 @@ class _ControllerState extends State<Controller> {
                         fontWeight: FontWeight.w300,
                         fontSize: 20,
                       ),
-                    ))),
+                    )
+                )
+            ),
 
             //--------------------------------------------------------------------------
             const SizedBox(
               height: 50.0,
             ),
+
             //----------------------Edit Floor Plan Button------------------------
             SizedBox(
                 height: 70, //height of button
@@ -190,12 +201,12 @@ class _ControllerState extends State<Controller> {
                       padding: const EdgeInsets.all(20),
                       shadowColor: Color(0xFFCD4F69),
                     ),
-                    onPressed: () => Navigator.of(context)
+                    onPressed: /*() => Navigator.of(context)
                         .push(
                         MaterialPageRoute(
                             builder: (context) => EditRedirectScreen()
                         )
-                    ),
+                    )*/ null,
                     child: Text(
                       "Edit Floor Plan",
                       style: GoogleFonts.raleway(
@@ -203,7 +214,9 @@ class _ControllerState extends State<Controller> {
                         fontWeight: FontWeight.w300,
                         fontSize: 20,
                       ),
-                    ))),
+                    )
+                )
+            ),
 
             //--------------------------------------------------------------------------
             const SizedBox(
@@ -234,7 +247,9 @@ class _ControllerState extends State<Controller> {
                         fontWeight: FontWeight.w300,
                         fontSize: 20,
                       ),
-                    ))),
+                    )
+                )
+            ),
             //--------------------------------------------------------------------------
             const SizedBox(
               height: 50.0,
