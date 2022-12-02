@@ -1,9 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:palantir_ips/pages/edit_demo_screen.dart';
-import 'package:palantir_ips/pages/edit_screen.dart';
 import '../classes/building_class.dart';
 import '../classes/floor_class.dart';
 import '../classes/router_class.dart';
@@ -13,16 +13,16 @@ import 'upload_screen.dart';
 class ViewScreen extends StatefulWidget {
   ViewScreen({
     Key? key,
-    required this.selectedImage,
-    this.file,
     required this.userInstance,
     required this.buildingInstances,
     required this.floorInstances,
     required this.routerInstances,
-    required this.currentBuilding
+    required this.currentBuilding,
+    required this.currentFloor,
+    this.file,
   }):super(key: key);
+
   final XFile? file;
-  final String selectedImage;
 
   userObject userInstance = new userObject(
       '',
@@ -37,6 +37,14 @@ class ViewScreen extends StatefulWidget {
       "",
       "",
       0
+  );
+
+  floorObject currentFloor = new floorObject(
+      "",
+      "",
+      "",
+      0,
+      ""
   );
 
   List<buildingObject> buildingInstances = [];
@@ -47,11 +55,13 @@ class ViewScreen extends StatefulWidget {
 
   @override
   _ViewScreenState createState() => _ViewScreenState(
-      this.userInstance,
-      this.buildingInstances,
-      this.floorInstances,
-      this.routerInstances,
-      this.currentBuilding
+    this.userInstance,
+    this.buildingInstances,
+    this.floorInstances,
+    this.routerInstances,
+    this.currentBuilding,
+    this.currentFloor,
+    this.file
   );
 }
 
@@ -62,8 +72,12 @@ class _ViewScreenState extends State<ViewScreen> {
     this.buildingInstances,
     this.floorInstances,
     this.routerInstances,
-    this.currentBuilding
+    this.currentBuilding,
+    this.currentFloor,
+    this.file
   );
+
+  final XFile? file;
 
   userObject userInstance = new userObject(
       '',
@@ -80,9 +94,35 @@ class _ViewScreenState extends State<ViewScreen> {
       0
   );
 
+  floorObject currentFloor = new floorObject(
+      "",
+      "",
+      "",
+      0,
+      ""
+  );
+
   List<buildingObject> buildingInstances = [];
   List<floorObject> floorInstances = [];
   List<routerObject> routerInstances = [];
+
+  Future addFloorPlan(String floorName) async {
+    // Getting Floor using it's document id (buildingName+floorName)
+    // We need it to access the relevant floor
+    // In which we can add the name of the floorPlan image, as stored in Storage
+    await FirebaseFirestore.instance.collection('Floors')
+        .doc(currentBuilding.buildingName + floorName)
+        .update({'floorPlan' : this.file!.name}) // <-- Updated data
+        .then((_) => print('Added image path to Floor document'))
+        .catchError((error) => print('Update failed: $error'));
+
+    // Making the relevant change in the class objects
+    for (int i=0; i<floorInstances.length; i++){
+      if (floorInstances[i].floorName == floorName){
+        floorInstances[i].floorPlan == this.file!.name;
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -103,7 +143,7 @@ class _ViewScreenState extends State<ViewScreen> {
               [
                 Image.file(
                   File(
-                    widget.selectedImage,
+                    widget.file!.path,
                   ),
                 ),
 
@@ -124,14 +164,16 @@ class _ViewScreenState extends State<ViewScreen> {
                           splashColor: const Color(0xFFCD4F69),
                           splashRadius: 45,
                           onPressed:() => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (context) => UploadScreen(
-                                      userInstance: this.userInstance,
-                                      buildingInstances: this.buildingInstances,
-                                      floorInstances: this.floorInstances,
-                                      routerInstances: this.routerInstances,
-                                      currentBuilding: this.currentBuilding
-                                  ))),
+                            MaterialPageRoute(
+                              builder: (context) => UploadScreen(
+                                userInstance: this.userInstance,
+                                buildingInstances: this.buildingInstances,
+                                floorInstances: this.floorInstances,
+                                routerInstances: this.routerInstances,
+                                currentBuilding: this.currentBuilding
+                              )
+                            )
+                          ),
                         ),
                       ),
 
@@ -147,17 +189,20 @@ class _ViewScreenState extends State<ViewScreen> {
                           iconSize: 30,
                           splashColor: const Color(0xFFCD4F69),
                           splashRadius: 45,
-                          onPressed: ()  => Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => EditDemoScreen(
-                                  userInstance: this.userInstance,
-                                  buildingInstances: this.buildingInstances,
-                                  floorInstances: this.floorInstances,
-                                  routerInstances: this.routerInstances,
-                                  currentBuilding: this.currentBuilding
-                              )
-                            )
-                          ),
+                          onPressed: () => {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => EditDemoScreen(
+                                    userInstance: this.userInstance,
+                                    buildingInstances: this.buildingInstances,
+                                    floorInstances: this.floorInstances,
+                                    routerInstances: this.routerInstances,
+                                    currentBuilding: this.currentBuilding
+                                )
+                              ),
+                            ),
+                            addFloorPlan(currentFloor.floorName),
+                          }
                         ),
                       ),
                     ],

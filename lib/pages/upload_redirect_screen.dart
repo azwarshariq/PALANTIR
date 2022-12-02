@@ -228,19 +228,19 @@ class _MyUploadRedirectScreenState extends State<UploadRedirectScreen> {
                           XFile? file = await ImagePicker().pickImage(
                           source: ImageSource.gallery,
                         );
-                        if (file != null) {
+                        if (file != null) {/*
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (context) => ViewScreen(
-                                selectedImage: file.path,
                                 userInstance: this.userInstance,
                                 buildingInstances: this.buildingInstances,
                                 floorInstances: this.floorInstances,
                                 routerInstances: this.routerInstances,
-                                currentBuilding: this.currentBuilding
+                                currentBuilding: this.currentBuilding,
+                                file: file
                               ),
                             ),
-                          );
+                          );*/
                         }
 
                         if (file == null) {
