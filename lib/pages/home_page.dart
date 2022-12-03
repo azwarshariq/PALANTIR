@@ -8,6 +8,7 @@ import 'package:palantir_ips/read_data/get_user_name.dart';
 import '../classes/floor_class.dart';
 import '../classes/router_class.dart';
 import '../classes/user_class.dart';
+import '../user/locate_me_screen.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -195,11 +196,17 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
 
-              SizedBox(height:30,),
+              SizedBox(height:30),
 
               // Button to proceed as User
               ElevatedButton(
-                onPressed: null,
+                onPressed: () => Navigator.of(context)
+                    .push(
+                    MaterialPageRoute(
+                        builder: (context) => LocateMeScreen()
+                        )
+                    ),
+
 
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
