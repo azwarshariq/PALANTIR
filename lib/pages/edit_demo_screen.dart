@@ -14,7 +14,8 @@ class EditDemoScreen extends StatefulWidget {
     required this.buildingInstances,
     required this.floorInstances,
     required this.routerInstances,
-    required this.currentBuilding
+    required this.currentBuilding,
+    required this.currentFloor
   });
 
   userObject userInstance = new userObject(
@@ -32,6 +33,14 @@ class EditDemoScreen extends StatefulWidget {
       0
   );
 
+  floorObject currentFloor = new floorObject(
+      "",
+      "",
+      "",
+      0,
+      ""
+  );
+
   List<buildingObject> buildingInstances = [];
 
   List<floorObject> floorInstances = [];
@@ -44,7 +53,8 @@ class EditDemoScreen extends StatefulWidget {
     this.buildingInstances,
     this.floorInstances,
     this.routerInstances,
-    this.currentBuilding
+    this.currentBuilding,
+    this.currentFloor
   );
 }
 
@@ -55,8 +65,9 @@ class _EditDemoScreenState extends State<EditDemoScreen> {
     this.buildingInstances,
     this.floorInstances,
     this.routerInstances,
-    this.currentBuilding
-  );
+    this.currentBuilding,
+    this.currentFloor
+    );
 
   userObject userInstance = new userObject(
       '',
@@ -71,6 +82,13 @@ class _EditDemoScreenState extends State<EditDemoScreen> {
       "",
       "",
       0
+  );
+  floorObject currentFloor = new floorObject(
+      "",
+      "",
+      "",
+      0,
+      ""
   );
 
   List<buildingObject> buildingInstances = [];
@@ -110,12 +128,13 @@ class _EditDemoScreenState extends State<EditDemoScreen> {
                             color: Colors.white60,
                             fontWeight: FontWeight.w300,
                             fontSize: 24,
-
                           ),
                         ),
+
                         SizedBox(
                           height: 20,
                         ),
+
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children:  [
@@ -132,17 +151,21 @@ class _EditDemoScreenState extends State<EditDemoScreen> {
                             ),
                           ],
                         ),
+
                         SizedBox(
                           height: 20,
                         ),
+
                         CircleAvatar(
                           backgroundColor: Color(0xff100D49),
                           backgroundImage: AssetImage('images/step1.jpeg'),
                           radius: 120.0,
                         ),
+
                         Padding(
                           padding: EdgeInsets.only(top: 5.0),
                         ),
+
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -155,24 +178,29 @@ class _EditDemoScreenState extends State<EditDemoScreen> {
                                   fontWeight: FontWeight.w200,
                                   fontSize: 20,
                                 ),
-                            ),
+                              ),
                             ),
                           ],
                         ),
+
                         SizedBox(
                           height: 20,
                         ),
+
                         CircleAvatar(
                           backgroundColor: Color(0xff100D49),
                           backgroundImage: AssetImage('images/step2.jpeg'),
                           radius: 120.0,
                         ),
+
                         Padding(
                           padding: EdgeInsets.only(top: 5.0),
                         ),
+
                         SizedBox(
                           height: 10,
                         ),
+
                         CircleAvatar(
                           //Add Button
                           radius: 35.0,
@@ -191,13 +219,15 @@ class _EditDemoScreenState extends State<EditDemoScreen> {
                                       buildingInstances: this.buildingInstances,
                                       floorInstances: this.floorInstances,
                                       routerInstances: this.routerInstances,
-                                      currentBuilding: this.currentBuilding
+                                      currentBuilding: this.currentBuilding,
+                                      currentFloor: this.currentFloor,
                                   ),
                                 ),
                               );
                             },
                           ),
                         ),
+
                         SizedBox(
                           height: 20,
                         ),

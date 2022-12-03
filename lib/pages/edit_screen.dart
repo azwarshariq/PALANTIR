@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../classes/building_class.dart';
 import '../classes/floor_class.dart';
@@ -14,7 +15,8 @@ class EditScreen extends StatefulWidget {
     required this.buildingInstances,
     required this.floorInstances,
     required this.routerInstances,
-    required this.currentBuilding
+    required this.currentBuilding,
+    required this.currentFloor
   });
 
   userObject userInstance = new userObject(
@@ -30,17 +32,25 @@ class EditScreen extends StatefulWidget {
       "",
       0
   );
+  floorObject currentFloor = new floorObject(
+      "",
+      "",
+      "",
+      0,
+      ""
+  );
   List<buildingObject> buildingInstances = [];
   List<floorObject> floorInstances = [];
   List<routerObject> routerInstances = [];
 
   @override
   State<EditScreen> createState() => _EditScreenState(
-      this.userInstance,
-      this.buildingInstances,
-      this.floorInstances,
-      this.routerInstances,
-      this.currentBuilding
+    this.userInstance,
+    this.buildingInstances,
+    this.floorInstances,
+    this.routerInstances,
+    this.currentBuilding,
+    this.currentFloor
   );
 }
 
@@ -54,17 +64,19 @@ double xVar = 0;
 double yVar = 0;
 int xyAxis = 100;
 int value = 0;
+
 String mac = "";
 String routerName = "";
 String roomID = "";
 String stairsID = "";
 String elevatorID = "";
 String typeID = "";
-List<String> macAddress = [];
-List<String> routers = [];
-List<String> rooms = [];
-List<String> stairs = [];
-List<String> elevators = [];
+
+List<String> listOfBSSIDs = [];
+List<String> listOfRouters = [];
+List<String> listOfRooms = [];
+List<String> listOfStairs = [];
+List<String> listOfElevators = [];
 List<String> types = [];
 
 class _EditScreenState extends State<EditScreen> {
@@ -74,7 +86,8 @@ class _EditScreenState extends State<EditScreen> {
       this.buildingInstances,
       this.floorInstances,
       this.routerInstances,
-      this.currentBuilding
+      this.currentBuilding,
+      this.currentFloor
       );
 
   userObject userInstance = new userObject(
@@ -84,19 +97,55 @@ class _EditScreenState extends State<EditScreen> {
       '',
       0
   );
-
   buildingObject currentBuilding = new buildingObject(
       "",
       "",
       "",
       0
   );
-
+  floorObject currentFloor = new floorObject(
+      "",
+      "",
+      "",
+      0,
+      ""
+  );
   List<buildingObject> buildingInstances = [];
-
   List<floorObject> floorInstances = [];
-
   List<routerObject> routerInstances = [];
+
+  Future addData() async {
+    routerObject routerInstance = new routerObject("", "", "", "");
+    // We need to store the floor's reference in all elements that we add
+    // All elements will be handled using a 3 step process to add it into all controlling
+    // parts of the database and local objects
+
+    // Routers
+    for (int i=0; i<listOfRouters.length; i++){
+      // 1. First create a Firestore document with given data
+      await FirebaseFirestore.instance.collection('Floors')
+        .doc(currentFloor.referenceId + listOfRouters[i]) // <-- Router Document ID (buildingID+floorID+routerID)
+        .set({
+        'routerName': listOfRouters[i],
+        'floorRef': currentFloor.referenceId,
+        'BSSID': listOfBSSIDs[i],
+        }) //
+        .then((_) => print('Added ' + listOfRouters[i] + ' with BSSID ' + listOfBSSIDs[i]))
+        .catchError((error) => print('Add failed: $error'));
+
+      // 2. Then create a Router Object instance, to store relevant data
+      routerInstance.setValues(
+        currentFloor.referenceId + listOfRouters[i],  // Reference ID for Router
+        listOfRouters[i],                             // Name of Router
+        currentFloor.referenceId,                     // Floor Reference
+        listOfBSSIDs[i]                               // BSSID of Router
+      );
+
+      // 3. Add routerInstance to the list of all routerInstances, for further use down the line
+      routerInstances.add(routerInstance);
+    }
+
+  }
 
   Offset? _tapPosition;
   String _value = "";
@@ -142,15 +191,19 @@ class _EditScreenState extends State<EditScreen> {
                         height: MediaQuery.of(context).size.height * 0.70,
                         width: MediaQuery.of(context).size.width * 0.9,
                         //fit: BoxFit.fitWidth,
-                      )),
+                      )
+                    ),
+
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.05,
                     ),
                   ],
                 ),
+
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.03,
                 ),
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -172,7 +225,8 @@ class _EditScreenState extends State<EditScreen> {
                           color: Color.fromARGB(207, 255, 255, 255),
                           elevation: 2,
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(32)),
+                            borderRadius: BorderRadius.circular(32)
+                          ),
                           child: const Icon(
                             Icons.add_circle_rounded,
                             size: 56,
@@ -203,31 +257,43 @@ class _EditScreenState extends State<EditScreen> {
                           _value = value;
                           if (_value == "router"){
                             Navigator.of(context)
-                              .push(HeroDialogRoute(builder: (context) {
-                                return PopUpItemBodyRouter();
-                              }
-                            ));
+                            .push(
+                              HeroDialogRoute(
+                                builder: (context) {
+                                  return PopUpItemBodyRouter();
+                                }
+                              )
+                            );
                           }
                           else if (_value == "room"){
                             Navigator.of(context)
-                              .push(HeroDialogRoute(builder: (context) {
-                                return PopUpItemBodyRoom();
-                              }
-                            ));
+                            .push(
+                              HeroDialogRoute(
+                                builder: (context) {
+                                  return PopUpItemBodyRoom();
+                                }
+                              )
+                            );
                           }
                           else if (_value == "stairs"){
                             Navigator.of(context)
-                              .push(HeroDialogRoute(builder: (context) {
-                                return PopUpItemBodyStairs();
-                              }
-                            ));
+                            .push(
+                              HeroDialogRoute(
+                                builder: (context) {
+                                  return PopUpItemBodyStairs();
+                                }
+                              )
+                            );
                           }
                           else if (_value == "elevator"){
                             Navigator.of(context)
-                              .push(HeroDialogRoute(builder: (context) {
-                                return PopUpItemBodyElevator();
-                              }
-                            ));
+                            .push(
+                              HeroDialogRoute(
+                                builder: (context) {
+                                  return PopUpItemBodyElevator();
+                                }
+                              )
+                            );
                           }
                         });
                       },
@@ -236,14 +302,17 @@ class _EditScreenState extends State<EditScreen> {
                           child: Text("Router"),
                           value: "router",
                         ),
+
                         PopupMenuItem(
                           child: Text("Room"),
                           value: "room",
                         ),
+
                         PopupMenuItem(
                           child: Text("Stairs"),
                           value: "stairs",
                         ),
+
                         PopupMenuItem(
                           child: Text("Elevator"),
                           value: "elevator",
@@ -299,7 +368,7 @@ class _EditScreenState extends State<EditScreen> {
                         color: Color.fromARGB(255, 156, 154, 154),
                         fontSize: 14),
                   )
-                      : null,
+                    : null,
                 ),
 
                 SizedBox(
@@ -525,9 +594,9 @@ class _PopUpItemBodyState extends State<PopUpItemBody> {
                                 else
                                   {
                                     check = false,
-                                    for (int i = 0; i < macAddress.length; i++)
+                                    for (int i = 0; i < listOfBSSIDs.length; i++)
                                       {
-                                        if (mac == macAddress[i])
+                                        if (mac == listOfBSSIDs[i])
                                           {
                                             check = true,
                                             ScaffoldMessenger.of(context).showSnackBar(
@@ -537,7 +606,7 @@ class _PopUpItemBodyState extends State<PopUpItemBody> {
                                               )
                                             ),
                                           }
-                                        else if (routerName == routers[i])
+                                        else if (routerName == listOfRouters[i])
                                           {
                                             check = true,
                                             ScaffoldMessenger.of(context).showSnackBar(
@@ -558,8 +627,8 @@ class _PopUpItemBodyState extends State<PopUpItemBody> {
                                         print(mac),
                                         print(xVar),
                                         print(yVar),
-                                        macAddress.add(mac),
-                                        routers.add(routerName),
+                                        listOfBSSIDs.add(mac),
+                                        listOfRouters.add(routerName),
                                         types.add("Router"),
                                         mac = "",
                                         routerName = "",
@@ -577,9 +646,9 @@ class _PopUpItemBodyState extends State<PopUpItemBody> {
                                 else
                                   {
                                     check = false,
-                                    for (int i = 0; i < rooms.length; i++)
+                                    for (int i = 0; i < listOfRooms.length; i++)
                                       {
-                                        if (roomID == rooms[i])
+                                        if (roomID == listOfRooms[i])
                                           {
                                             check = true,
                                             ScaffoldMessenger.of(context).showSnackBar(
@@ -598,7 +667,7 @@ class _PopUpItemBodyState extends State<PopUpItemBody> {
                                         print(xVar),
                                         print(yVar),
                                         print(roomID),
-                                        rooms.add(roomID),
+                                        listOfRooms.add(roomID),
                                         types.add("Room"),
                                         roomID = "",
                                       }
@@ -616,9 +685,9 @@ class _PopUpItemBodyState extends State<PopUpItemBody> {
                                 else
                                   {
                                     check = false,
-                                    for (int i = 0; i < stairs.length; i++)
+                                    for (int i = 0; i < listOfStairs.length; i++)
                                       {
-                                        if (stairsID == stairs[i])
+                                        if (stairsID == listOfStairs[i])
                                           {
                                             check = true,
                                             ScaffoldMessenger.of(context).showSnackBar(
@@ -636,7 +705,7 @@ class _PopUpItemBodyState extends State<PopUpItemBody> {
                                                 Text('Stairs Successfully Added'))),
                                         print(xVar),
                                         print(yVar),
-                                        stairs.add(stairsID),
+                                        listOfStairs.add(stairsID),
                                         types.add("Stairs"),
                                         stairsID = "",
                                       }
@@ -653,9 +722,9 @@ class _PopUpItemBodyState extends State<PopUpItemBody> {
                                 else
                                   {
                                     check = false,
-                                    for (int i = 0; i < elevators.length; i++)
+                                    for (int i = 0; i < listOfElevators.length; i++)
                                       {
-                                        if (elevatorID == elevators[i])
+                                        if (elevatorID == listOfElevators[i])
                                           {
                                             check = true,
                                             ScaffoldMessenger.of(context).showSnackBar(
@@ -673,7 +742,7 @@ class _PopUpItemBodyState extends State<PopUpItemBody> {
                                                 Text('Elevator Successfully Added'))),
                                         print(xVar),
                                         print(yVar),
-                                        elevators.add(elevatorID),
+                                        listOfElevators.add(elevatorID),
                                         types.add("Elevator"),
                                         elevatorID = "",
                                       }
@@ -711,7 +780,9 @@ class PopUpItemBodyRouter extends StatefulWidget {
   @override
   State<PopUpItemBodyRouter> createState() => _PopUpItemBodyRouterState();
 }
+
 const String _heroDeleteMacAddress = 'delete-mac-hero';
+
 class _PopUpItemBodyRouterState extends State<PopUpItemBodyRouter> {
 
   @override
@@ -724,21 +795,21 @@ class _PopUpItemBodyRouterState extends State<PopUpItemBodyRouter> {
             return Card(
               child:
               ListTile(
-                title: Text("ID: ${routers[index]}"),
+                title: Text("ID: ${listOfRouters[index]}"),
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(
                       height: 7,
                     ),
-                    Text("MAC: ${macAddress[index]}")
+                    Text("MAC: ${listOfBSSIDs[index]}")
                   ],
                 ),
                 trailing: GestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () {
-                    routers.remove(routers[index]);
-                    macAddress.remove(macAddress[index]);
+                    listOfRouters.remove(listOfRouters[index]);
+                    listOfBSSIDs.remove(listOfBSSIDs[index]);
                     Navigator.pop(context, '/');
 
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -760,7 +831,7 @@ class _PopUpItemBodyRouterState extends State<PopUpItemBodyRouter> {
 
             );
           },
-          itemCount: routers.length,
+          itemCount: listOfRouters.length,
           shrinkWrap: true,
           padding: EdgeInsets.all(5),
           scrollDirection: Axis.vertical,
@@ -791,11 +862,11 @@ class _PopUpItemBodyRoomState extends State<PopUpItemBodyRoom> {
             return Card(
               child:
               ListTile(
-                title: Text("ID: ${rooms[index]}"),
+                title: Text("ID: ${listOfRooms[index]}"),
                 trailing: GestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () {
-                    rooms.remove(rooms[index]);
+                    listOfRooms.remove(listOfRooms[index]);
                     Navigator.pop(context, '/');
 
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -817,7 +888,7 @@ class _PopUpItemBodyRoomState extends State<PopUpItemBodyRoom> {
 
             );
           },
-          itemCount: rooms.length,
+          itemCount: listOfRooms.length,
           shrinkWrap: true,
           padding: EdgeInsets.all(5),
           scrollDirection: Axis.vertical,
@@ -848,11 +919,11 @@ class _PopUpItemBodyStairsState extends State<PopUpItemBodyStairs> {
             return Card(
               child:
               ListTile(
-                title: Text("ID: ${stairs[index]}"),
+                title: Text("ID: ${listOfStairs[index]}"),
                 trailing: GestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () {
-                    stairs.remove(stairs[index]);
+                    listOfStairs.remove(listOfStairs[index]);
                     Navigator.pop(context, '/');
 
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -874,7 +945,7 @@ class _PopUpItemBodyStairsState extends State<PopUpItemBodyStairs> {
 
             );
           },
-          itemCount: stairs.length,
+          itemCount: listOfStairs.length,
           shrinkWrap: true,
           padding: EdgeInsets.all(5),
           scrollDirection: Axis.vertical,
@@ -904,11 +975,11 @@ class _PopUpItemBodyElevatorState extends State<PopUpItemBodyElevator> {
             return Card(
               child:
               ListTile(
-                title: Text("ID: ${elevators[index]}"),
+                title: Text("ID: ${listOfElevators[index]}"),
                 trailing: GestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () {
-                    elevators.remove(elevators[index]);
+                    listOfElevators.remove(listOfElevators[index]);
                     Navigator.pop(context, '/');
 
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -933,7 +1004,7 @@ class _PopUpItemBodyElevatorState extends State<PopUpItemBodyElevator> {
 
             );
           },
-          itemCount: elevators.length,
+          itemCount: listOfElevators.length,
           shrinkWrap: true,
           padding: EdgeInsets.all(5),
           scrollDirection: Axis.vertical,

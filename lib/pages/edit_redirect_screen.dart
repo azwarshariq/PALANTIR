@@ -184,8 +184,7 @@ class _MyEditRedirectScreenState extends State<EditRedirectScreen> {
                         iconSize: 30,
                         splashColor: const Color(0xDACD4F69),
                         splashRadius: 45,
-                        onPressed: () {
-
+                        onPressed: () {/*
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (context) => EditDemoScreen(
@@ -196,8 +195,7 @@ class _MyEditRedirectScreenState extends State<EditRedirectScreen> {
                                   currentBuilding: this.currentBuilding
                               )
                             ),
-                          );
-
+                          );*/
                         },
                       ),
                     ),

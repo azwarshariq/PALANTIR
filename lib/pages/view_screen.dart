@@ -197,7 +197,8 @@ class _ViewScreenState extends State<ViewScreen> {
                                     buildingInstances: this.buildingInstances,
                                     floorInstances: this.floorInstances,
                                     routerInstances: this.routerInstances,
-                                    currentBuilding: this.currentBuilding
+                                    currentBuilding: this.currentBuilding,
+                                    currentFloor: this.currentFloor,
                                 )
                               ),
                             ),
