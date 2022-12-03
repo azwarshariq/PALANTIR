@@ -60,39 +60,6 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
     }
   }
 
-  Future<void> _startListeningToScanResults(BuildContext context) async {
-    if (await _canGetScannedResults(context)) {
-      subscription = WiFiScan.instance.onScannedResultsAvailable
-          .listen((result) => setState(() => accessPoints = result));
-    }
-  }
-
-  void _stopListeningToScanResults() {
-    subscription?.cancel();
-    setState(() => subscription = null);
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    // stop subscription for scanned results
-    _stopListeningToScanResults();
-  }
-
-  // build toggle with label
-  Widget _buildToggle({
-    String? label,
-    bool value = false,
-    ValueChanged<bool>? onChanged,
-    Color? activeColor,
-  }) =>
-      Row(
-        children: [
-          if (label != null) Text(label),
-          Switch(value: value, onChanged: onChanged, activeColor: activeColor),
-        ],
-      );
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -158,9 +125,6 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
   }
 }
 
-/// Show tile for AccessPoint.
-///
-/// Can see details when tapped.
 class _AccessPointTile extends StatelessWidget {
   final WiFiAccessPoint accessPoint;
 
@@ -200,17 +164,10 @@ class _AccessPointTile extends StatelessWidget {
       child: Text('${accessPoint.ssid}, ${accessPoint.bssid}, ${accessPoint.frequency}, ${accessPoint.level}',
         style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
       ),
-
-
-
-
     );
-
     print(accessPoint.bssid);
-
   }
 }
-
 /// Show snackbar.
 void kShowSnackBar(BuildContext context, String message) {
   if (kDebugMode) print(message);

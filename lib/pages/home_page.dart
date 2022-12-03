@@ -110,41 +110,44 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+
               Expanded(
                 child: FutureBuilder(
                   future: getDocID(),
                   builder: (context, snapshot) {
                     return ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      itemCount: 1,
-                      itemBuilder: (context, index) {
-                        try{
-                          return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: ListTile(
-                              title: GetUserName(
-                                documentId: userDocReference,
-                                email: user.email!,
-                                userInstance: userInstance,
-                                buildingInstances: buildingInstances,
-                                floorInstances: floorInstances,
-                                routerInstances: routerInstances,
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        itemCount: 1,
+                        itemBuilder: (context, index) {
+                          try{
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: ListTile(
+                                title: GetUserName(
+                                  documentId: userDocReference,
+                                  email: user.email!,
+                                  userInstance: userInstance,
+                                  buildingInstances: buildingInstances,
+                                  floorInstances: floorInstances,
+                                  routerInstances: routerInstances,
+                                ),
                               ),
-                            ),
-                          );
-                        }catch(e){
-                          return Text(
-                            '${e}',
-                            style: GoogleFonts.raleway(
-                              color: const Color(0xffB62B37),
-                              fontWeight: FontWeight.w200,
-                              fontSize: 20,
-                            ),
-                          );
-                        };
-                      }
+                            );
+                          }catch(e){
+                            return Text(
+                              '${e}',
+                              style: GoogleFonts.raleway(
+                                color: const Color(0xffB62B37),
+                                fontWeight: FontWeight.w200,
+                                fontSize: 20,
+                              ),
+                            );
+                          };
+                        }
                     );
+
+
                   }
                 ),
               ),
