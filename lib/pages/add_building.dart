@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:palantir_ips/pages/upload_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+
 import '../classes/building_class.dart';
 import '../classes/floor_class.dart';
 import '../classes/router_class.dart';
@@ -287,9 +288,16 @@ class _AddBuildingState extends State<AddBuilding> {
 
                     FloatingActionButton(
                       child: Icon(Icons.save),
+                      heroTag: 'btn1',
                       backgroundColor:const Color(0xFFCD4F69),
                       foregroundColor: Colors.white,
-                      onPressed: addBuildingInfo,
+                      onPressed: () => {
+                        addBuildingInfo(),
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content: Text(
+                                    'Building Successfully Added'))),
+                      }
                     ),
                   ],
                 ),
@@ -298,6 +306,7 @@ class _AddBuildingState extends State<AddBuilding> {
 
                 FloatingActionButton(
                   child: Icon(Icons.arrow_forward),
+                  heroTag: 'btn2',
                   backgroundColor:const Color(0xFFCD4F69),
                   foregroundColor: Colors.white,
                   onPressed: () => Navigator.of(context)

@@ -8,6 +8,7 @@ import 'package:palantir_ips/read_data/get_user_name.dart';
 import '../classes/floor_class.dart';
 import '../classes/router_class.dart';
 import '../classes/user_class.dart';
+import '../user/locate_me_screen.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -109,41 +110,44 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+
               Expanded(
                 child: FutureBuilder(
                   future: getDocID(),
                   builder: (context, snapshot) {
                     return ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      itemCount: 1,
-                      itemBuilder: (context, index) {
-                        try{
-                          return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: ListTile(
-                              title: GetUserName(
-                                documentId: userDocReference,
-                                email: user.email!,
-                                userInstance: userInstance,
-                                buildingInstances: buildingInstances,
-                                floorInstances: floorInstances,
-                                routerInstances: routerInstances,
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        itemCount: 1,
+                        itemBuilder: (context, index) {
+                          try{
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: ListTile(
+                                title: GetUserName(
+                                  documentId: userDocReference,
+                                  email: user.email!,
+                                  userInstance: userInstance,
+                                  buildingInstances: buildingInstances,
+                                  floorInstances: floorInstances,
+                                  routerInstances: routerInstances,
+                                ),
                               ),
-                            ),
-                          );
-                        }catch(e){
-                          return Text(
-                            '${e}',
-                            style: GoogleFonts.raleway(
-                              color: const Color(0xffB62B37),
-                              fontWeight: FontWeight.w200,
-                              fontSize: 20,
-                            ),
-                          );
-                        };
-                      }
+                            );
+                          }catch(e){
+                            return Text(
+                              '${e}',
+                              style: GoogleFonts.raleway(
+                                color: const Color(0xffB62B37),
+                                fontWeight: FontWeight.w200,
+                                fontSize: 20,
+                              ),
+                            );
+                          };
+                        }
                     );
+
+
                   }
                 ),
               ),
@@ -195,11 +199,17 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
 
-              SizedBox(height:30,),
+              SizedBox(height:30),
 
               // Button to proceed as User
               ElevatedButton(
-                onPressed: null,
+                onPressed: () => Navigator.of(context)
+                    .push(
+                    MaterialPageRoute(
+                        builder: (context) => LocateMeScreen()
+                        )
+                    ),
+
 
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
