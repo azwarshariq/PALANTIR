@@ -72,8 +72,12 @@ String stairsID = "";
 String elevatorID = "";
 String typeID = "";
 
+List<double> temp = [];
 List<String> listOfBSSIDs = [];
-
+List<List<double>> routerCoords = [][2];
+List<List<double>> roomCoords = [][2];
+List<List<double>> stairsCoords = [][2];
+List<List<double>> elevatorCoords = [][2];
 List<String> listOfRouters = [];
 List<String> listOfRooms = [];
 List<String> listOfStairs = [];
@@ -625,9 +629,12 @@ class _PopUpItemBodyState extends State<PopUpItemBody> {
                                             const SnackBar(
                                                 content:
                                                 Text('Router Successfully Added'))),
-                                        print(mac),
-                                        print(xVar),
-                                        print(yVar),
+
+                                        temp.add(xVar),
+                                        temp.add(yVar),
+                                        routerCoords.add(temp),
+                                        temp = [],
+                                        print(routerCoords),
                                         listOfBSSIDs.add(mac),
                                         listOfRouters.add(routerName),
                                         types.add("Router"),
