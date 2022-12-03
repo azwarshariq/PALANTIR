@@ -63,6 +63,7 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
           backgroundColor: Color(0xff100D49),
