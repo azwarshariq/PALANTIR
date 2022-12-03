@@ -909,6 +909,7 @@ class _PopUpItemBodyState extends State<PopUpItemBody> {
                                         print(xVar),
                                         print(yVar),
                                         print(roomID),
+                                        addRoomData(roomID, xVar, yVar),
                                         listOfRooms.add(roomID),
                                         types.add("Room"),
                                         roomID = "",
@@ -947,6 +948,7 @@ class _PopUpItemBodyState extends State<PopUpItemBody> {
                                                 Text('Stairs Successfully Added'))),
                                         print(xVar),
                                         print(yVar),
+                                        addStairsData(stairsID, xVar, yVar),
                                         listOfStairs.add(stairsID),
                                         types.add("Stairs"),
                                         stairsID = "",
@@ -984,6 +986,7 @@ class _PopUpItemBodyState extends State<PopUpItemBody> {
                                                 Text('Elevator Successfully Added'))),
                                         print(xVar),
                                         print(yVar),
+                                        addElevatorsData(elevatorID, xVar, yVar),
                                         listOfElevators.add(elevatorID),
                                         types.add("Elevator"),
                                         elevatorID = "",
@@ -1316,6 +1319,7 @@ class _PopUpItemBodyRoomState extends State<PopUpItemBodyRoom> {
                 trailing: GestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () {
+                    deleteRoomData(listOfRooms[index]);
                     listOfRooms.remove(listOfRooms[index]);
                     Navigator.pop(context, '/');
 
@@ -1475,6 +1479,7 @@ class _PopUpItemBodyStairsState extends State<PopUpItemBodyStairs> {
                 trailing: GestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () {
+                    deleteStairsData(listOfStairs[index]);
                     listOfStairs.remove(listOfStairs[index]);
                     Navigator.pop(context, '/');
 
@@ -1633,6 +1638,7 @@ class _PopUpItemBodyElevatorState extends State<PopUpItemBodyElevator> {
                 trailing: GestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () {
+                    deleteElevatorData(listOfElevators[index]);
                     listOfElevators.remove(listOfElevators[index]);
                     Navigator.pop(context, '/');
 
