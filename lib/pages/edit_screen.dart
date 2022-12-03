@@ -589,6 +589,7 @@ class _PopUpItemBodyState extends State<PopUpItemBody> {
         .then((_) => print('Added Stairs: ' + stairsName))
         .catchError((error) => print('Add failed: $error'));
 
+
     // 2. Then create a Stairs Object instance, to store relevant data
     stairsObject stairsInstance = new stairsObject(
         floorRef + stairsName,      // Reference ID for Stairs (floorRef + stairsName)
