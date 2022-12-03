@@ -73,6 +73,7 @@ String elevatorID = "";
 String typeID = "";
 
 List<String> listOfBSSIDs = [];
+
 List<String> listOfRouters = [];
 List<String> listOfRooms = [];
 List<String> listOfStairs = [];
