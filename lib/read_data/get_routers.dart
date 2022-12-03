@@ -46,9 +46,11 @@ class GetRouters extends StatelessWidget {
 
             final routerInstance = new routerObject(
                 routerId,
-                data['Name'],
+                data['routerName'],
                 data['floorRef'],
-                data['MAC Address']
+                data['BSSID'],
+                data['x'],
+                data['y'],
             );
 
             routerInstances.add(routerInstance);

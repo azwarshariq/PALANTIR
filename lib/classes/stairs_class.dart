@@ -1,21 +1,21 @@
-class roomObject {
+class stairsObject {
   String referenceId = '';
-  String roomName = '';
+  String stairsName = '';
   String floorRef = '';
   double x = 0;
   double y = 0;
 
-  roomObject(referenceId, roomName, floorRef, x, y){
+  stairsObject(referenceId, stairsName, floorRef, x, y){
     this.referenceId = referenceId;
-    this.roomName = roomName;
+    this.stairsName = stairsName;
     this.floorRef = floorRef;
     this.x = x;
     this.y = y;
   }
 
-  void setValues(referenceId, roomName, floorRef, x, y){
+  void setValues(referenceId, stairsName, floorRef, x, y){
     this.referenceId = referenceId;
-    this.roomName = roomName;
+    this.stairsName = stairsName;
     this.floorRef = floorRef;
     this.x = x;
     this.y = y;

@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../classes/building_class.dart';
+import '../classes/elevators_class.dart';
 import '../classes/floor_class.dart';
+import '../classes/room_class.dart';
 import '../classes/router_class.dart';
+import '../classes/stairs_class.dart';
 import '../classes/user_class.dart';
 import 'collect_data_screen.dart';
 import 'hero_dialog_route.dart';
@@ -114,39 +117,9 @@ class _EditScreenState extends State<EditScreen> {
   List<buildingObject> buildingInstances = [];
   List<floorObject> floorInstances = [];
   List<routerObject> routerInstances = [];
-
-  Future addData() async {
-    routerObject routerInstance = new routerObject("", "", "", "");
-    // We need to store the floor's reference in all elements that we add
-    // All elements will be handled using a 3 step process to add it into all controlling
-    // parts of the database and local objects
-
-    // Routers
-    for (int i=0; i<listOfRouters.length; i++){
-      // 1. First create a Firestore document with given data
-      await FirebaseFirestore.instance.collection('Floors')
-        .doc(currentFloor.referenceId + listOfRouters[i]) // <-- Router Document ID (buildingID+floorID+routerID)
-        .set({
-        'routerName': listOfRouters[i],
-        'floorRef': currentFloor.referenceId,
-        'BSSID': listOfBSSIDs[i],
-        }) //
-        .then((_) => print('Added ' + listOfRouters[i] + ' with BSSID ' + listOfBSSIDs[i]))
-        .catchError((error) => print('Add failed: $error'));
-
-      // 2. Then create a Router Object instance, to store relevant data
-      routerInstance.setValues(
-        currentFloor.referenceId + listOfRouters[i],  // Reference ID for Router
-        listOfRouters[i],                             // Name of Router
-        currentFloor.referenceId,                     // Floor Reference
-        listOfBSSIDs[i]                               // BSSID of Router
-      );
-
-      // 3. Add routerInstance to the list of all routerInstances, for further use down the line
-      routerInstances.add(routerInstance);
-    }
-
-  }
+  List<roomObject> roomInstances = [];
+  List<stairsObject> stairsInstances = [];
+  List<elevatorObject> elevatorsInstances = [];
 
   Offset? _tapPosition;
   String _value = "";
@@ -214,7 +187,17 @@ class _EditScreenState extends State<EditScreen> {
                         .push(
                           HeroDialogRoute(
                             builder: (context) {
-                              return PopUpItemBody();
+                              return PopUpItemBody(
+                                  userInstance: this.userInstance,
+                                  buildingInstances: this.buildingInstances,
+                                  floorInstances: this.floorInstances,
+                                  routerInstances: this.routerInstances,
+                                  currentBuilding: this.currentBuilding,
+                                  currentFloor: this.currentFloor,
+                                  roomInstances: this.roomInstances,
+                                  stairsInstances: this.stairsInstances,
+                                  elevatorsInstances: this.elevatorsInstances,
+                              );
                             }
                           )
                         );
@@ -261,7 +244,17 @@ class _EditScreenState extends State<EditScreen> {
                             .push(
                               HeroDialogRoute(
                                 builder: (context) {
-                                  return PopUpItemBodyRouter();
+                                  return PopUpItemBodyRouter(
+                                    userInstance: this.userInstance,
+                                    buildingInstances: this.buildingInstances,
+                                    floorInstances: this.floorInstances,
+                                    routerInstances: this.routerInstances,
+                                    currentBuilding: this.currentBuilding,
+                                    currentFloor: this.currentFloor,
+                                    roomInstances: this.roomInstances,
+                                    stairsInstances: this.stairsInstances,
+                                    elevatorsInstances: this.elevatorsInstances,
+                                  );
                                 }
                               )
                             );
@@ -271,7 +264,17 @@ class _EditScreenState extends State<EditScreen> {
                             .push(
                               HeroDialogRoute(
                                 builder: (context) {
-                                  return PopUpItemBodyRoom();
+                                  return PopUpItemBodyRoom(
+                                    userInstance: this.userInstance,
+                                    buildingInstances: this.buildingInstances,
+                                    floorInstances: this.floorInstances,
+                                    routerInstances: this.routerInstances,
+                                    currentBuilding: this.currentBuilding,
+                                    currentFloor: this.currentFloor,
+                                    roomInstances: this.roomInstances,
+                                    stairsInstances: this.stairsInstances,
+                                    elevatorsInstances: this.elevatorsInstances,
+                                  );
                                 }
                               )
                             );
@@ -281,7 +284,17 @@ class _EditScreenState extends State<EditScreen> {
                             .push(
                               HeroDialogRoute(
                                 builder: (context) {
-                                  return PopUpItemBodyStairs();
+                                  return PopUpItemBodyStairs(
+                                    userInstance: this.userInstance,
+                                    buildingInstances: this.buildingInstances,
+                                    floorInstances: this.floorInstances,
+                                    routerInstances: this.routerInstances,
+                                    currentBuilding: this.currentBuilding,
+                                    currentFloor: this.currentFloor,
+                                    roomInstances: this.roomInstances,
+                                    stairsInstances: this.stairsInstances,
+                                    elevatorsInstances: this.elevatorsInstances,
+                                  );
                                 }
                               )
                             );
@@ -291,7 +304,17 @@ class _EditScreenState extends State<EditScreen> {
                             .push(
                               HeroDialogRoute(
                                 builder: (context) {
-                                  return PopUpItemBodyElevator();
+                                  return PopUpItemBodyElevator(
+                                    userInstance: this.userInstance,
+                                    buildingInstances: this.buildingInstances,
+                                    floorInstances: this.floorInstances,
+                                    routerInstances: this.routerInstances,
+                                    currentBuilding: this.currentBuilding,
+                                    currentFloor: this.currentFloor,
+                                    roomInstances: this.roomInstances,
+                                    stairsInstances: this.stairsInstances,
+                                    elevatorsInstances: this.elevatorsInstances,
+                                  );
                                 }
                               )
                             );
@@ -385,17 +408,231 @@ class _EditScreenState extends State<EditScreen> {
 }
 
 class PopUpItemBody extends StatefulWidget {
-  const PopUpItemBody({
-    Key? key,
-  }) : super(key: key);
+  PopUpItemBody({
+    required this.userInstance,
+    required this.buildingInstances,
+    required this.floorInstances,
+    required this.routerInstances,
+    required this.currentBuilding,
+    required this.currentFloor,
+    required this.roomInstances,
+    required this.stairsInstances,
+    required this.elevatorsInstances
+  });
+
+  userObject userInstance = new userObject(
+      '',
+      '',
+      '-',
+      '',
+      0
+  );
+  buildingObject currentBuilding = new buildingObject(
+      "",
+      "",
+      "",
+      0
+  );
+  floorObject currentFloor = new floorObject(
+      "",
+      "",
+      "",
+      0,
+      ""
+  );
+  List<buildingObject> buildingInstances = [];
+  List<floorObject> floorInstances = [];
+  List<routerObject> routerInstances = [];
+  List<roomObject> roomInstances = [];
+  List<stairsObject> stairsInstances = [];
+  List<elevatorObject> elevatorsInstances = [];
 
   @override
-  State<PopUpItemBody> createState() => _PopUpItemBodyState();
+  State<PopUpItemBody> createState() => _PopUpItemBodyState(
+      this.userInstance,
+      this.buildingInstances,
+      this.floorInstances,
+      this.routerInstances,
+      this.currentBuilding,
+      this.currentFloor,
+      this.roomInstances,
+      this.stairsInstances,
+      this.elevatorsInstances
+  );
 }
 
 const String _heroAddMacAddress = 'add-mac-hero';
 
 class _PopUpItemBodyState extends State<PopUpItemBody> {
+
+  _PopUpItemBodyState(
+      this.userInstance,
+      this.buildingInstances,
+      this.floorInstances,
+      this.routerInstances,
+      this.currentBuilding,
+      this.currentFloor,
+      this.roomInstances,
+      this.stairsInstances,
+      this.elevatorInstances
+    );
+
+  userObject userInstance = new userObject(
+      '',
+      '',
+      '-',
+      '',
+      0
+  );
+  buildingObject currentBuilding = new buildingObject(
+      "",
+      "",
+      "",
+      0
+  );
+  floorObject currentFloor = new floorObject(
+      "",
+      "",
+      "",
+      0,
+      ""
+  );
+  List<buildingObject> buildingInstances = [];
+  List<floorObject> floorInstances = [];
+  List<routerObject> routerInstances = [];
+  List<roomObject> roomInstances = [];
+  List<stairsObject> stairsInstances = [];
+  List<elevatorObject> elevatorInstances = [];
+
+  Future addRouterData(String routerName, String BSSID, double xVar, double yVar) async {
+    String floorRef = currentFloor.referenceId;
+    // We need to store the floor's reference in all elements that we add
+    // All elements will be handled using a 3 step process to add it into all controlling
+    // parts of the database and local objects
+
+    // 1. First create a Firestore document with given data
+    await FirebaseFirestore.instance.collection('Routers')
+      .doc(floorRef + routerName) // <-- Router Document ID (buildingID+floorName+routerName)
+      .set({
+        'routerName': routerName,
+        'floorRef': floorRef,
+        'BSSID': BSSID,
+        'x': xVar,
+        'y': yVar
+      }
+      ) //
+      .then((_) => print('Added ' + routerName + ' with BSSID ' + BSSID))
+      .catchError((error) => print('Add failed: $error'));
+
+    // 2. Then create a Router Object instance, to store relevant data
+    routerObject routerInstance = new routerObject(
+        floorRef + routerName,      // Reference ID for Router (floorRef + routerName)
+        routerName,                 // Name of Router
+        floorRef,                   // Floor Reference
+        BSSID,                      // BSSID of Router
+        xVar,                       // x Coordinate
+        yVar                        // y Coordinate
+    );
+
+    // 3. Add routerInstance to the list of all routerInstances, for further use down the line
+    routerInstances.add(routerInstance);
+  }
+
+  Future addRoomData(String roomName, double xVar, double yVar) async {
+    String floorRef = currentFloor.referenceId;
+    // We need to store the floor's reference in all elements that we add
+    // All elements will be handled using a 3 step process to add it into all controlling
+    // parts of the database and local objects
+
+    // 1. First create a Firestore document with given data
+    await FirebaseFirestore.instance.collection('Rooms')
+      .doc(floorRef + roomName) // <-- Room Document ID (buildingID+floorName+roomName)
+      .set({
+      'roomName': roomName,
+      'floorRef': floorRef,
+      'x': xVar,
+      'y': yVar
+      }
+      ) //
+      .then((_) => print('Added Room: ' + roomName))
+      .catchError((error) => print('Add failed: $error'));
+
+    // 2. Then create a Room Object instance, to store relevant data
+    roomObject roomInstance = new roomObject(
+        floorRef + roomName,      // Reference ID for Room (floorRef + roomName)
+        roomName,                   // Name of Room
+        floorRef,                   // Floor Reference
+        xVar,                       // x Coordinate
+        yVar                        // y Coordinate
+    );
+
+    // 3. Add roomInstance to the list of all roomInstances, for further use down the line
+    roomInstances.add(roomInstance);
+  }
+
+  Future addStairsData(String stairsName, double xVar, double yVar) async {
+    String floorRef = currentFloor.referenceId;
+    // We need to store the floor's reference in all elements that we add
+    // All elements will be handled using a 3 step process to add it into all controlling
+    // parts of the database and local objects
+
+    // 1. First create a Firestore document with given data
+    await FirebaseFirestore.instance.collection('Stairs')
+        .doc(floorRef + stairsName) // <-- Stairs Document ID (buildingID+floorName+stairsName)
+        .set({
+      'stairsName': stairsName,
+      'floorRef': floorRef,
+      'x': xVar,
+      'y': yVar
+    }
+    ) //
+        .then((_) => print('Added Stairs: ' + stairsName))
+        .catchError((error) => print('Add failed: $error'));
+
+    // 2. Then create a Stairs Object instance, to store relevant data
+    stairsObject stairsInstance = new stairsObject(
+        floorRef + stairsName,      // Reference ID for Stairs (floorRef + stairsName)
+        stairsName,                 // Name of Stairs
+        floorRef,                   // Floor Reference
+        xVar,                       // x Coordinate
+        yVar                        // y Coordinate
+    );
+
+    // 3. Add stairInstance to the list of all stairInstances, for further use down the line
+    stairsInstances.add(stairsInstance);
+  }
+
+  Future addElevatorsData(String elevatorName, double xVar, double yVar) async {
+    String floorRef = currentFloor.referenceId;
+    // We need to store the floor's reference in all elements that we add
+    // All elements will be handled using a 3 step process to add it into all controlling
+    // parts of the database and local objects
+
+    // 1. First create a Firestore document with given data
+    await FirebaseFirestore.instance.collection('Elevators')
+        .doc(floorRef + elevatorName) // <-- Elevators Document ID (buildingID+floorName+elevatorName)
+        .set({
+      'elevatorName': elevatorName,
+      'floorRef': floorRef,
+      'x': xVar,
+      'y': yVar
+    }
+    ) //
+        .then((_) => print('Added Elevator: ' + elevatorName))
+        .catchError((error) => print('Add failed: $error'));
+
+    // 2. Then create a Elevator Object instance, to store relevant data
+    elevatorObject elevatorInstance = new elevatorObject(
+        floorRef + elevatorName,    // Reference ID for Elevators (floorRef + elevatorName)
+        elevatorName,               // Name of Elevator
+        floorRef,                   // Floor Reference
+        xVar,                       // x Coordinate
+        yVar                        // y Coordinate
+    );
+
+    // 3. Add elevatorInstance to the list of all elevatorInstances, for further use down the line
+    elevatorInstances.add(elevatorInstance);
+  }
 
   String initialTypeValue = 'Router';
   var type = ['Router', 'Room', 'Stairs', 'Elevator'];
@@ -624,10 +861,13 @@ class _PopUpItemBodyState extends State<PopUpItemBody> {
                                         ScaffoldMessenger.of(context).showSnackBar(
                                             const SnackBar(
                                                 content:
-                                                Text('Router Successfully Added'))),
+                                                Text('Router Successfully Added')
+                                            )
+                                        ),
                                         print(mac),
                                         print(xVar),
                                         print(yVar),
+                                        addRouterData(routerName, mac, xVar, yVar),
                                         listOfBSSIDs.add(mac),
                                         listOfRouters.add(routerName),
                                         types.add("Router"),
@@ -775,16 +1015,121 @@ class _PopUpItemBodyState extends State<PopUpItemBody> {
 }
 
 class PopUpItemBodyRouter extends StatefulWidget {
+
   PopUpItemBodyRouter({
-    Key? key}) : super(key: key);
+    required this.userInstance,
+    required this.buildingInstances,
+    required this.floorInstances,
+    required this.routerInstances,
+    required this.currentBuilding,
+    required this.currentFloor,
+    required this.roomInstances,
+    required this.stairsInstances,
+    required this.elevatorsInstances
+  });
+
+  userObject userInstance = new userObject(
+      '',
+      '',
+      '-',
+      '',
+      0
+  );
+  buildingObject currentBuilding = new buildingObject(
+      "",
+      "",
+      "",
+      0
+  );
+  floorObject currentFloor = new floorObject(
+      "",
+      "",
+      "",
+      0,
+      ""
+  );
+  List<buildingObject> buildingInstances = [];
+  List<floorObject> floorInstances = [];
+  List<routerObject> routerInstances = [];
+  List<roomObject> roomInstances = [];
+  List<stairsObject> stairsInstances = [];
+  List<elevatorObject> elevatorsInstances = [];
 
   @override
-  State<PopUpItemBodyRouter> createState() => _PopUpItemBodyRouterState();
+  State<PopUpItemBodyRouter> createState() => _PopUpItemBodyRouterState(
+      this.userInstance,
+      this.buildingInstances,
+      this.floorInstances,
+      this.routerInstances,
+      this.currentBuilding,
+      this.currentFloor,
+      this.roomInstances,
+      this.stairsInstances,
+      this.elevatorsInstances
+
+  );
 }
 
 const String _heroDeleteMacAddress = 'delete-mac-hero';
 
 class _PopUpItemBodyRouterState extends State<PopUpItemBodyRouter> {
+
+  _PopUpItemBodyRouterState(
+      this.userInstance,
+      this.buildingInstances,
+      this.floorInstances,
+      this.routerInstances,
+      this.currentBuilding,
+      this.currentFloor,
+      this.roomInstances,
+      this.stairsInstances,
+      this.elevatorsInstances
+  );
+
+  userObject userInstance = new userObject(
+      '',
+      '',
+      '-',
+      '',
+      0
+  );
+  buildingObject currentBuilding = new buildingObject(
+      "",
+      "",
+      "",
+      0
+  );
+  floorObject currentFloor = new floorObject(
+      "",
+      "",
+      "",
+      0,
+      ""
+  );
+  List<buildingObject> buildingInstances = [];
+  List<floorObject> floorInstances = [];
+  List<routerObject> routerInstances = [];
+  List<roomObject> roomInstances = [];
+  List<stairsObject> stairsInstances = [];
+  List<elevatorObject> elevatorsInstances = [];
+
+  Future deleteRouterData(String routerName) async {
+    String floorRef = currentFloor.referenceId;
+    // Floor's reference needed to access Firestore document
+    // To delete, need to do 2 steps
+
+    // 1. First delete the Firestore document using Document ID (floorRef+routerName)
+    await FirebaseFirestore.instance.collection('Routers')
+        .doc(floorRef + routerName) // <-- Router Document ID (buildingID+floorName+routerName)
+        .delete();
+
+    // 2. Then delete the relevant object from routerInstances list
+    for (int i=0; i<routerInstances.length; i++){
+      if (routerInstances[i].routerName == routerName){
+        routerInstances.remove(routerInstances[i]);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -809,6 +1154,7 @@ class _PopUpItemBodyRouterState extends State<PopUpItemBodyRouter> {
                 trailing: GestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () {
+                    deleteRouterData(listOfRouters[index]);
                     listOfRouters.remove(listOfRouters[index]);
                     listOfBSSIDs.remove(listOfBSSIDs[index]);
                     Navigator.pop(context, '/');
@@ -846,12 +1192,114 @@ class _PopUpItemBodyRouterState extends State<PopUpItemBodyRouter> {
 
 class PopUpItemBodyRoom extends StatefulWidget {
   PopUpItemBodyRoom({
-    Key? key}) : super(key: key);
+    required this.userInstance,
+    required this.buildingInstances,
+    required this.floorInstances,
+    required this.routerInstances,
+    required this.currentBuilding,
+    required this.currentFloor,
+    required this.roomInstances,
+    required this.stairsInstances,
+    required this.elevatorsInstances
+  });
+
+  userObject userInstance = new userObject(
+      '',
+      '',
+      '-',
+      '',
+      0
+  );
+  buildingObject currentBuilding = new buildingObject(
+      "",
+      "",
+      "",
+      0
+  );
+  floorObject currentFloor = new floorObject(
+      "",
+      "",
+      "",
+      0,
+      ""
+  );
+  List<buildingObject> buildingInstances = [];
+  List<floorObject> floorInstances = [];
+  List<routerObject> routerInstances = [];
+  List<roomObject> roomInstances = [];
+  List<stairsObject> stairsInstances = [];
+  List<elevatorObject> elevatorsInstances = [];
 
   @override
-  State<PopUpItemBodyRoom> createState() => _PopUpItemBodyRoomState();
+  State<PopUpItemBodyRoom> createState() => _PopUpItemBodyRoomState(
+      this.userInstance,
+      this.buildingInstances,
+      this.floorInstances,
+      this.routerInstances,
+      this.currentBuilding,
+      this.currentFloor,
+      this.roomInstances,
+      this.stairsInstances,
+      this.elevatorsInstances
+  );
 }
 class _PopUpItemBodyRoomState extends State<PopUpItemBodyRoom> {
+  _PopUpItemBodyRoomState(
+      this.userInstance,
+      this.buildingInstances,
+      this.floorInstances,
+      this.routerInstances,
+      this.currentBuilding,
+      this.currentFloor,
+      this.roomInstances,
+      this.stairsInstances,
+      this.elevatorsInstances
+      );
+
+  userObject userInstance = new userObject(
+      '',
+      '',
+      '-',
+      '',
+      0
+  );
+  buildingObject currentBuilding = new buildingObject(
+      "",
+      "",
+      "",
+      0
+  );
+  floorObject currentFloor = new floorObject(
+      "",
+      "",
+      "",
+      0,
+      ""
+  );
+  List<buildingObject> buildingInstances = [];
+  List<floorObject> floorInstances = [];
+  List<routerObject> routerInstances = [];
+  List<roomObject> roomInstances = [];
+  List<stairsObject> stairsInstances = [];
+  List<elevatorObject> elevatorsInstances = [];
+
+  Future deleteRoomData(String roomName) async {
+    String floorRef = currentFloor.referenceId;
+    // Floor's reference needed to access Firestore document
+    // To delete, need to do 2 steps
+
+    // 1. First delete the Firestore document using Document ID (floorRef+roomName)
+    await FirebaseFirestore.instance.collection('Rooms')
+        .doc(floorRef + roomName) // <-- Router Document ID (buildingID+floorName+roomName)
+        .delete();
+
+    // 2. Then delete the relevant object from roomInstances list
+    for (int i=0; i<roomInstances.length; i++){
+      if (roomInstances[i].roomName == roomName){
+        roomInstances.remove(roomInstances[i]);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -903,12 +1351,114 @@ class _PopUpItemBodyRoomState extends State<PopUpItemBodyRoom> {
 
 class PopUpItemBodyStairs extends StatefulWidget {
   PopUpItemBodyStairs({
-    Key? key}) : super(key: key);
+    required this.userInstance,
+    required this.buildingInstances,
+    required this.floorInstances,
+    required this.routerInstances,
+    required this.currentBuilding,
+    required this.currentFloor,
+    required this.roomInstances,
+    required this.stairsInstances,
+    required this.elevatorsInstances
+  });
+
+  userObject userInstance = new userObject(
+      '',
+      '',
+      '-',
+      '',
+      0
+  );
+  buildingObject currentBuilding = new buildingObject(
+      "",
+      "",
+      "",
+      0
+  );
+  floorObject currentFloor = new floorObject(
+      "",
+      "",
+      "",
+      0,
+      ""
+  );
+  List<buildingObject> buildingInstances = [];
+  List<floorObject> floorInstances = [];
+  List<routerObject> routerInstances = [];
+  List<roomObject> roomInstances = [];
+  List<stairsObject> stairsInstances = [];
+  List<elevatorObject> elevatorsInstances = [];
 
   @override
-  State<PopUpItemBodyStairs> createState() => _PopUpItemBodyStairsState();
+  State<PopUpItemBodyStairs> createState() => _PopUpItemBodyStairsState(
+      this.userInstance,
+      this.buildingInstances,
+      this.floorInstances,
+      this.routerInstances,
+      this.currentBuilding,
+      this.currentFloor,
+      this.roomInstances,
+      this.stairsInstances,
+      this.elevatorsInstances
+  );
 }
 class _PopUpItemBodyStairsState extends State<PopUpItemBodyStairs> {
+  _PopUpItemBodyStairsState(
+      this.userInstance,
+      this.buildingInstances,
+      this.floorInstances,
+      this.routerInstances,
+      this.currentBuilding,
+      this.currentFloor,
+      this.roomInstances,
+      this.stairsInstances,
+      this.elevatorsInstances
+      );
+
+  userObject userInstance = new userObject(
+      '',
+      '',
+      '-',
+      '',
+      0
+  );
+  buildingObject currentBuilding = new buildingObject(
+      "",
+      "",
+      "",
+      0
+  );
+  floorObject currentFloor = new floorObject(
+      "",
+      "",
+      "",
+      0,
+      ""
+  );
+  List<buildingObject> buildingInstances = [];
+  List<floorObject> floorInstances = [];
+  List<routerObject> routerInstances = [];
+  List<roomObject> roomInstances = [];
+  List<stairsObject> stairsInstances = [];
+  List<elevatorObject> elevatorsInstances = [];
+
+  Future deleteStairsData(String stairsName) async {
+    String floorRef = currentFloor.referenceId;
+    // Floor's reference needed to access Firestore document
+    // To delete, need to do 2 steps
+
+    // 1. First delete the Firestore document using Document ID (floorRef+stairsName)
+    await FirebaseFirestore.instance.collection('Stairs')
+        .doc(floorRef + stairsName) // <-- Router Document ID (buildingID+floorName+stairsName)
+        .delete();
+
+    // 2. Then delete the relevant object from stairsInstances list
+    for (int i=0; i<stairsInstances.length; i++){
+      if (stairsInstances[i].stairsName == stairsName){
+        stairsInstances.remove(stairsInstances[i]);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -959,12 +1509,114 @@ class _PopUpItemBodyStairsState extends State<PopUpItemBodyStairs> {
 
 class PopUpItemBodyElevator extends StatefulWidget {
   PopUpItemBodyElevator({
-    Key? key}) : super(key: key);
+    required this.userInstance,
+    required this.buildingInstances,
+    required this.floorInstances,
+    required this.routerInstances,
+    required this.currentBuilding,
+    required this.currentFloor,
+    required this.roomInstances,
+    required this.stairsInstances,
+    required this.elevatorsInstances
+  });
+
+  userObject userInstance = new userObject(
+      '',
+      '',
+      '-',
+      '',
+      0
+  );
+  buildingObject currentBuilding = new buildingObject(
+      "",
+      "",
+      "",
+      0
+  );
+  floorObject currentFloor = new floorObject(
+      "",
+      "",
+      "",
+      0,
+      ""
+  );
+  List<buildingObject> buildingInstances = [];
+  List<floorObject> floorInstances = [];
+  List<routerObject> routerInstances = [];
+  List<roomObject> roomInstances = [];
+  List<stairsObject> stairsInstances = [];
+  List<elevatorObject> elevatorsInstances = [];
 
   @override
-  State<PopUpItemBodyElevator> createState() => _PopUpItemBodyElevatorState();
+  State<PopUpItemBodyElevator> createState() => _PopUpItemBodyElevatorState(
+      this.userInstance,
+      this.buildingInstances,
+      this.floorInstances,
+      this.routerInstances,
+      this.currentBuilding,
+      this.currentFloor,
+      this.roomInstances,
+      this.stairsInstances,
+      this.elevatorsInstances
+  );
 }
 class _PopUpItemBodyElevatorState extends State<PopUpItemBodyElevator> {
+  _PopUpItemBodyElevatorState(
+      this.userInstance,
+      this.buildingInstances,
+      this.floorInstances,
+      this.routerInstances,
+      this.currentBuilding,
+      this.currentFloor,
+      this.roomInstances,
+      this.stairsInstances,
+      this.elevatorsInstances
+      );
+
+  userObject userInstance = new userObject(
+      '',
+      '',
+      '-',
+      '',
+      0
+  );
+  buildingObject currentBuilding = new buildingObject(
+      "",
+      "",
+      "",
+      0
+  );
+  floorObject currentFloor = new floorObject(
+      "",
+      "",
+      "",
+      0,
+      ""
+  );
+  List<buildingObject> buildingInstances = [];
+  List<floorObject> floorInstances = [];
+  List<routerObject> routerInstances = [];
+  List<roomObject> roomInstances = [];
+  List<stairsObject> stairsInstances = [];
+  List<elevatorObject> elevatorsInstances = [];
+
+  Future deleteElevatorData(String elevatorName) async {
+    String floorRef = currentFloor.referenceId;
+    // Floor's reference needed to access Firestore document
+    // To delete, need to do 2 steps
+
+    // 1. First delete the Firestore document using Document ID (floorRef+elevatorName)
+    await FirebaseFirestore.instance.collection('Elevators')
+        .doc(floorRef + elevatorName) // <-- Router Document ID (buildingID+floorName+elevatorName)
+        .delete();
+
+    // 2. Then delete the relevant object from elevatorInstances list
+    for (int i=0; i<elevatorsInstances.length; i++){
+      if (elevatorsInstances[i].elevatorName == elevatorName){
+        elevatorsInstances.remove(elevatorsInstances[i]);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
