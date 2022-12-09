@@ -3,6 +3,9 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:wifi_scan/wifi_scan.dart';
+import 'dart:math' as math;
+import 'package:vector_math/vector_math.dart';
+
 
 class LocateMeScreen extends StatefulWidget {
   const LocateMeScreen({Key? key}) : super(key: key);
@@ -16,8 +19,12 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
   List<WiFiAccessPoint> accessPoints = <WiFiAccessPoint>[];
   StreamSubscription<List<WiFiAccessPoint>>? subscription;
   bool shouldCheckCan = true;
-
   bool get isStreaming => subscription != null;
+  List routerDistance = [];
+  List distance = [12, 8, 5];
+  //int noOfRouters = distance.length;
+  List Router_X = [469, 469, 224];
+  List Router_Y = [192, 540, 372];
 
   Future<void> _startScan(BuildContext context) async {
     // check if "can" startScan
@@ -60,6 +67,23 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
     }
   }
 
+  List getDistance(noOfRouters, distance){
+    var temp = [];
+    var temp1 = [];
+    var array = [];
+    for( var i = 0; i<noOfRouters; i++){
+      for( var j = 0; j<360;j++){
+        temp.add(distance[i] * (math.cos(radians(j.toDouble()))));
+        temp.add(distance[i] * (math.sin(radians(j.toDouble()))));
+        temp1.add(temp);
+        temp = [];
+      }
+      array.add(temp1);
+      temp1 =[];
+    }
+    return array;
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -94,11 +118,14 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
                         onPressed: () => {
                           _startScan(context),
                           _getScannedResults(context),
+                          routerDistance = getDistance(distance.length, distance),
+                          print(routerDistance),
+                          print(routerDistance.length),
                         },
                         child: Text(
                           "Locate Me",
                           style: GoogleFonts.raleway(
-                            color: Colors.white60,
+                            color: Color(0xffFFFFFF),
                             fontWeight: FontWeight.w300,
                             fontSize: 20,
                           ),
@@ -135,7 +162,7 @@ class _AccessPointTile extends StatelessWidget {
   // build row that can display info, based on label: value pair.
   Widget _buildInfo(String label, dynamic value) => Container(
     decoration: const BoxDecoration(
-      border: Border(bottom: BorderSide(color: Colors.grey)),
+      border: Border(bottom: BorderSide(color: Color(0xffFFFFFF))),
     ),
     child: Row(
       children: [
@@ -163,7 +190,7 @@ class _AccessPointTile extends StatelessWidget {
     // );
     return Center(
       child: Text('${accessPoint.ssid}, ${accessPoint.bssid}, ${accessPoint.frequency}, ${accessPoint.level}',
-        style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+        style: const TextStyle(fontWeight: FontWeight.bold, color: Color(0xffFFFFFF)),
       ),
     );
     print(accessPoint.bssid);
