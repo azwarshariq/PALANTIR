@@ -230,14 +230,12 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
                           _getScannedResults(context),
 
                           //--------------------------------------------------------
-                          distance = [15,7,9],
+                          distance = [10,8,9],
                           Router_X = [469, 469, 224],
                           Router_Y = [192, 540, 372],
                           routerDistance = [],
                           routerDistance = getDistance(distance.length, distance),
-                          print(routerDistance[0][359]),
-                          print(routerDistance[1][359]),
-                          print(routerDistance[2][359]),
+                          //print(routerDistance),
                           //--------------------------------------------------------
                           routerPixel = [],
                           routerPixel = getPixel(distance.length, routerDistance),
@@ -279,6 +277,7 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
                           },
                           avg_x = sum_x/count,
                           avg_y = sum_y/count,
+                          avg_y = 1200 - avg_y,
                           print(avg_x),
                           print(avg_y),
                           //--------------------------------------------------------
@@ -352,21 +351,47 @@ class _AccessPointTile extends StatelessWidget {
     final signalIcon = accessPoint.level >= -80
         ? Icons.signal_wifi_4_bar
         : Icons.signal_wifi_0_bar;
-    // return ListTile(
-    //   visualDensity: VisualDensity.compact,
-    //   leading: Icon(signalIcon),
-    //   title: Text(title),
-    //   subtitle: Text(accessPoint.bssid),
-    //
-    // );
+
     return Center(
-      child: Text('${accessPoint.ssid}, ${accessPoint.bssid}, ${accessPoint.frequency}, ${accessPoint.level}',
-        style: const TextStyle(fontWeight: FontWeight.bold, color: Color(0xffFFFFFF)),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            GetCoordinates(frequency: accessPoint.frequency, signal_strength: accessPoint.level,),
+          ],
+        ),
       ),
     );
-    print(accessPoint.bssid);
   }
 }
+
+class GetCoordinates extends StatelessWidget {
+  final frequency;
+  final signal_strength;
+
+  const GetCoordinates({Key? key, required this.frequency, required this.signal_strength})
+  : super(key: key);
+
+  Widget build(BuildContext context) {
+    return Center(
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text('${frequency}, ${signal_strength}',
+              style: const TextStyle(fontWeight: FontWeight.bold, color: Color(0xffFFFFFF)),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+}
+
+
+
+
 /// Show snackbar.
 void kShowSnackBar(BuildContext context, String message) {
   if (kDebugMode) print(message);
