@@ -461,8 +461,6 @@ class PopUpItemBody extends StatefulWidget {
   );
 }
 
-const String _heroAddMacAddress = 'add-mac-hero';
-
 class _PopUpItemBodyState extends State<PopUpItemBody> {
 
   _PopUpItemBodyState(
@@ -995,9 +993,6 @@ class _PopUpItemBodyState extends State<PopUpItemBody> {
                               }
                           }
                       },
-
-
-
                       style: ElevatedButton.styleFrom(
                           backgroundColor: Color(0xffB62B37) // Background color
                       ),
@@ -1073,8 +1068,6 @@ class PopUpItemBodyRouter extends StatefulWidget {
 
   );
 }
-
-const String _heroDeleteMacAddress = 'delete-mac-hero';
 
 class _PopUpItemBodyRouterState extends State<PopUpItemBodyRouter> {
 
