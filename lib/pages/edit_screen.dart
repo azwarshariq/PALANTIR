@@ -1,5 +1,9 @@
+import 'dart:typed_data';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:palantir_ips/pages/storage_service.dart';
 import '../classes/building_class.dart';
 import '../classes/elevators_class.dart';
 import '../classes/floor_class.dart';
@@ -53,7 +57,8 @@ class EditScreen extends StatefulWidget {
     this.floorInstances,
     this.routerInstances,
     this.currentBuilding,
-    this.currentFloor
+    this.currentFloor,
+    ""
   );
 }
 
@@ -84,6 +89,9 @@ List<String> listOfElevators = [];
 List<String> types = [];
 
 class _EditScreenState extends State<EditScreen> {
+  Uint8List imageBytes = Uint8List(0);
+  String errorMsg;
+  final FirebaseStorage storage = FirebaseStorage.instance;
 
   _EditScreenState(
       this.userInstance,
@@ -91,8 +99,22 @@ class _EditScreenState extends State<EditScreen> {
       this.floorInstances,
       this.routerInstances,
       this.currentBuilding,
-      this.currentFloor
-      );
+      this.currentFloor,
+      this.errorMsg,
+  ){
+    storage.ref().child(currentFloor.floorPlan)
+    .getData(10000000)
+    .then((data) => setState(() {
+      imageBytes = data!;
+      print(imageBytes);
+    })
+    )
+      .catchError((e) => setState(() {
+        errorMsg = e.error;
+      })
+    );
+  }
+
 
   userObject userInstance = new userObject(
       '',
@@ -126,6 +148,13 @@ class _EditScreenState extends State<EditScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    var loadedImage = imageBytes != null ? Image.memory(
+      imageBytes,
+      height: MediaQuery.of(context).size.height * 0.70,
+      width: MediaQuery.of(context).size.width * 0.9,
+    ) : Text(errorMsg != null ? errorMsg : "Loading...");
+
     return GestureDetector(
       onTapDown: (position) {
         setState(() {
@@ -160,12 +189,14 @@ class _EditScreenState extends State<EditScreen> {
                       width: MediaQuery.of(context).size.width * 0.05,
                     ),
                     Container(
-                      child: Image.asset(
+                      child:
+                        loadedImage
+                        /*Image.asset(
                         'assets/floorplan.jpeg',
                         height: MediaQuery.of(context).size.height * 0.70,
                         width: MediaQuery.of(context).size.width * 0.9,
                         //fit: BoxFit.fitWidth,
-                      )
+                      )*/
                     ),
 
                     SizedBox(
@@ -992,8 +1023,6 @@ class _PopUpItemBodyState extends State<PopUpItemBody> {
                               }
                           }
                       },
-
-
 
                       style: ElevatedButton.styleFrom(
                           backgroundColor: Color(0xffB62B37) // Background color
