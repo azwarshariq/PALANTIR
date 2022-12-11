@@ -230,15 +230,11 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
                     else{
                       distance = [],
                       for ( var i=0; i< accessPoints.length; i++ ){
-                        print(accessPoints[i].bssid),
-                        print(accessPoints[i].frequency),
-                        print(accessPoints[i].level),
                         exponent = ((27.55 - (20 * (log(accessPoints[i].frequency))/log(10)) + accessPoints[i].level.abs()) / 20),
-                        print("Exponent: "),
-                        print(exponent),
-                        distance.add(pow(10, exponent))
+                        distance.add(pow(10, exponent)),
+                        print(accessPoints[i].bssid),
+                        print(distance[i]),
                       },
-                      print(distance),
                       distance = [10.0,8.0,10.0],
                       Router_X = [469, 469, 224],
                       Router_Y = [192, 540, 372],

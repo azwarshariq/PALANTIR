@@ -122,6 +122,8 @@ class _ViewScreenState extends State<ViewScreen> {
         floorInstances[i].floorPlan == this.file!.name;
       }
     }
+    // Making the change in currentFloor
+    currentFloor.floorPlan = this.file!.name;
   }
 
   @override

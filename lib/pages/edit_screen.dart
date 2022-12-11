@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import '../classes/building_class.dart';
 import '../classes/elevators_class.dart';
@@ -55,6 +56,7 @@ class EditScreen extends StatefulWidget {
     this.currentBuilding,
     this.currentFloor
   );
+
 }
 
 TextEditingController userInput = TextEditingController();
@@ -84,6 +86,17 @@ List<String> listOfElevators = [];
 List<String> types = [];
 
 class _EditScreenState extends State<EditScreen> {
+
+
+  String? Url = " ";
+
+  Future<String> getURL(image) async{
+    final ref = FirebaseStorage.instance.ref().child('files/' + image);
+// no need of the file extension, the name will do fine.
+    var url =  await ref.getDownloadURL();
+
+    return url.toString();
+  }
 
   _EditScreenState(
       this.userInstance,
@@ -160,24 +173,49 @@ class _EditScreenState extends State<EditScreen> {
                       width: MediaQuery.of(context).size.width * 0.05,
                     ),
                     Container(
-                      child: Image.asset(
-                        'assets/floorplan.jpeg',
-                        height: MediaQuery.of(context).size.height * 0.70,
-                        width: MediaQuery.of(context).size.width * 0.9,
-                        //fit: BoxFit.fitWidth,
-                      )
+                      child: Column(
+                        children: [
+                          FutureBuilder<String>(
+                            future: getURL(currentFloor.floorPlan),
+                            builder: (BuildContext context, AsyncSnapshot<String> url)
+                            {
+                              Url = url.data;
+                              var check = Url;
+                              if (check != null) {
+                                return Image.network(
+                                  Url!,
+                                  height: MediaQuery.of(context).size.height * 0.70,
+                                  width: MediaQuery.of(context).size.width * 0.9,
+                                  //fit: BoxFit.fitWidth,
+                                ); // Safe
+                              }
+                              else{
+                                return Center(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Text("Loading...",
+                                        style: TextStyle(
+                                            fontSize: 17,
+                                            color: Colors.white60,)
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              }
+                            }
+                          ),
+                        ],
+                      ),
                     ),
-
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.05,
                     ),
                   ],
                 ),
-
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.03,
                 ),
-
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -1002,6 +1040,7 @@ class _PopUpItemBodyState extends State<PopUpItemBody> {
                               color: Colors.white,
                               fontWeight: FontWeight.w500)),
                     ),
+
                   ],
                 ),
               ),
@@ -1186,7 +1225,6 @@ class _PopUpItemBodyRouterState extends State<PopUpItemBodyRouter> {
   }
 }
 
-
 class PopUpItemBodyRoom extends StatefulWidget {
   PopUpItemBodyRoom({
     required this.userInstance,
@@ -1240,6 +1278,7 @@ class PopUpItemBodyRoom extends StatefulWidget {
       this.elevatorsInstances
   );
 }
+
 class _PopUpItemBodyRoomState extends State<PopUpItemBodyRoom> {
   _PopUpItemBodyRoomState(
       this.userInstance,
@@ -1346,7 +1385,6 @@ class _PopUpItemBodyRoomState extends State<PopUpItemBodyRoom> {
   }
 }
 
-
 class PopUpItemBodyStairs extends StatefulWidget {
   PopUpItemBodyStairs({
     required this.userInstance,
@@ -1400,6 +1438,7 @@ class PopUpItemBodyStairs extends StatefulWidget {
       this.elevatorsInstances
   );
 }
+
 class _PopUpItemBodyStairsState extends State<PopUpItemBodyStairs> {
   _PopUpItemBodyStairsState(
       this.userInstance,
@@ -1559,6 +1598,7 @@ class PopUpItemBodyElevator extends StatefulWidget {
       this.elevatorsInstances
   );
 }
+
 class _PopUpItemBodyElevatorState extends State<PopUpItemBodyElevator> {
   _PopUpItemBodyElevatorState(
       this.userInstance,
@@ -1667,3 +1707,212 @@ class _PopUpItemBodyElevatorState extends State<PopUpItemBodyElevator> {
     );
   }
 }
+
+// class LinePainter extends CustomPainter{
+//   @override
+//   void paint(Canvas canvas, Size size){
+//     final paint = Paint();
+//     canvas.drawLine(
+//         Offset(5,10),
+//         Offset(7,15) ,
+//         paint,
+//     );
+//
+//   }
+//
+//   @override
+//   bool shouldRepaint(covariant CustomPainter oldDelegate) {
+//     // TODO: implement shouldRepaint
+//     throw UnimplementedError();
+//   }
+// }
+//
+// class MyArc extends StatelessWidget {
+//   const MyArc({
+//     Key? key,
+//   }) : super(key: key);
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     // for responsive design
+//     return LayoutBuilder(
+//         builder: (BuildContext context, BoxConstraints constraints) {
+//           // mobile screen
+//           Text("heeeeeeeeeeeee");
+//           if (constraints.maxWidth < 1000) {
+//             return const Logo(
+//               // the diameter is 150 is the
+//               // screen is a mobile screen
+//               diameter: 150,
+//               isMobile: true,
+//             );
+//           }
+//           // desktop screen
+//           return const Logo(
+//             // the diameter is a bit larger than
+//             // the mobile screen's diameter
+//             diameter: 200,
+//             isMobile: false,
+//           );
+//         });
+//   }
+// }
+//
+// class Logo extends StatelessWidget {
+//   const Logo({
+//     Key? key,
+//     required this.diameter,
+//     required this.isMobile,
+//   }) : super(key: key);
+//
+//   // the diameter of the logo
+//   final double diameter;
+//
+//   // isMobile is true if the
+//   // screen is a mobile screen
+//   final bool isMobile;
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     // using row widget to create the
+//     // two sides of the logo
+//     // and join them after painting
+//     return Row(
+//       mainAxisAlignment: MainAxisAlignment.center,
+//       children: [
+//         // also has properties foregroundPainter,
+//         // which paints after drawing its children
+//         // and child, which adds widgets below this
+//         // widget in the widget tree.
+//         // but we won't be needing these
+//         // properties here.
+//         CustomPaint(
+//           // the left side of the logo
+//           // the painter the paints
+//           // before its children are
+//           // drawn on the canvas
+//           painter: Left(isMobile),
+//           // providing the custom paint with the diameter
+//           size: Size(diameter, diameter),
+//         ),
+//         Padding(
+//           // add some padding between the two
+//           // sides of the GFG logo
+//           // such that the two Gs just touch
+//           // each other as in the original logo
+//           padding: EdgeInsets.only(left: isMobile ? 25.0 : 30.0),
+//           child: CustomPaint(
+//             // the right side of the logo
+//             painter: Right(isMobile),
+//             size: Size(diameter, diameter),
+//           ),
+//         ),
+//       ],
+//     );
+//   }
+// }
+//
+// class Left extends CustomPainter {
+//   final bool isMobile;
+//
+//   Left(this.isMobile);
+//
+//   @override
+//   void paint(Canvas canvas, Size size) {
+//     Paint paint = Paint()
+//       ..color = const Color(0xFF009900)
+//     // the style of the paint
+//     // default fills the shape.
+//     // but we want a stroke
+//       ..style = PaintingStyle.stroke
+//     // the stroke width is a bit less in mobile screen
+//       ..strokeWidth = isMobile ? 28 : 32;
+//     // draw the horizontal line in the
+//     // left side of the logo
+//     // the x offset is in negative in order
+//     // to account for the thick stroke width
+//     // the y offset is set in the middle as in
+//     // the original logo
+//     // where the horizontal line run through
+//     // the middle of the two Gs
+//     canvas.drawLine(Offset(isMobile ? -13.6 : -15.5, size.height / 2),
+//         Offset(size.width, size.height / 2), paint);
+//
+//     // the following two blocks draw
+//     // the circles in the left side of the logo
+//     canvas.drawArc(
+//       Rect.fromCenter(
+//         center: Offset(size.height / 2, size.width / 2),
+//         height: size.height,
+//         width: size.width,
+//       ),
+//       pi / 2,
+//       pi / 2,
+//       false,
+//       paint,
+//     );
+//     canvas.drawArc(
+//       Rect.fromCenter(
+//         center: Offset(size.height / 2, size.width / 2),
+//         height: size.height,
+//         width: size.width,
+//       ),
+//       -pi / 1.25,
+//       pi * 1.5,
+//       false,
+//       paint,
+//     );
+//   }
+//
+//   // flutter calls this method
+//   // to check if repainting is needed
+//   @override
+//   bool shouldRepaint(CustomPainter oldDelegate) => false;
+// }
+//
+// class Right extends CustomPainter {
+//   final bool isMobile;
+//
+//   Right(this.isMobile);
+//
+//   @override
+//   void paint(Canvas canvas, Size size) {
+//     Paint paint = Paint()
+//       ..color = const Color(0xFF009900)
+//       ..style = PaintingStyle.stroke
+//       ..strokeWidth = isMobile ? 28 : 32;
+//
+//     // draw the horizontal line in
+//     // the right side of the logo
+//     canvas.drawLine(
+//         Offset(
+//             isMobile ? size.width + 13.6 : size.width + 15.5, size.height / 2),
+//         Offset(0, size.height / 2),
+//         paint);
+//     canvas.drawArc(
+//       Rect.fromCenter(
+//         center: Offset(size.height / 2, size.width / 2),
+//         height: size.height,
+//         width: size.width,
+//       ),
+//       pi / 1.25,
+//       pi,
+//       false,
+//       paint,
+//     );
+//     canvas.drawArc(
+//       Rect.fromCenter(
+//         center: Offset(size.height / 2, size.width / 2),
+//         height: size.height,
+//         width: size.width,
+//       ),
+//       0,
+//       pi,
+//       false,
+//       paint,
+//     );
+//   }
+//
+//   @override
+//   bool shouldRepaint(CustomPainter oldDelegate) => false;
+// }
