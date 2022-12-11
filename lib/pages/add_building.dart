@@ -201,9 +201,19 @@ class _AddBuildingState extends State<AddBuilding> {
         elevation: 10,
         shadowColor: const Color(0xffB62B37),
       ),
-      backgroundColor:const Color(0xff100D49),
       body: Container(
+        constraints: const BoxConstraints.expand(),
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage("assets/Home Page.png"),
+                fit: BoxFit.cover
+            ),
+            borderRadius: BorderRadius.circular(30)
+        ),
         padding: const EdgeInsets.only(left: 40, right: 40),
+        margin: const EdgeInsets.all(20),
+
+
         child: Form(
           key: formKey, //key for form
           child: SingleChildScrollView(
@@ -322,11 +332,11 @@ class _AddBuildingState extends State<AddBuilding> {
                     )
                   ),
                 ),
-              ],
+               ],
+             ),
             ),
           ),
         ),
-      )
     );
   }
 }
