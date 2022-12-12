@@ -65,7 +65,7 @@ class GetBuildings extends StatelessWidget {
     };
 
     print('Floor References:');
-    for(int i=0; i<2; i++){
+    for(int i=0; i<floorDocReference.length; i++){
       print(floorDocReference[i]);
     }
   }
