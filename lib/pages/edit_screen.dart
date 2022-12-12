@@ -87,7 +87,6 @@ List<String> types = [];
 
 class _EditScreenState extends State<EditScreen> {
 
-
   String? Url = " ";
 
   Future<String> getURL(image) async{
