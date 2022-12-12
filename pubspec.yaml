@@ -47,6 +47,7 @@ dependencies:
   popup_card: ^0.1.0
   _flutterfire_internals: ^1.0.6
   wifi_scan: ^0.4.0+1
+  path: ^1.8.1
 
 
 dev_dependencies:
@@ -87,7 +88,7 @@ flutter:
     - assets/Splash Screen.png
     - assets/Controller.png
     - assets/sample.png
-    - assets/SScreen.png
+    #- assets/SScreen.png
 
 
   # To add assets to your application, add an assets section, like this:
