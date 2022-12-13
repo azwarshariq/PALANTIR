@@ -154,7 +154,7 @@ class _EditScreenState extends State<EditScreen> {
             xyAxis;
         });
       },
-      //
+
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Color(0xff100D49),
@@ -184,8 +184,8 @@ class _EditScreenState extends State<EditScreen> {
                                 return Image.network(
                                   Url!,
                                   height: MediaQuery.of(context).size.height * 0.70,
-                                  width: MediaQuery.of(context).size.width * 0.9,
-                                  //fit: BoxFit.fitWidth,
+                                  width: MediaQuery.of(context).size.width * 0.90,
+                                  fit:BoxFit.contain,
                                 ); // Safe
                               }
                               else{
