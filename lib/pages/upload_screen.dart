@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:palantir_ips/pages/view_screen.dart';
@@ -127,6 +126,10 @@ class _MyUploadScreenState extends State<UploadScreen> {
           image: AssetImage('assets/elements/AppBar Upload.png'),
           fit: BoxFit.cover,
         ),
+        iconTheme: IconThemeData(
+          color: const Color(0xff325E89), //change your color here
+        ),
+        elevation: 0,
         title: Text(
           'Upload Floorplan',
           style: GoogleFonts.raleway(
@@ -138,7 +141,7 @@ class _MyUploadScreenState extends State<UploadScreen> {
         centerTitle: true,
         backgroundColor: Colors.transparent,
       ),
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xFFF3F4F4),
       body: Container(
         constraints: const BoxConstraints.expand(),
         decoration: BoxDecoration(
@@ -146,10 +149,16 @@ class _MyUploadScreenState extends State<UploadScreen> {
                 image: AssetImage("assets/elements/AddBuilding Hero.png"),
                 fit: BoxFit.cover
             ),
-            borderRadius: BorderRadius.circular(30)
+            borderRadius: BorderRadius.circular(30),
+            boxShadow: [
+            BoxShadow(
+            color: Colors.grey, //New
+            blurRadius: 5.0,
+            offset: Offset(0, -1))
+          ],
         ),
-          padding: const EdgeInsets.only(left: 40, right: 40, top: 20),
-          margin: const EdgeInsets.fromLTRB(20, 40, 20, 80),
+        padding: const EdgeInsets.only(left: 40, right: 40, top: 20),
+        margin: const EdgeInsets.fromLTRB(20, 40, 20, 80),
 
           child: Form(
           child: Center(
@@ -180,7 +189,7 @@ class _MyUploadScreenState extends State<UploadScreen> {
                         dropdownValue = newValue!;
                       });
                     },
-                    dropdownColor: Colors.white,
+                    dropdownColor: Colors.white60,
                   ),
 
                   const SizedBox(height: 200),
@@ -201,9 +210,9 @@ class _MyUploadScreenState extends State<UploadScreen> {
                     backgroundColor: const Color(0xFFFFFFFF),
                     child: IconButton(
                       icon: Icon(Icons.cloud_upload_outlined),
-                      color: Color(0xFF44CDB1),
+                      color: Color(0xff325E89),
                       iconSize: 30,
-                      splashColor: const Color(0xDA97EEDB),
+                      splashColor: const Color(0xAA325E89),
                       splashRadius: 45,
                       onPressed: () async {
                         XFile? file = await ImagePicker().pickImage(
