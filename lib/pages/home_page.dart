@@ -56,7 +56,7 @@ class _HomePageState extends State<HomePage> {
       return Text(
         'Loading...',
         style: GoogleFonts.raleway(
-          color: const Color(0xffB62B37),
+          color: Colors.white,
           fontWeight: FontWeight.w300,
           fontSize: 20,
         ),
@@ -73,7 +73,7 @@ class _HomePageState extends State<HomePage> {
       constraints: const BoxConstraints.expand(),
       decoration: const BoxDecoration(
           image: DecorationImage(
-              image: AssetImage("assets/Home Page.png"),
+              image: AssetImage("assets/Home Page 1.png"),
               fit: BoxFit.cover
           )
       ),
@@ -105,7 +105,7 @@ class _HomePageState extends State<HomePage> {
             )
           ],
         ),
-        backgroundColor: Colors.black54,
+        backgroundColor: Colors.transparent,
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -137,7 +137,7 @@ class _HomePageState extends State<HomePage> {
                           return Text(
                             'Loading...',
                             style: GoogleFonts.raleway(
-                              color: const Color(0xffB62B37),
+                              color: Colors.white,
                               fontWeight: FontWeight.w300,
                               fontSize: 35,
                             ),
@@ -182,13 +182,13 @@ class _HomePageState extends State<HomePage> {
                     //to set border radius to button
                       borderRadius: BorderRadius.circular(20)
                   ),
-                  backgroundColor: const Color(0xFFCD4F69),
+                  backgroundColor: Color(0xFFA11C44),
                   shadowColor: Color(0xFFCD4F69),
                 ),
                 child: Text(
                   'Proceed As Mapper',
                   style: GoogleFonts.raleway(
-                    color: Colors.white60,
+                    color: Colors.white,
                     fontWeight: FontWeight.w200,
                     fontSize: 20,
                   ),
@@ -212,13 +212,13 @@ class _HomePageState extends State<HomePage> {
                     //to set border radius to button
                       borderRadius: BorderRadius.circular(20)
                   ),
-                  backgroundColor: const Color(0xFFCD4F69),
-                  shadowColor: Color(0xFFCD4F69),
+                  backgroundColor: const Color(0xFF51AFBA),
+                  shadowColor: Color(0xFF51AFBA),
                 ),
                 child: Text(
                   'Proceed As User',
                   style: GoogleFonts.raleway(
-                    color: Colors.white60,
+                    color: Colors.white,
                     fontWeight: FontWeight.w200,
                     fontSize: 20,
                   ),

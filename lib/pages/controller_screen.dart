@@ -65,34 +65,17 @@ class _ControllerState extends State<Controller> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      constraints: const BoxConstraints.expand(),
-      decoration: const BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage("assets/Controller.png"),
-              fit: BoxFit.cover
-          )
-      ),
-
       child: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            'Home Page',
-            style: GoogleFonts.raleway(
-              color: Colors.white60,
-              fontWeight: FontWeight.w300,
-              fontSize: 30,
-            ),
-          ),
-
-          backgroundColor: const Color(0xffB62B37),
-          elevation: 10,
-          toolbarOpacity: 0.9,
-          shadowColor: const Color(0xff100D49),
-        ),
-
-        backgroundColor: Colors.black54,
+        //Appbar
         body: Container(
-          padding: const EdgeInsets.only(left: 60, right: 40, top: 0),
+          padding: const EdgeInsets.only(left: 60, right: 40, top: 20),
+          constraints: const BoxConstraints.expand(),
+          decoration: const BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage("assets/Controller Screen.png"),
+                  fit: BoxFit.cover
+              )
+          ),
           child: Form(
             child: Center(
               child: Column(
@@ -102,11 +85,11 @@ class _ControllerState extends State<Controller> {
               ),
 
               SizedBox(
-                height: 70, //height of button
-                width: 250, //width of button
+                height: 75, //height of button
+                width: 235, //width of button
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xffB62B37), //background color of button
+                    backgroundColor: Colors.white, //background color of button
                     elevation: 8, //elevation of button
                     shape: RoundedRectangleBorder(
                       //to set border radius to button
@@ -131,8 +114,8 @@ class _ControllerState extends State<Controller> {
                 child: Text(
                   "Add New Building",
                   style: GoogleFonts.raleway(
-                    color: Colors.white60,
-                    fontWeight: FontWeight.w300,
+                    color: Color(0xFFA11C44),
+                    fontWeight: FontWeight.w400,
                     fontSize: 20,
                   ),
                 ),
@@ -146,11 +129,11 @@ class _ControllerState extends State<Controller> {
 
             //----------------------Upload Floor Plan Button------------------------
             SizedBox(
-                height: 70, //height of button
-                width: 250, //width of button
+                height: 75, //height of button
+                width: 235, //width of button
                 child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xffB62B37), //background color of button
+                      backgroundColor: Colors.white, //background color of button
                       elevation: 8, //elevation of button
                       shape: RoundedRectangleBorder(
                         //to set border radius to button
@@ -173,8 +156,8 @@ class _ControllerState extends State<Controller> {
                     child: Text(
                       "Upload Floor Plan",
                       style: GoogleFonts.raleway(
-                        color: Colors.white60,
-                        fontWeight: FontWeight.w300,
+                        color: Color(0xFFA11C44),
+                        fontWeight: FontWeight.w400,
                         fontSize: 20,
                       ),
                     )
@@ -188,11 +171,11 @@ class _ControllerState extends State<Controller> {
 
             //----------------------Edit Floor Plan Button------------------------
             SizedBox(
-                height: 70, //height of button
-                width: 250, //width of button
+                height: 75, //height of button
+                width: 235, //width of button
                 child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xffB62B37), //background color of button
+                      backgroundColor: Colors.white, //background color of button
                       elevation: 8, //elevation of button
                       shape: RoundedRectangleBorder(
                         //to set border radius to button
@@ -210,8 +193,8 @@ class _ControllerState extends State<Controller> {
                     child: Text(
                       "Edit Floor Plan",
                       style: GoogleFonts.raleway(
-                        color: Colors.white60,
-                        fontWeight: FontWeight.w300,
+                        color: Color(0xFFA11C44),
+                        fontWeight: FontWeight.w400,
                         fontSize: 20,
                       ),
                     )
@@ -224,11 +207,11 @@ class _ControllerState extends State<Controller> {
             ),
             //----------------------Collect Position Data Button------------------------
             SizedBox(
-                height: 70, //height of button
-                width: 250, //width of button
+                height: 75, //height of button
+                width: 235,  //width of button
                 child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xffB62B37), //background color of button
+                      backgroundColor: Colors.white, //background color of button
                       elevation: 8, //elevation of button
                       shape: RoundedRectangleBorder(
                         //to set border radius to button
@@ -243,8 +226,8 @@ class _ControllerState extends State<Controller> {
                     child: Text(
                       "Collect Position Data",
                       style: GoogleFonts.raleway(
-                        color: Colors.white60,
-                        fontWeight: FontWeight.w300,
+                        color: Color(0xFFA11C44),
+                        fontWeight: FontWeight.w400,
                         fontSize: 20,
                       ),
                     )

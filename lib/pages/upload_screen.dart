@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:palantir_ips/pages/view_screen.dart';
 import 'package:palantir_ips/pages/storage_service.dart';
@@ -102,7 +103,7 @@ class _MyUploadScreenState extends State<UploadScreen> {
             child: Text(
               floorInstances[i].floorName,
               style: const TextStyle(
-                color: Colors.white60,
+                color: Colors.white,
                 fontSize: 18
               ),
             ),
@@ -122,23 +123,46 @@ class _MyUploadScreenState extends State<UploadScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xff100D49),
-        elevation: 10,
+        flexibleSpace: Image(
+          image: AssetImage('assets/AppBar Upload.png'),
+          fit: BoxFit.cover,
+        ),
+        title: Text(
+          'Upload Floorplan',
+          style: GoogleFonts.raleway(
+            color: const Color(0xff325E89),
+            fontWeight: FontWeight.w400,
+            fontSize: 20,
+          ),
+        ),
+        centerTitle: true,
+        backgroundColor: Colors.transparent,
       ),
-      backgroundColor: const Color(0xff100D49),
+      backgroundColor: Colors.white,
       body: Container(
-        padding: const EdgeInsets.only(left: 60, right: 40, top: 0),
-        child: Form(
+        constraints: const BoxConstraints.expand(),
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage("assets/AddBuilding Hero.png"),
+                fit: BoxFit.cover
+            ),
+            borderRadius: BorderRadius.circular(30)
+        ),
+          padding: const EdgeInsets.only(left: 40, right: 40, top: 20),
+          margin: const EdgeInsets.fromLTRB(20, 40, 20, 80),
+
+          child: Form(
           child: Center(
             child: SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text(
+                  Text(
                     "Select Floor",
-                    style: TextStyle(
-                      fontSize: 30,
-                      color: const Color(0xffB62B37),
+                    style: GoogleFonts.raleway(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 25,
                     ),
                   ),
 
@@ -156,16 +180,16 @@ class _MyUploadScreenState extends State<UploadScreen> {
                         dropdownValue = newValue!;
                       });
                     },
-                    dropdownColor: Colors.white60,
+                    dropdownColor: Colors.white,
                   ),
 
                   const SizedBox(height: 200),
-
-                  const Text(
+                  Text(
                     "Upload Image",
-                    style: TextStyle(
-                      fontSize: 21,
-                      color: const Color(0xffB62B37),
+                    style: GoogleFonts.raleway(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 25,
                     ),
                   ),
 
@@ -174,12 +198,12 @@ class _MyUploadScreenState extends State<UploadScreen> {
                   CircleAvatar(
                     //Add Button
                     radius: 35.0,
-                    backgroundColor: const Color(0xFFCD4F69),
+                    backgroundColor: const Color(0xFFFFFFFF),
                     child: IconButton(
                       icon: Icon(Icons.cloud_upload_outlined),
-                      color: Color.fromARGB(255, 255, 254, 254),
+                      color: Color(0xFF44CDB1),
                       iconSize: 30,
-                      splashColor: const Color(0xDACD4F69),
+                      splashColor: const Color(0xDA97EEDB),
                       splashRadius: 45,
                       onPressed: () async {
                         XFile? file = await ImagePicker().pickImage(

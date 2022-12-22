@@ -197,22 +197,32 @@ class _AddBuildingState extends State<AddBuilding> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        backgroundColor:const Color(0xff100D49),
-        elevation: 10,
-        shadowColor: const Color(0xffB62B37),
+        flexibleSpace: Image(
+          image: AssetImage('assets/AppBar.png'),
+          fit: BoxFit.cover,
+        ),
+        title: Text(
+          'Add Building',
+          style: GoogleFonts.raleway(
+          color: const Color(0xff325E89),
+          fontWeight: FontWeight.w400,
+          fontSize: 20,
+          ),
+        ),
+        centerTitle: true,
+        backgroundColor: Colors.transparent,
       ),
       body: Container(
         constraints: const BoxConstraints.expand(),
         decoration: BoxDecoration(
             image: DecorationImage(
-                image: AssetImage("assets/Home Page.png"),
+                image: AssetImage("assets/AddBuilding Hero.png"),
                 fit: BoxFit.cover
             ),
             borderRadius: BorderRadius.circular(30)
         ),
-        padding: const EdgeInsets.only(left: 40, right: 40),
-        margin: const EdgeInsets.all(20),
-
+        padding: const EdgeInsets.only(left: 40, right: 40, top: 20),
+        margin: const EdgeInsets.fromLTRB(20, 40, 20, 80),
 
         child: Form(
           key: formKey, //key for form
@@ -221,18 +231,12 @@ class _AddBuildingState extends State<AddBuilding> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: height * 0.04),
-                const Text(
-                  "Enter some details of ",
-                  style: TextStyle(
-                    fontSize: 30,
-                    color: const Color(0xffB62B37),
-                  ),
-                ),
-                const Text(
-                  "the building you want to map:",
-                  style: TextStyle(
-                      fontSize: 30,
-                      color: const Color(0xffB62B37),
+                Text(
+                  "Enter some details of the building you want to map:",
+                  style: GoogleFonts.raleway(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 25,
                   ),
                 ),
 
@@ -244,7 +248,7 @@ class _AddBuildingState extends State<AddBuilding> {
                   controller: _NameController,
                   decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white60),
+                        borderSide: BorderSide(color: Colors.white),
                         borderRadius: BorderRadius.circular(12)
                     ),
                     focusedBorder: OutlineInputBorder(
@@ -252,22 +256,20 @@ class _AddBuildingState extends State<AddBuilding> {
                         borderRadius: BorderRadius.circular(12)
                     ),
                     hintText: "Enter Name of Building",
-                    fillColor: Colors.white60,
+                    fillColor: Colors.white,
                     filled: true,
                   ),
                 ),
-
                 SizedBox(
                   height: height * 0.05,
                 ),
-
                 TextFormField(
                   controller: _numFloorsController,
                   keyboardType: TextInputType.number,
                   inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
                   decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white60),
+                        borderSide: BorderSide(color: Colors.white),
                         borderRadius: BorderRadius.circular(12)
                     ),
                     focusedBorder: OutlineInputBorder(
@@ -275,7 +277,7 @@ class _AddBuildingState extends State<AddBuilding> {
                         borderRadius: BorderRadius.circular(12)
                     ),
                     hintText: "Enter the number of floors it has",
-                    fillColor: Colors.white60,
+                    fillColor: Colors.white,
                     filled: true,
                   ),
                 ),
@@ -288,19 +290,20 @@ class _AddBuildingState extends State<AddBuilding> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   // ignore: prefer_const_literals_to_create_immutables
                   children: [
-                    const Text(
+                    Text(
                       "Submit Building Info",
-                      style: TextStyle(
-                        fontSize: 21,
-                        color:const Color(0xffB62B37),
+                      style: GoogleFonts.raleway(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 20,
                       ),
                     ),
 
                     FloatingActionButton(
                       child: Icon(Icons.save),
                       heroTag: 'btn1',
-                      backgroundColor:const Color(0xFFCD4F69),
-                      foregroundColor: Colors.white,
+                      backgroundColor: Colors.white,
+                      foregroundColor: Color(0xFFA11C44),
                       onPressed: () => {
                         addBuildingInfo(),
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -317,8 +320,8 @@ class _AddBuildingState extends State<AddBuilding> {
                 FloatingActionButton(
                   child: Icon(Icons.arrow_forward),
                   heroTag: 'btn2',
-                  backgroundColor:const Color(0xFFCD4F69),
-                  foregroundColor: Colors.white,
+                  backgroundColor: Colors.white,
+                  foregroundColor: Color(0xFFA11C44),
                   onPressed: () => Navigator.of(context)
                     .push(
                     MaterialPageRoute(
