@@ -69,116 +69,112 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      constraints: const BoxConstraints.expand(),
-      decoration: const BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage("assets/backgrounds/Home Page 1.png"),
-              fit: BoxFit.cover
-          )
-      ),
-      child: Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          // Show credentials
-          title: Text(
-            'Welcome back',
-            style: GoogleFonts.raleway(
-              color: const Color(0xffffffff),
-              fontWeight: FontWeight.w200,
-              fontSize: 25,
-            ),
-          ),
-          backgroundColor: const Color(0x00ffffff),
-          elevation: 10,
-          toolbarOpacity: 0.9,
-          shadowColor: const Color(0x00ffffff),
-          actions: [
-            GestureDetector(
-              child: Icon(
-                Icons.logout_rounded,
-                color: const Color(0xffffffff),
-                size: 36,
-              ),
-              onTap: (){
-                FirebaseAuth.instance.signOut();
-              },
-            )
-          ],
-        ),
-
-        backgroundColor: Colors.transparent,
+    return Scaffold(
+      // appBar: AppBar(
+        //   automaticallyImplyLeading: false,
+        //   // Show credentials
+        //   title: Text(
+        //     'Welcome back',
+        //     style: GoogleFonts.raleway(
+        //       color: const Color(0xffffffff),
+        //       fontWeight: FontWeight.w200,
+        //       fontSize: 25,
+        //     ),
+        //   ),
+        //   backgroundColor: const Color(0x00ffffff),
+        //   elevation: 10,
+        //   toolbarOpacity: 0.9,
+        //   shadowColor: const Color(0x00ffffff),
+        //   actions: [
+        //     GestureDetector(
+        //       child: Icon(
+        //         Icons.logout_rounded,
+        //         color: const Color(0xffffffff),
+        //         size: 36,
+        //       ),
+        //       onTap: (){
+        //         FirebaseAuth.instance.signOut();
+        //       },
+        //     )
+        //   ],
+        // ),
+        backgroundColor: Colors.white,
         body: Center(
+
+          child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Expanded(
-                child: FutureBuilder(
-                  future: getDocID(),
-                  builder: (context, snapshot) {
-                    return ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      itemCount: 1,
-                      itemBuilder: (context, index) {
-                        try{
-                          return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: ListTile(
-                              title: GetUserName(
-                                documentId: userDocReference,
-                                email: user.email!,
-                                userInstance: userInstance,
-                                buildingInstances: buildingInstances,
-                                floorInstances: floorInstances,
-                                routerInstances: routerInstances,
-                              ),
-                            ),
-                          );
-                        }catch(e){
-                          return Text(
-                            'Loading...',
-                            style: GoogleFonts.raleway(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w300,
-                              fontSize: 35,
-                            ),
-                          );
-                        }
-                      }
-                    );
-                  }
+
+              Container(
+                height: 500,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage("assets/elements/Home Page Hero.png"),
+                      fit: BoxFit.cover
+                  ),
+                  borderRadius: BorderRadius.circular(30),
+                  boxShadow: [
+                    BoxShadow(
+                        color: Colors.grey, //New
+                        blurRadius: 5.0,
+                        offset: Offset(0, -1))
+                  ],
                 ),
+                padding: const EdgeInsets.only(left: 40, right: 40, top: 40, bottom: 40),
+                margin: const EdgeInsets.fromLTRB(0, 10, 0, 50),
+                  child: FutureBuilder(
+                    future: getDocID(),
+                    builder: (context, snapshot) {
+                      return ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        itemCount: 1,
+                        itemBuilder: (context, index) {
+                          try{
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: ListTile(
+                                title: GetUserName(
+                                  documentId: userDocReference,
+                                  email: user.email!,
+                                  userInstance: userInstance,
+                                  buildingInstances: buildingInstances,
+                                  floorInstances: floorInstances,
+                                  routerInstances: routerInstances,
+                                ),
+                              ),
+                            );
+                          }catch(e){
+                            return Text(
+                              'Loading...',
+                              style: GoogleFonts.raleway(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w300,
+                                fontSize: 35,
+                              ),
+                            );
+                          }
+                        }
+                      );
+                    }
+                  ),
+
               ),
-/*
-            Text(
-              'User: ' + userInstance.firstName + ' ' + userInstance.lastName
-              + '\nBuildings: ${buildingInstances.length}'
-              + '\nFloors: ${floorInstances.length}'
-              + '\nRouters: ${routerInstances.length}',
-              style: GoogleFonts.raleway(
-                color: const Color(0xffB62B37),
-                fontWeight: FontWeight.w200,
-                fontSize: 20,
-              ),
-            ),
-*/
-              SizedBox(height:30,),
 
               // Button to proceed as Mapper
               ElevatedButton(
                 onPressed: () => Navigator.of(context)
-                    .push(
-                    MaterialPageRoute(
-                        builder: (context) => Controller(
-                          userInstance: userInstance,
-                          buildingInstances: buildingInstances,
-                          floorInstances: floorInstances,
-                          routerInstances: routerInstances,
-                        )
-                    )
+                  .push(
+                  MaterialPageRoute(
+                      builder: (context) => Controller(
+                        userInstance: userInstance,
+                        buildingInstances: buildingInstances,
+                        floorInstances: floorInstances,
+                        routerInstances: routerInstances,
+                      )
+                  )
                 ),
-
                 style: ElevatedButton.styleFrom(
                   animationDuration: const Duration(seconds: 1),
                   shape: RoundedRectangleBorder(
@@ -187,6 +183,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   backgroundColor: Color(0xFFA11C44),
                   shadowColor: Color(0xAACD4F69),
+                  padding: EdgeInsets.all(20),
                 ),
 
                 child: Text(
@@ -200,7 +197,6 @@ class _HomePageState extends State<HomePage> {
               ),
 
               SizedBox(height:30),
-
               // Button to proceed as User
               ElevatedButton(
                 onPressed: () => Navigator.of(context)
@@ -215,8 +211,9 @@ class _HomePageState extends State<HomePage> {
                     //to set border radius to button
                       borderRadius: BorderRadius.circular(20)
                   ),
-                  backgroundColor: const Color(0xFF51AFBA),
+                  backgroundColor: const Color(0xFF4EBEA7),
                   shadowColor: Color(0xAA51AFBA),
+                  padding: EdgeInsets.all(20),
                 ),
                 child: Text(
                   'Proceed As User',
@@ -227,11 +224,24 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-
               SizedBox(height:30,),
             ],
-          )
-        ),
+          ),
+
+/*
+            Text(
+              'User: ' + userInstance.firstName + ' ' + userInstance.lastName
+              + '\nBuildings: ${buildingInstances.length}'
+              + '\nFloors: ${floorInstances.length}'
+              + '\nRouters: ${routerInstances.length}',
+              style: GoogleFonts.raleway(
+                color: const Color(0xffB62B37),
+                fontWeight: FontWeight.w200,
+                fontSize: 20,
+              ),
+            ),
+*/
+          ),
       ),
     );
   }

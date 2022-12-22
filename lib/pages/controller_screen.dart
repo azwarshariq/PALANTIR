@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:palantir_ips/pages/home_page.dart';
 import 'package:palantir_ips/pages/upload_redirect_screen.dart';
 import '../classes/building_class.dart';
 import '../classes/floor_class.dart';
@@ -68,7 +69,7 @@ class _ControllerState extends State<Controller> {
       child: Scaffold(
         //Appbar
         body: Container(
-          padding: const EdgeInsets.only(left: 60, right: 40, top: 20),
+          padding: const EdgeInsets.only(left: 10, right: 40, top: 20),
           constraints: const BoxConstraints.expand(),
           decoration: const BoxDecoration(
               image: DecorationImage(
@@ -80,167 +81,199 @@ class _ControllerState extends State<Controller> {
             child: Center(
               child: Column(
                 children: [
-                const SizedBox(
-                height: 150.0,
-              ),
-
-              SizedBox(
-                height: 75, //height of button
-                width: 235, //width of button
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white, //background color of button
-                    elevation: 8, //elevation of button
-                    shape: RoundedRectangleBorder(
-                      //to set border radius to button
-                        borderRadius: BorderRadius.circular(20)
-                    ),
-                    padding: const EdgeInsets.all(20),
-                    shadowColor: Color(0xFFCD4F69),
-                ),
-                onPressed: () => Navigator.of(context)
-                  .push(
-                  MaterialPageRoute(
-                    builder: (context) => AddBuilding(
-                      userInstance: userInstance,
-                      buildingInstances: buildingInstances,
-                      floorInstances: floorInstances,
-                      routerInstances: routerInstances,
-                    )
-                  )
-                ),
-                  //code to execute when this button is pressed.
-
-                child: Text(
-                  "Add New Building",
-                  style: GoogleFonts.raleway(
-                    color: Color(0xFFA11C44),
-                    fontWeight: FontWeight.w400,
-                    fontSize: 20,
+                  SizedBox(height: 15.0,),
+                  Row(
+                    children: [
+                      IconButton(
+                        iconSize: 30,
+                        color: Colors.white,
+                        icon: const Icon(
+                          Icons.arrow_back,
+                        ),
+                        onPressed: () => Navigator.of(context)
+                          .push(
+                          MaterialPageRoute(
+                              builder: (context) => HomePage()
+                          )
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              )
-            ),
+                  const SizedBox(height: 120.0),
+                  Row(
+                    children: [
+                      SizedBox(width: 65,),
+                      SizedBox(
+                          height: 75, //height of button
+                          width: 235, //width of button
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.white, //background color of button
+                              elevation: 8, //elevation of button
+                              shape: RoundedRectangleBorder(
+                                //to set border radius to button
+                                  borderRadius: BorderRadius.circular(20)
+                              ),
+                              padding: const EdgeInsets.all(20),
+                              shadowColor: Color(0xFFCD4F69),
+                            ),
+                            onPressed: () => Navigator.of(context)
+                                .push(
+                                MaterialPageRoute(
+                                    builder: (context) => AddBuilding(
+                                      userInstance: userInstance,
+                                      buildingInstances: buildingInstances,
+                                      floorInstances: floorInstances,
+                                      routerInstances: routerInstances,
+                                    )
+                                )
+                            ),
+                            //code to execute when this button is pressed.
 
-            //--------------------------------------------------------------------------
-            const SizedBox(
-              height: 50.0,
-            ),
-
-            //----------------------Upload Floor Plan Button------------------------
-            SizedBox(
-                height: 75, //height of button
-                width: 235, //width of button
-                child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white, //background color of button
-                      elevation: 8, //elevation of button
-                      shape: RoundedRectangleBorder(
-                        //to set border radius to button
-                          borderRadius: BorderRadius.circular(20)
+                            child: Text(
+                              "Add New Building",
+                              style: GoogleFonts.raleway(
+                                color: Color(0xFFA11C44),
+                                fontWeight: FontWeight.w400,
+                                fontSize: 20,
+                              ),
+                            ),
+                          )
                       ),
-                      padding: const EdgeInsets.all(20),
-                      shadowColor: Color(0xFFCD4F69),
-                    ),
-                    onPressed:/* () => Navigator.of(context)
-                        .push(
-                        MaterialPageRoute(
-                            builder: (context) => UploadRedirectScreen(
-                              userInstance: this.userInstance,
-                              buildingInstances: this.buildingInstances,
-                              floorInstances: this.floorInstances,
-                              routerInstances: this.routerInstances,
+                    ],
+                  ),
+                  //--------------------------------------------------------------------------
+                  const SizedBox(
+                    height: 50.0,
+                  ),
+                  //----------------------Upload Floor Plan Button------------------------
+                  Row(
+                    children: [
+                      SizedBox(width: 65,),
+                        SizedBox(
+                          height: 75, //height of button
+                          width: 235, //width of button
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.white, //background color of button
+                              elevation: 8, //elevation of button
+                              shape: RoundedRectangleBorder(
+                                //to set border radius to button
+                                  borderRadius: BorderRadius.circular(20)
+                              ),
+                              padding: const EdgeInsets.all(20),
+                              shadowColor: Color(0xFFCD4F69),
+                            ),
+                            onPressed:/* () => Navigator.of(context)
+                              .push(
+                              MaterialPageRoute(
+                                builder: (context) => UploadRedirectScreen(
+                                  userInstance: this.userInstance,
+                                  buildingInstances: this.buildingInstances,
+                                  floorInstances: this.floorInstances,
+                                  routerInstances: this.routerInstances,
+                                )
+                              )
+                            )*/ null,
+                              child: Text(
+                                "Upload Floor Plan",
+                                style: GoogleFonts.raleway(
+                                  color: Color(0xFFA11C44),
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 20,
+                                ),
+                              )
+                          )
+                        ),
+                    ],
+                  ),
+                  //--------------------------------------------------------------------------
+                  const SizedBox(
+                    height: 50.0,
+                  ),
+                  //----------------------Edit Floor Plan Button------------------------
+                  Row(
+                    children: [
+                      SizedBox(width: 65,),
+                      SizedBox(
+                        height: 75, //height of button
+                        width: 235, //width of button
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white, //background color of button
+                            elevation: 8, //elevation of button
+                            shape: RoundedRectangleBorder(
+                              //to set border radius to button
+                                borderRadius: BorderRadius.circular(20)
+                            ),
+                            padding: const EdgeInsets.all(20),
+                            shadowColor: Color(0xFFCD4F69),
+                          ),
+                          onPressed: /*() => Navigator.of(context)
+                              .push(
+                              MaterialPageRoute(
+                                  builder: (context) => EditRedirectScreen()
+                              )
+                          )*/ null,
+                          child: Text(
+                            "Edit Floor Plan",
+                            style: GoogleFonts.raleway(
+                              color: Color(0xFFA11C44),
+                              fontWeight: FontWeight.w400,
+                              fontSize: 20,
+                            ),
+                          )
+                        )
+                      ),
+                    ],
+                  ),
+                  //--------------------------------------------------------------------------
+                  const SizedBox(
+                    height: 50.0,
+                  ),
+                  //----------------------Collect Position Data Button------------------------
+                  Row(
+                    children: [
+                      SizedBox(width: 65,),
+                        SizedBox(
+                          height: 75, //height of button
+                          width: 235,  //width of button
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.white, //background color of button
+                              elevation: 8, //elevation of button
+                              shape: RoundedRectangleBorder(
+                                //to set border radius to button
+                                  borderRadius: BorderRadius.circular(20)
+                              ),
+                              padding: const EdgeInsets.all(20),
+                              shadowColor: Color(0xFFCD4F69),
+                            ),
+                            onPressed: () {
+                              //code to execute when this button is pressed.
+                            },
+                            child: Text(
+                              "Collect Position Data",
+                              style: GoogleFonts.raleway(
+                                color: Color(0xFFA11C44),
+                                fontWeight: FontWeight.w400,
+                                fontSize: 20,
+                              ),
                             )
-                        )
-                    )*/ null,
-                    child: Text(
-                      "Upload Floor Plan",
-                      style: GoogleFonts.raleway(
-                        color: Color(0xFFA11C44),
-                        fontWeight: FontWeight.w400,
-                        fontSize: 20,
-                      ),
-                    )
-                )
-            ),
+                          )
+                        ),
+                    ],
+                  ),
 
-            //--------------------------------------------------------------------------
-            const SizedBox(
-              height: 50.0,
-            ),
-
-            //----------------------Edit Floor Plan Button------------------------
-            SizedBox(
-                height: 75, //height of button
-                width: 235, //width of button
-                child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white, //background color of button
-                      elevation: 8, //elevation of button
-                      shape: RoundedRectangleBorder(
-                        //to set border radius to button
-                          borderRadius: BorderRadius.circular(20)
-                      ),
-                      padding: const EdgeInsets.all(20),
-                      shadowColor: Color(0xFFCD4F69),
+                  //--------------------------------------------------------------------------
+                  const SizedBox(
+                    height: 50.0,
                     ),
-                    onPressed: /*() => Navigator.of(context)
-                        .push(
-                        MaterialPageRoute(
-                            builder: (context) => EditRedirectScreen()
-                        )
-                    )*/ null,
-                    child: Text(
-                      "Edit Floor Plan",
-                      style: GoogleFonts.raleway(
-                        color: Color(0xFFA11C44),
-                        fontWeight: FontWeight.w400,
-                        fontSize: 20,
-                      ),
-                    )
-                )
-            ),
-
-            //--------------------------------------------------------------------------
-            const SizedBox(
-              height: 50.0,
-            ),
-            //----------------------Collect Position Data Button------------------------
-            SizedBox(
-                height: 75, //height of button
-                width: 235,  //width of button
-                child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white, //background color of button
-                      elevation: 8, //elevation of button
-                      shape: RoundedRectangleBorder(
-                        //to set border radius to button
-                          borderRadius: BorderRadius.circular(20)
-                      ),
-                      padding: const EdgeInsets.all(20),
-                      shadowColor: Color(0xFFCD4F69),
-                    ),
-                    onPressed: () {
-                      //code to execute when this button is pressed.
-                    },
-                    child: Text(
-                      "Collect Position Data",
-                      style: GoogleFonts.raleway(
-                        color: Color(0xFFA11C44),
-                        fontWeight: FontWeight.w400,
-                        fontSize: 20,
-                      ),
-                    )
-                )
-            ),
-            //--------------------------------------------------------------------------
-            const SizedBox(
-              height: 50.0,
+                ],
               ),
-            ],
-          )),
+            ),
+          ),
         ),
-      ),
       ),
     );
   }

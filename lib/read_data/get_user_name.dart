@@ -100,7 +100,7 @@ class GetUserName extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        'Hello, ${data['firstName']} \nYou\'ve mapped the following buildings:',
+                        'Hello, ${data['firstName']} \nYou\'ve mapped the following buildings: ',
                         textAlign: TextAlign.center,
                         style: GoogleFonts.raleway(
                           color: const Color(0xffffffff),
@@ -108,6 +108,7 @@ class GetUserName extends StatelessWidget {
                           fontSize: 30,
                         ),
                       ),
+                      SizedBox(height: 20,),
 
                       Flexible(
                         child: FutureBuilder(
