@@ -201,6 +201,10 @@ class _AddBuildingState extends State<AddBuilding> {
           image: AssetImage('assets/AppBar.png'),
           fit: BoxFit.cover,
         ),
+        iconTheme: IconThemeData(
+          color: const Color(0xff325E89), //change your color here
+        ),
+        elevation: 0,
         title: Text(
           'Add Building',
           style: GoogleFonts.raleway(
@@ -212,6 +216,7 @@ class _AddBuildingState extends State<AddBuilding> {
         centerTitle: true,
         backgroundColor: Colors.transparent,
       ),
+      backgroundColor: Color(0xFAF9FCFA),
       body: Container(
         constraints: const BoxConstraints.expand(),
         decoration: BoxDecoration(
@@ -219,7 +224,13 @@ class _AddBuildingState extends State<AddBuilding> {
                 image: AssetImage("assets/AddBuilding Hero.png"),
                 fit: BoxFit.cover
             ),
-            borderRadius: BorderRadius.circular(30)
+            borderRadius: BorderRadius.circular(30),
+          boxShadow: [
+            BoxShadow(
+                color: Colors.grey, //New
+                blurRadius: 5.0,
+                offset: Offset(0, -1))
+          ],
         ),
         padding: const EdgeInsets.only(left: 40, right: 40, top: 20),
         margin: const EdgeInsets.fromLTRB(20, 40, 20, 80),
