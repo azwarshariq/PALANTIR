@@ -79,6 +79,7 @@ class _HomePageState extends State<HomePage> {
       ),
       child: Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           // Show credentials
           title: Text(
             'Welcome back',
@@ -105,6 +106,7 @@ class _HomePageState extends State<HomePage> {
             )
           ],
         ),
+
         backgroundColor: Colors.transparent,
         body: Center(
           child: Column(
