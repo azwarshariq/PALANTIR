@@ -184,7 +184,7 @@ class _ViewScreenState extends State<ViewScreen> {
                     children: [
                       CircleAvatar(
                         //Edit Button
-                        radius: 40.0,
+                        radius: 35.0,
                         backgroundColor: const Color(0xffffffff),
                         child: IconButton(
                           icon: Icon(Icons.add),
@@ -210,7 +210,7 @@ class _ViewScreenState extends State<ViewScreen> {
 
                       CircleAvatar(
                         //Edit Button
-                        radius: 40.0,
+                        radius: 35.0,
                         backgroundColor: const Color(0xffffffff),
                         child: IconButton(
                           icon: Icon(Icons.edit),

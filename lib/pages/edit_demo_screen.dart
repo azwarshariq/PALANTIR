@@ -209,7 +209,7 @@ class _EditDemoScreenState extends State<EditDemoScreen> {
                           radius: 30.0,
                           backgroundColor: const Color(0xFF44CDB1),
                           child: IconButton(
-                            icon: Icon(Icons.arrow_circle_right_rounded),
+                            icon: Icon(Icons.arrow_forward),
                             color: Color.fromARGB(255, 255, 254, 254),
                             iconSize: 30,
                             splashColor: const Color(0xDA44CDB1),
