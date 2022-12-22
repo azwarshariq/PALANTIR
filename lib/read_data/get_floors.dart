@@ -56,7 +56,7 @@ class GetFloors extends StatelessWidget {
       return Text(
         'Loading...',
         style: GoogleFonts.raleway(
-          color: const Color(0xffB62B37),
+          color: const Color(0xffffffff),
           fontWeight: FontWeight.w200,
           fontSize: 20,
         ),
@@ -141,7 +141,7 @@ class GetFloors extends StatelessWidget {
             return Text(
               '',
               style: GoogleFonts.raleway(
-                color: const Color(0xffB62B37),
+                color: const Color(0xffffffff),
                 fontWeight: FontWeight.w200,
                 fontSize: 5,
               ),

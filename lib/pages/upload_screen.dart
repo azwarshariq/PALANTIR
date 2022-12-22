@@ -124,7 +124,7 @@ class _MyUploadScreenState extends State<UploadScreen> {
     return Scaffold(
       appBar: AppBar(
         flexibleSpace: Image(
-          image: AssetImage('assets/AppBar Upload.png'),
+          image: AssetImage('assets/elements/AppBar Upload.png'),
           fit: BoxFit.cover,
         ),
         title: Text(
@@ -143,7 +143,7 @@ class _MyUploadScreenState extends State<UploadScreen> {
         constraints: const BoxConstraints.expand(),
         decoration: BoxDecoration(
             image: DecorationImage(
-                image: AssetImage("assets/AddBuilding Hero.png"),
+                image: AssetImage("assets/elements/AddBuilding Hero.png"),
                 fit: BoxFit.cover
             ),
             borderRadius: BorderRadius.circular(30)

@@ -60,7 +60,7 @@ class GetUserName extends StatelessWidget {
       return Text(
         'Loading...',
         style: GoogleFonts.raleway(
-          color: const Color(0xffB62B37),
+          color: const Color(0xffffffff),
           fontWeight: FontWeight.w200,
           fontSize: 20,
         ),
@@ -103,8 +103,8 @@ class GetUserName extends StatelessWidget {
                         'Hello, ${data['firstName']} \nYou\'ve mapped the following buildings:',
                         textAlign: TextAlign.center,
                         style: GoogleFonts.raleway(
-                          color: const Color(0xffB62B37),
-                          fontWeight: FontWeight.w300,
+                          color: const Color(0xffffffff),
+                          fontWeight: FontWeight.w200,
                           fontSize: 30,
                         ),
                       ),

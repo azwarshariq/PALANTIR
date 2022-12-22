@@ -72,7 +72,7 @@ class _ControllerState extends State<Controller> {
           constraints: const BoxConstraints.expand(),
           decoration: const BoxDecoration(
               image: DecorationImage(
-                  image: AssetImage("assets/Controller Screen.png"),
+                  image: AssetImage("assets/backgrounds/Controller Screen.png"),
                   fit: BoxFit.cover
               )
           ),

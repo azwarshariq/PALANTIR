@@ -73,7 +73,7 @@ class _HomePageState extends State<HomePage> {
       constraints: const BoxConstraints.expand(),
       decoration: const BoxDecoration(
           image: DecorationImage(
-              image: AssetImage("assets/Home Page 1.png"),
+              image: AssetImage("assets/backgrounds/Home Page 1.png"),
               fit: BoxFit.cover
           )
       ),
@@ -83,20 +83,20 @@ class _HomePageState extends State<HomePage> {
           title: Text(
             'Welcome back',
             style: GoogleFonts.raleway(
-              color: const Color(0xff100D49),
+              color: const Color(0xffffffff),
               fontWeight: FontWeight.w200,
               fontSize: 25,
             ),
           ),
-          backgroundColor: const Color(0xffB62B37),
+          backgroundColor: const Color(0x00ffffff),
           elevation: 10,
           toolbarOpacity: 0.9,
-          shadowColor: const Color(0xff100D49),
+          shadowColor: const Color(0x00ffffff),
           actions: [
             GestureDetector(
               child: Icon(
                 Icons.logout_rounded,
-                color: const Color(0xff100D49),
+                color: const Color(0xffffffff),
                 size: 36,
               ),
               onTap: (){
@@ -176,15 +176,17 @@ class _HomePageState extends State<HomePage> {
                         )
                     )
                 ),
+
                 style: ElevatedButton.styleFrom(
                   animationDuration: const Duration(seconds: 1),
                   shape: RoundedRectangleBorder(
                     //to set border radius to button
-                      borderRadius: BorderRadius.circular(20)
+                    borderRadius: BorderRadius.circular(20),
                   ),
                   backgroundColor: Color(0xFFA11C44),
-                  shadowColor: Color(0xFFCD4F69),
+                  shadowColor: Color(0xAACD4F69),
                 ),
+
                 child: Text(
                   'Proceed As Mapper',
                   style: GoogleFonts.raleway(
@@ -206,14 +208,13 @@ class _HomePageState extends State<HomePage> {
                     )
                 ),
 
-
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
                     //to set border radius to button
                       borderRadius: BorderRadius.circular(20)
                   ),
                   backgroundColor: const Color(0xFF51AFBA),
-                  shadowColor: Color(0xFF51AFBA),
+                  shadowColor: Color(0xAA51AFBA),
                 ),
                 child: Text(
                   'Proceed As User',

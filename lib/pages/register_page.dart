@@ -93,249 +93,257 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: const Color(0xff100D49),
-        body: SafeArea(
-          child: Center(
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    // Greeting Message
-                    Text(
-                      'PALANTIR',
-                      style: GoogleFonts.raleway(
-                        color: const Color(0xffB62B37),
-                        fontWeight: FontWeight.w200,
-                        fontSize: 50,
-                      ),
-                    ),
-                    SizedBox(height:10),
-                    Text(
-                      'Fill in the following fields',
-                      style: GoogleFonts.raleway(
-                        color: const Color(0xffB62B37),
-                        fontSize: 20,
-                      ),
-                    ),
-
-                    //Space in between
-                    SizedBox(height:50),
-
-                    //firstname textfield
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                      child: TextField(
-                        controller: _firstNameController,
-                        decoration: InputDecoration(
-                          enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white60),
-                              borderRadius: BorderRadius.circular(12)
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: const Color(0xffB62B37)),
-                              borderRadius: BorderRadius.circular(12)
-                          ),
-                          hintText: 'Your First Name',
-                          fillColor: Colors.grey[200],
-                          filled: true,
+    return Container(
+      constraints: BoxConstraints.expand(),
+      decoration: const BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage("assets/backgrounds/Register Screen.png"),
+              fit: BoxFit.fill
+          )
+      ),
+      child: Scaffold(
+          backgroundColor: const Color(0x00ffffff),
+          body: SafeArea(
+            child: Center(
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // Greeting Message
+                      Text(
+                        'PALANTIR',
+                        style: GoogleFonts.raleway(
+                          color: const Color(0xff204E7A),
+                          fontWeight: FontWeight.w200,
+                          fontSize: 50,
                         ),
                       ),
-                    ),
-
-                    //Space in between
-                    SizedBox(height:10),
-
-                    //lastname textfield
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                      child: TextField(
-                        controller: _lastNameController,
-                        decoration: InputDecoration(
-                          enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white60),
-                              borderRadius: BorderRadius.circular(12)
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: const Color(0xffB62B37)),
-                              borderRadius: BorderRadius.circular(12)
-                          ),
-                          hintText: 'Your Last Name',
-                          fillColor: Colors.grey[200],
-                          filled: true,
+                      SizedBox(height:10),
+                      Text(
+                        'Fill in the following fields',
+                        style: GoogleFonts.raleway(
+                          color: const Color(0xff204E7A),
+                          fontWeight: FontWeight.w200,
+                          fontSize: 20,
                         ),
                       ),
-                    ),
 
-                    //Space in between
-                    SizedBox(height:10),
+                      //Space in between
+                      SizedBox(height:50),
 
-                    //age textfield
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                      child: TextField(
-                        controller: _ageController,
-                        decoration: InputDecoration(
-                          enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white60),
-                              borderRadius: BorderRadius.circular(12)
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: const Color(0xffB62B37)),
-                              borderRadius: BorderRadius.circular(12)
-                          ),
-                          hintText: 'Your Age',
-                          fillColor: Colors.grey[200],
-                          filled: true,
-                        ),
-                      ),
-                    ),
-
-                    //Space in between
-                    SizedBox(height:10),
-
-                    //username textfield
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                      child: TextField(
-                        controller: _emailController,
-                        decoration: InputDecoration(
-                          enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white60),
-                              borderRadius: BorderRadius.circular(12)
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: const Color(0xffB62B37)),
-                              borderRadius: BorderRadius.circular(12)
-                          ),
-                          hintText: 'email@xyz.com',
-                          fillColor: Colors.grey[200],
-                          filled: true,
-                        ),
-                      ),
-                    ),
-
-                    //Space in between
-                    SizedBox(height:10),
-
-                    //password textfield
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                      child: TextField(
-                        obscureText: !_passwordVisible,
-                        controller: _passwordController,
-                        decoration: InputDecoration(
-                          enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white60),
-                              borderRadius: BorderRadius.circular(12)
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: const Color(0xffB62B37)),
-                              borderRadius: BorderRadius.circular(12)
-                          ),
-                          hintText: 'password',
-                          fillColor: Colors.grey[200],
-                          filled: true,
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              // Based on passwordVisible state choose the icon
-                              _passwordVisible
-                                  ? Icons.visibility
-                                  : Icons.visibility_off,
-                              color:const Color(0xFFCD4F69),
+                      //firstname textfield
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                        child: TextField(
+                          controller: _firstNameController,
+                          decoration: InputDecoration(
+                            enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white60),
+                                borderRadius: BorderRadius.circular(12)
                             ),
-                            onPressed: () {
-                              // Update the state i.e. toggle the state of passwordVisible variable
-                              setState(() {
-                                _passwordVisible = !_passwordVisible;
-                              });
-                            },
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12)
+                            ),
+                            hintText: 'Your First Name',
+                            fillColor: Colors.grey[200],
+                            filled: true,
                           ),
                         ),
                       ),
-                    ),
 
-                    //Space in between
-                    SizedBox(height:10),
+                      //Space in between
+                      SizedBox(height:10),
 
-                    //confirm password textfield
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                      child: TextField(
-                        obscureText: true,
-                        controller: _confirmPasswordController,
-                        decoration: InputDecoration(
-                          enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white60),
-                              borderRadius: BorderRadius.circular(12)
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: const Color(0xffB62B37)),
-                              borderRadius: BorderRadius.circular(12)
-                          ),
-                          hintText: 'confirm password',
-                          fillColor: Colors.grey[200],
-                          filled: true,
-                        ),
-                      ),
-                    ),
-
-                    //Space in between
-                    SizedBox(height:25),
-
-                    //sign-up button
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                      child: GestureDetector(
-                        onTap: signUp,
-                        child: Container(
-                          padding: EdgeInsets.all(20),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFCD4F69),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Center(
-                              child: Text(
-                                'Sign Up',
-                                style: GoogleFonts.raleway(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w200,
-                                  fontSize: 18,
-                                ),
-                              )
+                      //lastname textfield
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                        child: TextField(
+                          controller: _lastNameController,
+                          decoration: InputDecoration(
+                            enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white60),
+                                borderRadius: BorderRadius.circular(12)
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12)
+                            ),
+                            hintText: 'Your Last Name',
+                            fillColor: Colors.grey[200],
+                            filled: true,
                           ),
                         ),
                       ),
-                    ),
 
-                    //Space in between
-                    SizedBox(height:20),
+                      //Space in between
+                      SizedBox(height:10),
 
-                    //register
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                            'Already have an account?',
-                            style: GoogleFonts.raleway(
-                              color: Colors.grey,
-                            )
+                      //age textfield
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                        child: TextField(
+                          controller: _ageController,
+                          decoration: InputDecoration(
+                            enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white60),
+                                borderRadius: BorderRadius.circular(12)
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12)
+                            ),
+                            hintText: 'Your Age',
+                            fillColor: Colors.grey[200],
+                            filled: true,
+                          ),
                         ),
-                        GestureDetector(
-                          onTap: widget.showLoginPage,
-                          child: Text(
-                              ' Login',
+                      ),
+
+                      //Space in between
+                      SizedBox(height:10),
+
+                      //username textfield
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                        child: TextField(
+                          controller: _emailController,
+                          decoration: InputDecoration(
+                            enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white60),
+                                borderRadius: BorderRadius.circular(12)
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12)
+                            ),
+                            hintText: 'email@xyz.com',
+                            fillColor: Colors.grey[200],
+                            filled: true,
+                          ),
+                        ),
+                      ),
+
+                      //Space in between
+                      SizedBox(height:10),
+
+                      //password textfield
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                        child: TextField(
+                          obscureText: !_passwordVisible,
+                          controller: _passwordController,
+                          decoration: InputDecoration(
+                            enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white60),
+                                borderRadius: BorderRadius.circular(12)
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12)
+                            ),
+                            hintText: 'password',
+                            fillColor: Colors.grey[200],
+                            filled: true,
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                // Based on passwordVisible state choose the icon
+                                _passwordVisible
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                                color:const Color(0xff51AFBA),
+                              ),
+                              onPressed: () {
+                                // Update the state i.e. toggle the state of passwordVisible variable
+                                setState(() {
+                                  _passwordVisible = !_passwordVisible;
+                                });
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      //Space in between
+                      SizedBox(height:10),
+
+                      //confirm password textfield
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                        child: TextField(
+                          obscureText: true,
+                          controller: _confirmPasswordController,
+                          decoration: InputDecoration(
+                            enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white60),
+                                borderRadius: BorderRadius.circular(12)
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12)
+                            ),
+                            hintText: 'confirm password',
+                            fillColor: Colors.grey[200],
+                            filled: true,
+                          ),
+                        ),
+                      ),
+
+                      //Space in between
+                      SizedBox(height:25),
+
+                      //sign-up button
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                        child: GestureDetector(
+                          onTap: signUp,
+                          child: Container(
+                            padding: EdgeInsets.all(20),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF51AFBA),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Center(
+                                child: Text(
+                                  'Sign Up',
+                                  style: GoogleFonts.raleway(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w200,
+                                    fontSize: 18,
+                                  ),
+                                )
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      //Space in between
+                      SizedBox(height:20),
+
+                      //register
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                              'Already have an account?',
                               style: GoogleFonts.raleway(
-                                color: const Color(0xFFCD4F69),
+                                color: const Color(0xAA51AFBA),
+                                fontWeight: FontWeight.w300,
+                                fontSize: 16
                               )
                           ),
-                        ),
-                      ],
-                    ),
-                  ],),
-              )
-          ),
-        )
+                          GestureDetector(
+                            onTap: widget.showLoginPage,
+                            child: Text(
+                                ' Login',
+                                style: GoogleFonts.raleway(
+                                  color: const Color(0xFF51AFBA),
+                                    fontWeight: FontWeight.w300,
+                                    fontSize: 16
+                                )
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],),
+                )
+            ),
+          )
+      ),
     );
   }
 }

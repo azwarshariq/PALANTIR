@@ -77,25 +77,24 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   assets:
+    - assets/backgrounds/
+    - images/logos/
     - icon/logo.png
     - assets/floorplan.jpeg
     - google_fonts/
-    - images/PALANTIR logo.png
-    - images/PALANTIR logo Navy.png
-    - images/PALANTIR logo White.png
-    - images/1.png
+    - images/logos/PALANTIR logo.png
     - images/step1.jpeg
     - images/step2.jpeg
     - assets/Home Page.png
-    - assets/Home Page 1.png
     - assets/Splash Screen.png
     - assets/Controller.png
-    - assets/sample.png
-    - assets/SScreen.png
-    - assets/Controller Screen.png
-    - assets/AppBar.png
-    - assets/AppBar Upload.png
-    - assets/AddBuilding Hero.png
+    - assets/backgrounds/Splash Screen.png
+    - assets/backgrounds/Login Screen.png
+    - assets/backgrounds/Register Screen.png
+    - assets/backgrounds/Home Page 1.png
+    - assets/backgrounds/Controller Screen.png
+    - assets/elements/AppBar AddBuilding.png
+    - assets/elements/AddBuilding Hero.png
 
 
   # To add assets to your application, add an assets section, like this:

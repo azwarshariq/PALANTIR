@@ -198,7 +198,7 @@ class _AddBuildingState extends State<AddBuilding> {
       key: _scaffoldKey,
       appBar: AppBar(
         flexibleSpace: Image(
-          image: AssetImage('assets/AppBar.png'),
+          image: AssetImage('assets/elements/AppBar AddBuilding.png'),
           fit: BoxFit.cover,
         ),
         iconTheme: IconThemeData(
@@ -215,13 +215,14 @@ class _AddBuildingState extends State<AddBuilding> {
         ),
         centerTitle: true,
         backgroundColor: Colors.transparent,
+        shadowColor: const Color(0x00ffffff),
       ),
       backgroundColor: Color(0xFAF9FCFA),
       body: Container(
         constraints: const BoxConstraints.expand(),
         decoration: BoxDecoration(
             image: DecorationImage(
-                image: AssetImage("assets/AddBuilding Hero.png"),
+                image: AssetImage("assets/elements/AddBuilding Hero.png"),
                 fit: BoxFit.cover
             ),
             borderRadius: BorderRadius.circular(30),
@@ -312,6 +313,7 @@ class _AddBuildingState extends State<AddBuilding> {
 
                     FloatingActionButton(
                       child: Icon(Icons.save),
+                      splashColor:  Color(0x88A11C44),
                       heroTag: 'btn1',
                       backgroundColor: Colors.white,
                       foregroundColor: Color(0xFFA11C44),
@@ -320,7 +322,9 @@ class _AddBuildingState extends State<AddBuilding> {
                         ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                                 content: Text(
-                                    'Building Successfully Added'))),
+                                    'Building Successfully Added')
+                            )
+                        ),
                       }
                     ),
                   ],
@@ -330,6 +334,7 @@ class _AddBuildingState extends State<AddBuilding> {
 
                 FloatingActionButton(
                   child: Icon(Icons.arrow_forward),
+                  splashColor:  Color(0x88A11C44),
                   heroTag: 'btn2',
                   backgroundColor: Colors.white,
                   foregroundColor: Color(0xFFA11C44),

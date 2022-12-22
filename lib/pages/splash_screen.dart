@@ -29,7 +29,7 @@ class _SplashScreenState extends State<SplashScreen> {
       constraints: const BoxConstraints.expand(),
       decoration: const BoxDecoration(
           image: DecorationImage(
-              image: AssetImage("assets/SScreen.png"),
+              image: AssetImage("assets/backgrounds/Splash Screen.png"),
           )
       ),
       child: Scaffold(
@@ -40,7 +40,7 @@ class _SplashScreenState extends State<SplashScreen> {
               decoration: BoxDecoration(
                   color: Colors.transparent,
                   image: DecorationImage(
-                      image: AssetImage("assets/SScreen.png"),
+                      image: AssetImage("assets/backgrounds/Splash Screen.png"),
                       fit: BoxFit.cover
                   )
               ),
@@ -56,7 +56,7 @@ class _SplashScreenState extends State<SplashScreen> {
                         width: 200,
                         height: 200,
                         child: Image(
-                          image:AssetImage('images/PALANTIR logo White.png')
+                          image:AssetImage('images/logos/PALANTIR logo White.png')
                         ),
                       ),
                       Padding(
@@ -65,8 +65,8 @@ class _SplashScreenState extends State<SplashScreen> {
                       Text(
                         "PALANTIR",
                         style: GoogleFonts.raleway(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w300,
+                          color: const Color(0xffffffff),
+                          fontWeight: FontWeight.w200,
                           fontSize: 40,
                           letterSpacing: 4,
                         ),
@@ -81,7 +81,7 @@ class _SplashScreenState extends State<SplashScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       CircularProgressIndicator(
-                        color: Colors.white,
+                        color: const Color(0xffffffff),
                       ),
                       Padding(
                         padding: EdgeInsets.only(top: 20.0),
@@ -89,8 +89,8 @@ class _SplashScreenState extends State<SplashScreen> {
                       Text(
                         "Indoor Navigation System",
                           style: GoogleFonts.raleway(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w300,
+                            color: const Color(0xffffffff),
+                            fontWeight: FontWeight.w200,
                             fontSize: 18.0,
                           ),
                       )
