@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:palantir_ips/pages/edit_demo_screen.dart';
 import '../classes/building_class.dart';
@@ -130,13 +131,39 @@ class _ViewScreenState extends State<ViewScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor:const Color(0xff100D49),
-        elevation: 10,
-        shadowColor: const Color(0xffB62B37),
+        backgroundColor:const Color(0xffffffff),
+        iconTheme: IconThemeData(
+          color: const Color(0xffA11C44), //change your color here
+        ),
+        elevation: 0,
+        title: Text(
+          'View Floorplan',
+          style: GoogleFonts.raleway(
+            color: const Color(0xffA11C44),
+            fontWeight: FontWeight.w400,
+            fontSize: 20,
+          ),
+        ),
+        centerTitle: true,
       ),
-      backgroundColor:const Color(0xff100D49),
+      backgroundColor:const Color(0xffffffff),
       body: Container(
         padding: const EdgeInsets.fromLTRB(10, 20, 10, 10),
+        margin: const EdgeInsets.fromLTRB(20, 40, 20, 80),
+        constraints: const BoxConstraints.expand(),
+        decoration: BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage("assets/backgrounds/Splash Screen.png"),
+              fit: BoxFit.cover
+          ),
+          borderRadius: BorderRadius.circular(30),
+          boxShadow: [
+            BoxShadow(
+                color: Colors.grey, //New
+                blurRadius: 5.0,
+                offset: Offset(0, -1))
+          ],
+        ),
         child: Center(
           child: SingleChildScrollView(
             child: Column(
@@ -149,7 +176,7 @@ class _ViewScreenState extends State<ViewScreen> {
                   ),
                 ),
 
-                const SizedBox(height: 20),
+                const SizedBox(height: 30),
 
                 Center(
                   child: Row(
@@ -158,12 +185,12 @@ class _ViewScreenState extends State<ViewScreen> {
                       CircleAvatar(
                         //Edit Button
                         radius: 40.0,
-                        backgroundColor: const Color(0xffB62B37),
+                        backgroundColor: const Color(0xffffffff),
                         child: IconButton(
                           icon: Icon(Icons.add),
-                          color: Colors.white60,
+                          color: Color(0xFFA11C44),
                           iconSize: 40,
-                          splashColor: const Color(0xFFCD4F69),
+                          splashColor: const Color(0xAAA11C44),
                           splashRadius: 45,
                           onPressed:() => Navigator.of(context).push(
                             MaterialPageRoute(
@@ -184,12 +211,12 @@ class _ViewScreenState extends State<ViewScreen> {
                       CircleAvatar(
                         //Edit Button
                         radius: 40.0,
-                        backgroundColor: const Color(0xffB62B37),
+                        backgroundColor: const Color(0xffffffff),
                         child: IconButton(
                           icon: Icon(Icons.edit),
-                          color: Colors.white60,
+                          color: Color(0xFFA11C44),
                           iconSize: 30,
-                          splashColor: const Color(0xFFCD4F69),
+                          splashColor: const Color(0xAAA11C44),
                           splashRadius: 45,
                           onPressed: () => {
                             Navigator.of(context).push(

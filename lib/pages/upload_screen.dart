@@ -141,7 +141,7 @@ class _MyUploadScreenState extends State<UploadScreen> {
         centerTitle: true,
         backgroundColor: Colors.transparent,
       ),
-      backgroundColor: Color(0xFFF3F4F4),
+      backgroundColor: Color(0xFFFFFFFF),
       body: Container(
         constraints: const BoxConstraints.expand(),
         decoration: BoxDecoration(

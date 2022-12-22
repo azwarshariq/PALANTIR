@@ -69,7 +69,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Container(
       // appBar: AppBar(
         //   automaticallyImplyLeading: false,
         //   // Show credentials
@@ -98,9 +98,18 @@ class _HomePageState extends State<HomePage> {
         //     )
         //   ],
         // ),
-        backgroundColor: Colors.white,
-        body: Center(
 
+        child: Scaffold(
+        body: Container(
+          padding: const EdgeInsets.only(left: 10, right: 10, top: 20),
+          // constraints: const BoxConstraints.expand(),
+          // decoration: const BoxDecoration(
+          //     image: DecorationImage(
+          //         image: AssetImage("assets/backgrounds/White Background.png"),
+          //         fit: BoxFit.cover
+          //     )
+          // ),
+          child: Center(
           child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -240,9 +249,10 @@ class _HomePageState extends State<HomePage> {
                 fontSize: 20,
               ),
             ),
-*/
-          ),
+*/        ),
+        ),
       ),
+        ),
     );
   }
 }

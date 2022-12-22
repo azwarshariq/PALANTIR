@@ -101,14 +101,17 @@ class _EditDemoScreenState extends State<EditDemoScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xff100D49),
-        elevation: 10,
+        backgroundColor: Color(0xffffffff),
+        elevation: 0,
+        iconTheme: IconThemeData(
+          color: const Color(0xff204E7A), //change your color here
+        ),
       ),
       body: Stack(
         fit: StackFit.expand,
         children: <Widget>[
           Container(
-            decoration: BoxDecoration(color: Color(0xff100D49)),
+            decoration: BoxDecoration(color: Color(0xffffffff)),
           ),
           Column(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
             Expanded(
@@ -125,8 +128,8 @@ class _EditDemoScreenState extends State<EditDemoScreen> {
                          Text(
                           "How to edit floorplan",
                           style: GoogleFonts.raleway(
-                            color: Colors.white60,
-                            fontWeight: FontWeight.w300,
+                            color: Color(0xFF204E7A),
+                            fontWeight: FontWeight.w400,
                             fontSize: 24,
                           ),
                         ),
@@ -143,8 +146,8 @@ class _EditDemoScreenState extends State<EditDemoScreen> {
                                 "Step 1: Tap on floorplan to get X & Y coordinates of the router",
                                 textAlign: TextAlign.center,
                                 style: GoogleFonts.raleway(
-                                  color: Colors.white60,
-                                  fontWeight: FontWeight.w200,
+                                  color: Color(0xFF204E7A),
+                                  fontWeight: FontWeight.w300,
                                   fontSize: 20,
                                 ),
                               ),
@@ -157,7 +160,7 @@ class _EditDemoScreenState extends State<EditDemoScreen> {
                         ),
 
                         CircleAvatar(
-                          backgroundColor: Color(0xff100D49),
+                          backgroundColor: Color(0xffffffff),
                           backgroundImage: AssetImage('images/step1.jpeg'),
                           radius: 120.0,
                         ),
@@ -174,8 +177,8 @@ class _EditDemoScreenState extends State<EditDemoScreen> {
                                 "Step 2: Tap on add button to add router name and MAC address",
                                 textAlign: TextAlign.center,
                                 style: GoogleFonts.raleway(
-                                  color: Colors.white60,
-                                  fontWeight: FontWeight.w200,
+                                    color: Color(0xFF204E7A),
+                                  fontWeight: FontWeight.w300,
                                   fontSize: 20,
                                 ),
                               ),
@@ -188,7 +191,7 @@ class _EditDemoScreenState extends State<EditDemoScreen> {
                         ),
 
                         CircleAvatar(
-                          backgroundColor: Color(0xff100D49),
+                          backgroundColor: Color(0xffffffff),
                           backgroundImage: AssetImage('images/step2.jpeg'),
                           radius: 120.0,
                         ),
@@ -203,13 +206,13 @@ class _EditDemoScreenState extends State<EditDemoScreen> {
 
                         CircleAvatar(
                           //Add Button
-                          radius: 35.0,
-                          backgroundColor: const Color(0xFFCD4F69),
+                          radius: 30.0,
+                          backgroundColor: const Color(0xFF44CDB1),
                           child: IconButton(
                             icon: Icon(Icons.arrow_circle_right_rounded),
                             color: Color.fromARGB(255, 255, 254, 254),
                             iconSize: 30,
-                            splashColor: const Color(0xDACD4F69),
+                            splashColor: const Color(0xDA44CDB1),
                             splashRadius: 45,
                             onPressed: () {
                               Navigator.of(context).push(

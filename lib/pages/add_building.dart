@@ -217,7 +217,7 @@ class _AddBuildingState extends State<AddBuilding> {
         backgroundColor: Colors.transparent,
         shadowColor: const Color(0x00ffffff),
       ),
-      backgroundColor: Color(0xFAF9FCFA),
+      backgroundColor: Color(0xFFFFFFFF),
       body: Container(
         constraints: const BoxConstraints.expand(),
         decoration: BoxDecoration(

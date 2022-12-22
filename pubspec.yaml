@@ -97,6 +97,7 @@ flutter:
     - assets/elements/AppBar Upload.png
     - assets/elements/AddBuilding Hero.png
     - assets/elements/Home Page Hero.png
+    - assets/backgrounds/White Background.png
 
 
   # To add assets to your application, add an assets section, like this:
