@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../classes/building_class.dart';
 import '../classes/elevators_class.dart';
 import '../classes/floor_class.dart';
@@ -155,291 +156,318 @@ class _EditScreenState extends State<EditScreen> {
         });
       },
 
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Color(0xff100D49),
-          elevation: 10,
-        ),
-        backgroundColor: Color(0xff100D49),
-        body: Center(
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Row(
-                  children: [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.05,
-                    ),
-                    Container(
-                      child: Column(
-                        children: [
-                          FutureBuilder<String>(
-                            future: getURL(currentFloor.floorPlan),
-                            builder: (BuildContext context, AsyncSnapshot<String> url)
-                            {
-                              Url = url.data;
-                              var check = Url;
-                              if (check != null) {
-                                return Image.network(
-                                  Url!,
-                                  height: MediaQuery.of(context).size.height * 0.70,
-                                  width: MediaQuery.of(context).size.width * 0.90,
-                                  fit:BoxFit.contain,
-                                ); // Safe
-                              }
-                              else{
-                                return Center(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      Text("Loading...",
-                                        style: TextStyle(
-                                            fontSize: 17,
-                                            color: Colors.white60,)
-                                      ),
-                                    ],
-                                  ),
+        child: Scaffold(
+          appBar: AppBar(
+            flexibleSpace: Image(
+              image: AssetImage('assets/elements/AppBar Edit.png'),
+              fit: BoxFit.cover,
+            ),
+            iconTheme: IconThemeData(
+              color: const Color(0xffffffff), //change your color here
+            ),
+            elevation: 0,
+            title: Text(
+              'Edit Floorplan',
+              style: GoogleFonts.raleway(
+                color: const Color(0xffffffff),
+                fontWeight: FontWeight.w400,
+                fontSize: 20,
+              ),
+            ),
+            centerTitle: true,
+            backgroundColor: Colors.transparent,
+            shadowColor: const Color(0x00ffffff),
+          ),
+          body: Container(
+              decoration: const BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage("assets/backgrounds/Controller Screen.png"),
+                      fit: BoxFit.cover
+                  )
+              ),
+          child: Center(
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Row(
+                    children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.05,
+                      ),
+                      Container(
+                          child: Column(
+                            children: [
+                              FutureBuilder<String>(
+                                  future: getURL(currentFloor.floorPlan),
+                                  builder: (BuildContext context, AsyncSnapshot<String> url)
+                                  {
+                                    Url = url.data;
+                                    var check = Url;
+                                    if (check != null) {
+                                      return Image.network(
+                                        Url!,
+                                        height: MediaQuery.of(context).size.height * 0.70,
+                                        width: MediaQuery.of(context).size.width * 0.90,
+                                        fit:BoxFit.contain,
+                                      ); // Safe
+                                    }
+                                    else{
+                                      return Center(
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            Text("Loading...",
+                                                style: TextStyle(
+                                                  fontSize: 17,
+                                                  color: Colors.white60,)
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    }
+                                  }
+                              ),
+                            ],
+                          ),
+                         ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.05,
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.03,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.10,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context)
+                          .push(
+                            HeroDialogRoute(
+                              builder: (context) {
+                                return PopUpItemBody(
+                                    userInstance: this.userInstance,
+                                    buildingInstances: this.buildingInstances,
+                                    floorInstances: this.floorInstances,
+                                    routerInstances: this.routerInstances,
+                                    currentBuilding: this.currentBuilding,
+                                    currentFloor: this.currentFloor,
+                                    roomInstances: this.roomInstances,
+                                    stairsInstances: this.stairsInstances,
+                                    elevatorsInstances: this.elevatorsInstances,
                                 );
                               }
-                            }
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.05,
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.03,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.of(context)
-                        .push(
-                          HeroDialogRoute(
-                            builder: (context) {
-                              return PopUpItemBody(
-                                  userInstance: this.userInstance,
-                                  buildingInstances: this.buildingInstances,
-                                  floorInstances: this.floorInstances,
-                                  routerInstances: this.routerInstances,
-                                  currentBuilding: this.currentBuilding,
-                                  currentFloor: this.currentFloor,
-                                  roomInstances: this.roomInstances,
-                                  stairsInstances: this.stairsInstances,
-                                  elevatorsInstances: this.elevatorsInstances,
-                              );
-                            }
-                          )
-                        );
-                      },
-
-                      child: Hero(
-                        tag: 'btn2',
-                        child: Material(
-                          color: Color.fromARGB(207, 255, 255, 255),
-                          elevation: 2,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(32)
-                          ),
-                          child: const Icon(
-                            Icons.add_circle_rounded,
-                            size: 56,
-                            color: Color(0xffB62B37),
-                          ),
-                        ),
-                      ),
-                    ),
-
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.15,
-                    ),
-
-                    PopupMenuButton(
-                      child: Material(
-                        color: Color.fromARGB(198, 255, 255, 255),
-                        elevation: 2,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(32)),
-                        child: const Icon(
-                          Icons.delete_rounded,
-                          size: 56,
-                          color: Color(0xffB62B37),
-                        ),
-                      ),
-                      onSelected: (value) {
-                        setState(() {
-                          _value = value;
-                          if (_value == "router"){
-                            Navigator.of(context)
-                            .push(
-                              HeroDialogRoute(
-                                builder: (context) {
-                                  return PopUpItemBodyRouter(
-                                    userInstance: this.userInstance,
-                                    buildingInstances: this.buildingInstances,
-                                    floorInstances: this.floorInstances,
-                                    routerInstances: this.routerInstances,
-                                    currentBuilding: this.currentBuilding,
-                                    currentFloor: this.currentFloor,
-                                    roomInstances: this.roomInstances,
-                                    stairsInstances: this.stairsInstances,
-                                    elevatorsInstances: this.elevatorsInstances,
-                                  );
-                                }
-                              )
-                            );
-                          }
-                          else if (_value == "room"){
-                            Navigator.of(context)
-                            .push(
-                              HeroDialogRoute(
-                                builder: (context) {
-                                  return PopUpItemBodyRoom(
-                                    userInstance: this.userInstance,
-                                    buildingInstances: this.buildingInstances,
-                                    floorInstances: this.floorInstances,
-                                    routerInstances: this.routerInstances,
-                                    currentBuilding: this.currentBuilding,
-                                    currentFloor: this.currentFloor,
-                                    roomInstances: this.roomInstances,
-                                    stairsInstances: this.stairsInstances,
-                                    elevatorsInstances: this.elevatorsInstances,
-                                  );
-                                }
-                              )
-                            );
-                          }
-                          else if (_value == "stairs"){
-                            Navigator.of(context)
-                            .push(
-                              HeroDialogRoute(
-                                builder: (context) {
-                                  return PopUpItemBodyStairs(
-                                    userInstance: this.userInstance,
-                                    buildingInstances: this.buildingInstances,
-                                    floorInstances: this.floorInstances,
-                                    routerInstances: this.routerInstances,
-                                    currentBuilding: this.currentBuilding,
-                                    currentFloor: this.currentFloor,
-                                    roomInstances: this.roomInstances,
-                                    stairsInstances: this.stairsInstances,
-                                    elevatorsInstances: this.elevatorsInstances,
-                                  );
-                                }
-                              )
-                            );
-                          }
-                          else if (_value == "elevator"){
-                            Navigator.of(context)
-                            .push(
-                              HeroDialogRoute(
-                                builder: (context) {
-                                  return PopUpItemBodyElevator(
-                                    userInstance: this.userInstance,
-                                    buildingInstances: this.buildingInstances,
-                                    floorInstances: this.floorInstances,
-                                    routerInstances: this.routerInstances,
-                                    currentBuilding: this.currentBuilding,
-                                    currentFloor: this.currentFloor,
-                                    roomInstances: this.roomInstances,
-                                    stairsInstances: this.stairsInstances,
-                                    elevatorsInstances: this.elevatorsInstances,
-                                  );
-                                }
-                              )
-                            );
-                          }
-                        });
-                      },
-                      itemBuilder:(context) => [
-                        PopupMenuItem(
-                          child: Text("Router"),
-                          value: "router",
-                        ),
-
-                        PopupMenuItem(
-                          child: Text("Room"),
-                          value: "room",
-                        ),
-
-                        PopupMenuItem(
-                          child: Text("Stairs"),
-                          value: "stairs",
-                        ),
-
-                        PopupMenuItem(
-                          child: Text("Elevator"),
-                          value: "elevator",
-                        ),
-                      ]
-                    ),
-
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.15,
-                    ),
-
-                    CircleAvatar(
-                      //Add Button
-                      radius: 35.0,
-                      backgroundColor: const Color(0xFFCD4F69),
-                      child: IconButton(
-                        icon: Icon(Icons.arrow_circle_right_rounded),
-                        color: Color.fromARGB(255, 255, 254, 254),
-                        iconSize: 30,
-                        splashColor: const Color(0xDACD4F69),
-                        splashRadius: 45,
-                        onPressed: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => CollectDataScreen(),
-                            ),
+                            )
                           );
                         },
+                        child: Hero(
+                          tag: 'btn2',
+                          child: Material(
+                            color: Colors.white,
+                            elevation: 2,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(32)
+                            ),
+                            child: const Icon(
+                              Icons.add,
+                              size: 56,
+                              color: Color(0xff44CDB1),
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
-                  ],
-                ),
 
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.03,
-                ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.12,
+                      ),
 
-                Container(
-                  child: ((_tapPosition?.dx ?? 0) >
-                      (MediaQuery.of(context).size.width * 0.05) &&
-                      (_tapPosition?.dx ?? 0) <
-                          (MediaQuery.of(context).size.width * 0.95) &&
-                      (_tapPosition?.dy ?? 0) >
-                          (MediaQuery.of(context).padding.top +
-                              kToolbarHeight) &&
-                      (_tapPosition?.dy ?? 0) <
-                          (MediaQuery.of(context).size.height * 0.7) +
-                              (MediaQuery.of(context).padding.top +
-                                  kToolbarHeight))
-                      ? Text(
-                    'X : ${xVar.toString()}, Y : ${yVar.toString()}',
-                    style: const TextStyle(
-                        color: Color.fromARGB(255, 156, 154, 154),
-                        fontSize: 14),
-                  )
-                    : null,
-                ),
+                      PopupMenuButton(
+                        child: Material(
+                          color: Colors.white,
+                          elevation: 2,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(32)),
+                          child: const Icon(
+                            Icons.delete,
+                            size: 56,
+                            color: Color(0xff44CDB1),
+                          ),
+                        ),
+                        onSelected: (value) {
+                          setState(() {
+                            _value = value;
+                            if (_value == "router"){
+                              Navigator.of(context)
+                              .push(
+                                HeroDialogRoute(
+                                  builder: (context) {
+                                    return PopUpItemBodyRouter(
+                                      userInstance: this.userInstance,
+                                      buildingInstances: this.buildingInstances,
+                                      floorInstances: this.floorInstances,
+                                      routerInstances: this.routerInstances,
+                                      currentBuilding: this.currentBuilding,
+                                      currentFloor: this.currentFloor,
+                                      roomInstances: this.roomInstances,
+                                      stairsInstances: this.stairsInstances,
+                                      elevatorsInstances: this.elevatorsInstances,
+                                    );
+                                  }
+                                )
+                              );
+                            }
+                            else if (_value == "room"){
+                              Navigator.of(context)
+                              .push(
+                                HeroDialogRoute(
+                                  builder: (context) {
+                                    return PopUpItemBodyRoom(
+                                      userInstance: this.userInstance,
+                                      buildingInstances: this.buildingInstances,
+                                      floorInstances: this.floorInstances,
+                                      routerInstances: this.routerInstances,
+                                      currentBuilding: this.currentBuilding,
+                                      currentFloor: this.currentFloor,
+                                      roomInstances: this.roomInstances,
+                                      stairsInstances: this.stairsInstances,
+                                      elevatorsInstances: this.elevatorsInstances,
+                                    );
+                                  }
+                                )
+                              );
+                            }
+                            else if (_value == "stairs"){
+                              Navigator.of(context)
+                              .push(
+                                HeroDialogRoute(
+                                  builder: (context) {
+                                    return PopUpItemBodyStairs(
+                                      userInstance: this.userInstance,
+                                      buildingInstances: this.buildingInstances,
+                                      floorInstances: this.floorInstances,
+                                      routerInstances: this.routerInstances,
+                                      currentBuilding: this.currentBuilding,
+                                      currentFloor: this.currentFloor,
+                                      roomInstances: this.roomInstances,
+                                      stairsInstances: this.stairsInstances,
+                                      elevatorsInstances: this.elevatorsInstances,
+                                    );
+                                  }
+                                )
+                              );
+                            }
+                            else if (_value == "elevator"){
+                              Navigator.of(context)
+                              .push(
+                                HeroDialogRoute(
+                                  builder: (context) {
+                                    return PopUpItemBodyElevator(
+                                      userInstance: this.userInstance,
+                                      buildingInstances: this.buildingInstances,
+                                      floorInstances: this.floorInstances,
+                                      routerInstances: this.routerInstances,
+                                      currentBuilding: this.currentBuilding,
+                                      currentFloor: this.currentFloor,
+                                      roomInstances: this.roomInstances,
+                                      stairsInstances: this.stairsInstances,
+                                      elevatorsInstances: this.elevatorsInstances,
+                                    );
+                                  }
+                                )
+                              );
+                            }
+                          });
+                        },
+                        itemBuilder:(context) => [
+                          PopupMenuItem(
+                            child: Text("Router"),
+                            value: "router",
+                          ),
 
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.05,
-                ),
-              ]
+                          PopupMenuItem(
+                            child: Text("Room"),
+                            value: "room",
+                          ),
+
+                          PopupMenuItem(
+                            child: Text("Stairs"),
+                            value: "stairs",
+                          ),
+
+                          PopupMenuItem(
+                            child: Text("Elevator"),
+                            value: "elevator",
+                          ),
+                        ]
+                      ),
+
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.15,
+                      ),
+
+                      CircleAvatar(
+                        //Add Button
+                        radius: 35.0,
+                        backgroundColor: const Color(0xFFFFFFFF),
+                        child: IconButton(
+                          icon: Icon(Icons.arrow_forward),
+                          color: Color(0xFFA11C44),
+                          iconSize: 30,
+                          splashColor: const Color(0xAAA11C44),
+                          splashRadius: 45,
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => CollectDataScreen(),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.01,
+                  ),
+
+                  Container(
+                    child: ((_tapPosition?.dx ?? 0) >
+                        (MediaQuery.of(context).size.width * 0.05) &&
+                        (_tapPosition?.dx ?? 0) <
+                            (MediaQuery.of(context).size.width * 0.95) &&
+                        (_tapPosition?.dy ?? 0) >
+                            (MediaQuery.of(context).padding.top +
+                                kToolbarHeight) &&
+                        (_tapPosition?.dy ?? 0) <
+                            (MediaQuery.of(context).size.height * 0.7) +
+                                (MediaQuery.of(context).padding.top +
+                                    kToolbarHeight))
+                        ? Text(
+                      'X : ${xVar.toString()}, Y : ${yVar.toString()}',
+                      style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 14),
+                    )
+                      : null,
+                  ),
+
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.05,
+                  ),
+                ]
+              )
             )
-          )
+
         )
-      )
+          ),
+      ),
     );
   }
 }
@@ -1031,7 +1059,7 @@ class _PopUpItemBodyState extends State<PopUpItemBody> {
                           }
                       },
                       style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xffB62B37) // Background color
+                          backgroundColor: Color(0xffA11C44) // Background color
                       ),
                       child: const Text("Add",
                           style: TextStyle(
@@ -1205,7 +1233,7 @@ class _PopUpItemBodyRouterState extends State<PopUpItemBodyRouter> {
                     child: const Icon(
                       Icons.delete,
                       size: 40,
-                      color: Color(0xffB62B37),
+                      color: Color(0xffA11C44),
                     ),
                   ),
                 ),

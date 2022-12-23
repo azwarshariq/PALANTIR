@@ -95,6 +95,7 @@ flutter:
     - assets/backgrounds/Controller Screen.png
     - assets/elements/AppBar AddBuilding.png
     - assets/elements/AppBar Upload.png
+    - assets/elements/AppBar Edit.png
     - assets/elements/AddBuilding Hero.png
     - assets/elements/Home Page Hero.png
     - assets/backgrounds/White Background.png

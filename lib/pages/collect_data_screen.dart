@@ -1,7 +1,9 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:palantir_ips/pages/home_page.dart';
 import 'package:wifi_scan/wifi_scan.dart';
 import 'hero_dialog_route.dart';
 
@@ -23,6 +25,15 @@ int value = 0;
 
 class _CollectDataScreenState extends State<CollectDataScreen> {
 
+  String? Url = " ";
+
+  Future<String> getURL(image) async{
+    final ref = FirebaseStorage.instance.ref().child('files/' + image);
+// no need of the file extension, the name will do fine.
+    var url =  await ref.getDownloadURL();
+
+    return url.toString();
+  }
   Offset? _tapPosition;
   @override
   Widget build(BuildContext context) {
@@ -44,11 +55,34 @@ class _CollectDataScreenState extends State<CollectDataScreen> {
         //
         child: Scaffold(
             appBar: AppBar(
-              backgroundColor: Color(0xff100D49),
-              elevation: 10,
+              flexibleSpace: Image(
+                image: AssetImage('assets/elements/AppBar Edit.png'),
+                fit: BoxFit.cover,
+              ),
+              iconTheme: IconThemeData(
+                color: const Color(0xffffffff), //change your color here
+              ),
+              elevation: 0,
+              title: Text(
+                'Collect Data',
+                style: GoogleFonts.raleway(
+                  color: const Color(0xffffffff),
+                  fontWeight: FontWeight.w400,
+                  fontSize: 20,
+                ),
+              ),
+              centerTitle: true,
+              backgroundColor: Colors.transparent,
+              shadowColor: const Color(0x00ffffff),
             ),
-            backgroundColor: Color(0xff100D49),
-            body: Center(
+            body: Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("assets/backgrounds/Controller Screen.png"),
+                fit: BoxFit.cover
+              )
+            ),
+              child: Center(
                 child: SingleChildScrollView(
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -58,6 +92,43 @@ class _CollectDataScreenState extends State<CollectDataScreen> {
                               SizedBox(
                                 width: MediaQuery.of(context).size.width * 0.05,
                               ),
+                              // Container(
+                              //   child: Column(
+                              //     children: [
+                              //       FutureBuilder<String>(
+                              //           future: getURL(currentFloor.floorPlan),
+                              //           builder: (BuildContext context, AsyncSnapshot<String> url)
+                              //           {
+                              //             Url = url.data;
+                              //             var check = Url;
+                              //             if (check != null) {
+                              //               return Image.network(
+                              //                 Url!,
+                              //                 height: MediaQuery.of(context).size.height * 0.70,
+                              //                 width: MediaQuery.of(context).size.width * 0.90,
+                              //                 fit:BoxFit.contain,
+                              //               ); // Safe
+                              //             }
+                              //             else{
+                              //               return Center(
+                              //                 child: Column(
+                              //                   crossAxisAlignment: CrossAxisAlignment.center,
+                              //                   children: [
+                              //                     Text("Loading...",
+                              //                         style: TextStyle(
+                              //                           fontSize: 17,
+                              //                           color: Colors.white60,)
+                              //                     ),
+                              //                   ],
+                              //                 ),
+                              //               );
+                              //             }
+                              //           }
+                              //       ),
+                              //     ],
+                              //   ),
+                              // ),
+
                               Container(
                                   child: Image.asset(
                                     'assets/floorplan.jpeg',
@@ -73,26 +144,7 @@ class _CollectDataScreenState extends State<CollectDataScreen> {
                           SizedBox(
                             height: MediaQuery.of(context).size.height * 0.03,
                           ),
-                          Container(
-                            child: ((_tapPosition?.dx ?? 0) >
-                                (MediaQuery.of(context).size.width * 0.05) &&
-                                (_tapPosition?.dx ?? 0) <
-                                    (MediaQuery.of(context).size.width * 0.95) &&
-                                (_tapPosition?.dy ?? 0) >
-                                    (MediaQuery.of(context).padding.top +
-                                        kToolbarHeight) &&
-                                (_tapPosition?.dy ?? 0) <
-                                    (MediaQuery.of(context).size.height * 0.7) +
-                                        (MediaQuery.of(context).padding.top +
-                                            kToolbarHeight))
-                                ? Text(
-                              'X : ${xVar.toString()}, Y : ${yVar.toString()}',
-                              style: const TextStyle(
-                                  color: Color.fromARGB(255, 156, 154, 154),
-                                  fontSize: 14),
-                            )
-                                : null,
-                          ),
+
                           SizedBox(
                             height: MediaQuery.of(context).size.height * 0.02,
                           ),
@@ -110,14 +162,14 @@ class _CollectDataScreenState extends State<CollectDataScreen> {
                                   child: Hero(
                                     tag: 'btn2',
                                     child: Material(
-                                      color: Color.fromARGB(207, 255, 255, 255),
+                                      color: Colors.white,
                                       elevation: 2,
                                       shape: RoundedRectangleBorder(
                                           borderRadius: BorderRadius.circular(32)),
                                       child: const Icon(
-                                        Icons.add_circle_rounded,
+                                        Icons.add,
                                         size: 56,
-                                        color: Color(0xffB62B37),
+                                        color: Color(0xff44CDB1),
                                       ),
                                     ),
                                   ),
@@ -128,14 +180,20 @@ class _CollectDataScreenState extends State<CollectDataScreen> {
                                 CircleAvatar(
                                   //Add Button
                                   radius: 35.0,
-                                  backgroundColor: const Color(0xFFCD4F69),
+                                  backgroundColor: const Color(0xFFFFFFFF),
                                   child: IconButton(
-                                    icon: Icon(Icons.arrow_circle_right_rounded),
-                                    color: Color.fromARGB(255, 255, 254, 254),
+                                    icon: Icon(Icons.home_filled),
+                                    color: Color(0xFFA11C44),
                                     iconSize: 30,
                                     splashColor: const Color(0xDACD4F69),
                                     splashRadius: 45,
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) => HomePage(),
+                                        ),
+                                      );
+                                    },
                                   ),
                                 ),
                                 ]
@@ -144,7 +202,8 @@ class _CollectDataScreenState extends State<CollectDataScreen> {
                         ]
                     )
                 )
-            )
+              ),
+            ),
         )
     );
   }
@@ -178,7 +237,7 @@ class _PopUpItemBodyAccessPointsState extends State<PopUpItemBodyAccessPoints> {
 
     // call startScan API
     final result = await WiFiScan.instance.startScan();
-    if (mounted) kShowSnackBar(context, "startScan: $result");
+    //if (mounted) kShowSnackBar(context, "startScan: $result");
     // reset access points.
     setState(() => accessPoints = <WiFiAccessPoint>[]);
   }
@@ -202,7 +261,7 @@ class _PopUpItemBodyAccessPointsState extends State<PopUpItemBodyAccessPoints> {
       // get scanned results
       final results = await WiFiScan.instance.getScannedResults();
       setState(() => accessPoints = results);
-      kShowSnackBar(context, "getScannedResults: true");
+      //kShowSnackBar(context, "getScannedResults: true");
     }
   }
 
@@ -284,7 +343,13 @@ class _PopUpItemBodyAccessPointsState extends State<PopUpItemBodyAccessPoints> {
                   padding: const EdgeInsets.all(20),
                   shadowColor: Color(0xFFCD4F69),
                 ),
-                onPressed: () {},
+                onPressed: () => {
+                  Navigator.pop(context),
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                          content:
+                          Text('Data Successfully Uploaded!'))),
+                },
                 child: Text(
                   "Upload Data",
                   style: GoogleFonts.raleway(
