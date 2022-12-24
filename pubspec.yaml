@@ -99,6 +99,7 @@ flutter:
     - assets/elements/AddBuilding Hero.png
     - assets/elements/Home Page Hero.png
     - assets/backgrounds/White Background.png
+    - assets/backgrounds/Locate Me.png
 
 
   # To add assets to your application, add an assets section, like this:

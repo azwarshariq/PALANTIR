@@ -195,117 +195,144 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Color(0xff100D49),
-          elevation: 10,
+    return Scaffold(
+      appBar: AppBar(
+        flexibleSpace: Image(
+          image: AssetImage('assets/elements/AppBar Edit.png'),
+          fit: BoxFit.cover,
         ),
-        backgroundColor: Color(0xff100D49),
-        body: Builder(
+        elevation: 0,
+        title: Text(
+          'Positioning',
+          style: GoogleFonts.raleway(
+            color: const Color(0xffffffff),
+            fontWeight: FontWeight.w400,
+            fontSize: 20,
+          ),
+        ),
+        iconTheme: IconThemeData(
+          color: const Color(0xffffffff), //change your color here
+        ),
+        centerTitle: true,
+      ),
+      body: Container(
+        constraints: const BoxConstraints.expand(),
+        decoration: const BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage("assets/backgrounds/Locate Me.png"),
+                fit: BoxFit.cover
+            )
+        ),
+        child: Builder(
           builder: (context) => Padding(
             padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
             child: Column(
               mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xffB62B37), //background color of button
-                    elevation: 8, //elevation of button
-                    shape: RoundedRectangleBorder(
-                      //to set border radius to button
-                        borderRadius: BorderRadius.circular(20)
+                SizedBox(height: 450,),
+                Row(
+                  children: [
+                    SizedBox(width: 115,),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xFFFFFFFF), //background color of button
+                        elevation: 4, //elevation of button
+                        shape: RoundedRectangleBorder(
+                          //to set border radius to button
+                            borderRadius: BorderRadius.circular(20)
+                        ),
+                        padding: const EdgeInsets.all(20),
+                        shadowColor: Color(0xAA44CDB1),
+                      ),
+                      onPressed: () => {
+                        _startScan(context),
+                        _getScannedResults(context),
+                        if (accessPoints.isEmpty){
+                          print("No Scanned Results")
+                        }
+                        else{
+                          distance = [],
+                          for ( var i=0; i< accessPoints.length; i++ ){
+                            exponent = ((27.55 - (20 * (log(accessPoints[i].frequency))/log(10)) + accessPoints[i].level.abs()) / 20),
+                            distance.add(pow(10, exponent)),
+                            print(accessPoints[i].bssid),
+                            print(distance[i]),
+                          },
+                          distance = [10.0,8.0,10.0],
+                          Router_X = [469, 469, 224],
+                          Router_Y = [192, 540, 372],
+                          routerDistance = [],
+                          routerDistance = getDistance(distance.length, distance),
+                          //print(routerDistance),
+                          //--------------------------------------------------------
+                          routerPixel = [],
+                          routerPixel = getPixel(distance.length, routerDistance),
+                          //print(routerPixel),
+                          //--------------------------------------------------------
+                          index = [],
+                          index.add(getIntersectingPoints(0 , 1, routerPixel, 360, 360)),
+                          index.add(getIntersectingPoints(0 , 2, routerPixel, 360, 360)),
+                          index.add(getIntersectingPoints(1 , 2, routerPixel, 360, 360)),
+                          //print(index),
+                          //--------------------------------------------------------
+                          intersectingLine = [],
+                          intersectingLine.add(getIntersectingPointsRange( 0 , 1, index[0][0], index[0][1], routerPixel )),
+                          intersectingLine.add(getIntersectingPointsRange( 0 , 2, index[1][0], index[1][1], routerPixel )),
+                          intersectingLine.add(getIntersectingPointsRange( 1 , 2, index[2][0], index[2][1], routerPixel )),
+                          //print(intersectingLine),
+                          //--------------------------------------------------------
+                          index1 = [],
+                          index1.add(getIntersectingPoints(0 , 1, intersectingLine, intersectingLine[0].length, intersectingLine[1].length)),
+                          index1.add(getIntersectingPoints(0 , 2, intersectingLine, intersectingLine[0].length, intersectingLine[2].length)),
+                          index1.add(getIntersectingPoints(1 , 2, intersectingLine, intersectingLine[1].length, intersectingLine[2].length)),
+                          //print(index1),
+                          //--------------------------------------------------------
+                          intersectingRegion = [],
+                          intersectingRegion.add(getIntersectingRegion( 0 , 1, index1[0][0], index1[0][1], intersectingLine )),
+                          intersectingRegion.add(getIntersectingRegion( 0 , 2, index1[1][0], index1[1][1], intersectingLine )),
+                          intersectingRegion.add(getIntersectingRegion( 1 , 2, index1[2][0], index1[2][1], intersectingLine )),
+                          //print(intersectingRegion),
+                          //--------------------------------------------------------
+                          sum_x = 0,
+                          sum_y = 0,
+                          count = 0,
+                          for(var i=0;i<intersectingRegion.length;i++){
+                            for(var j=0;j<intersectingRegion[i].length;j++){
+                              count++,
+                              sum_x = sum_x + intersectingRegion[i][j][0],
+                              sum_y = sum_y + intersectingRegion[i][j][1],
+                            },
+                          },
+                          avg_x = sum_x/count,
+                          avg_y = sum_y/count,
+                          avg_y = 1200 - avg_y,
+                          print(avg_x),
+                          print(avg_y),
+                          //--------------------------------------------------------
+                        }
+                      },
+                      child: Text(
+                        "Locate Me",
+                        style: GoogleFonts.raleway(
+                          color: Color(0xffA11C44),
+                          fontWeight: FontWeight.w400,
+                          fontSize: 20,
+                        ),
+                      ),
                     ),
-                    padding: const EdgeInsets.all(20),
-                    shadowColor: Color(0xFFCD4F69),
-                  ),
-                  onPressed: () => {
-                    _startScan(context),
-                    _getScannedResults(context),
-                    if (accessPoints.isEmpty){
-                      print("No Scanned Results")
-                    }
-                    else{
-                      distance = [],
-                      for ( var i=0; i< accessPoints.length; i++ ){
-                        exponent = ((27.55 - (20 * (log(accessPoints[i].frequency))/log(10)) + accessPoints[i].level.abs()) / 20),
-                        distance.add(pow(10, exponent)),
-                        print(accessPoints[i].bssid),
-                        print(distance[i]),
-                      },
-                      distance = [10.0,8.0,10.0],
-                      Router_X = [469, 469, 224],
-                      Router_Y = [192, 540, 372],
-                      routerDistance = [],
-                      routerDistance = getDistance(distance.length, distance),
-                      //print(routerDistance),
-                      //--------------------------------------------------------
-                      routerPixel = [],
-                      routerPixel = getPixel(distance.length, routerDistance),
-                      //print(routerPixel),
-                      //--------------------------------------------------------
-                      index = [],
-                      index.add(getIntersectingPoints(0 , 1, routerPixel, 360, 360)),
-                      index.add(getIntersectingPoints(0 , 2, routerPixel, 360, 360)),
-                      index.add(getIntersectingPoints(1 , 2, routerPixel, 360, 360)),
-                      //print(index),
-                      //--------------------------------------------------------
-                      intersectingLine = [],
-                      intersectingLine.add(getIntersectingPointsRange( 0 , 1, index[0][0], index[0][1], routerPixel )),
-                      intersectingLine.add(getIntersectingPointsRange( 0 , 2, index[1][0], index[1][1], routerPixel )),
-                      intersectingLine.add(getIntersectingPointsRange( 1 , 2, index[2][0], index[2][1], routerPixel )),
-                      //print(intersectingLine),
-                      //--------------------------------------------------------
-                      index1 = [],
-                      index1.add(getIntersectingPoints(0 , 1, intersectingLine, intersectingLine[0].length, intersectingLine[1].length)),
-                      index1.add(getIntersectingPoints(0 , 2, intersectingLine, intersectingLine[0].length, intersectingLine[2].length)),
-                      index1.add(getIntersectingPoints(1 , 2, intersectingLine, intersectingLine[1].length, intersectingLine[2].length)),
-                      //print(index1),
-                      //--------------------------------------------------------
-                      intersectingRegion = [],
-                      intersectingRegion.add(getIntersectingRegion( 0 , 1, index1[0][0], index1[0][1], intersectingLine )),
-                      intersectingRegion.add(getIntersectingRegion( 0 , 2, index1[1][0], index1[1][1], intersectingLine )),
-                      intersectingRegion.add(getIntersectingRegion( 1 , 2, index1[2][0], index1[2][1], intersectingLine )),
-                      //print(intersectingRegion),
-                      //--------------------------------------------------------
-                      sum_x = 0,
-                      sum_y = 0,
-                      count = 0,
-                      for(var i=0;i<intersectingRegion.length;i++){
-                        for(var j=0;j<intersectingRegion[i].length;j++){
-                          count++,
-                          sum_x = sum_x + intersectingRegion[i][j][0],
-                          sum_y = sum_y + intersectingRegion[i][j][1],
-                        },
-                      },
-                      avg_x = sum_x/count,
-                      avg_y = sum_y/count,
-                      avg_y = 1200 - avg_y,
-                      print(avg_x),
-                      print(avg_y),
-                      //--------------------------------------------------------
-                    }
-                  },
-                  child: Text(
-                    "Scan",
+                  ],
+                ),
+                SizedBox(height: 20),
+                if (avg_x != 0.0 && avg_y != 0.0)
+                  Text(
+                    "X: ${avg_x}, Y: ${avg_y}",
                     style: GoogleFonts.raleway(
-                      color: Color(0xffFFFFFF),
+                      color: Color(0xff325E89),
                       fontWeight: FontWeight.w300,
                       fontSize: 20,
                     ),
                   ),
-                ),
-                SizedBox(height: 20),
-                Text(
-                  "X: ${avg_x}, Y: ${avg_y}",
-                  style: GoogleFonts.raleway(
-                    color: Color(0xffFFFFFF),
-                    fontWeight: FontWeight.w300,
-                    fontSize: 20,
-                  ),
-                ),
               ],
             ),
           ),

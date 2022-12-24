@@ -72,7 +72,7 @@ class _LoginPageState extends State<LoginPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(
-                      Icons.map,
+                      Icons.location_on,
                       size: 100,
                       color: const Color(0x9A02BB95),
                     ),
@@ -81,7 +81,7 @@ class _LoginPageState extends State<LoginPage> {
                       'PALANTIR',
                       style: GoogleFonts.raleway(
                         color: const Color(0xff02BB95),
-                        fontWeight: FontWeight.w200,
+                        fontWeight: FontWeight.w300,
                         fontSize: 50,
                       ),
                     ),
@@ -90,7 +90,7 @@ class _LoginPageState extends State<LoginPage> {
                       'Login to proceed to mapping',
                       style: GoogleFonts.raleway(
                         color: const Color(0xff02BB95),
-                        fontWeight: FontWeight.w200,
+                        fontWeight: FontWeight.w300,
                         fontSize: 20,
                       ),
                     ),
@@ -192,7 +192,7 @@ class _LoginPageState extends State<LoginPage> {
                               'Forgot your password?',
                               style: GoogleFonts.raleway(
                                 color: const Color(0xFF325E89),
-                                fontWeight: FontWeight.w200,
+                                fontWeight: FontWeight.w300,
                                 fontSize: 14,
                               )
                             ),
@@ -240,7 +240,7 @@ class _LoginPageState extends State<LoginPage> {
                           'Don\'t have an account?',
                           style: GoogleFonts.raleway(
                             color: const Color(0xAA325E89),
-                            fontWeight: FontWeight.w300,
+                            fontWeight: FontWeight.w400,
                             fontSize: 16,
                           )
                         ),
@@ -250,7 +250,7 @@ class _LoginPageState extends State<LoginPage> {
                             ' Register now',
                             style: GoogleFonts.raleway(
                               color: const Color(0xFF325E89),
-                              fontWeight: FontWeight.w300,
+                              fontWeight: FontWeight.w400,
                               fontSize: 16,
                             )
                           ),

@@ -149,7 +149,7 @@ class _ViewScreenState extends State<ViewScreen> {
       backgroundColor:const Color(0xffffffff),
       body: Container(
         padding: const EdgeInsets.fromLTRB(10, 20, 10, 10),
-        margin: const EdgeInsets.fromLTRB(20, 40, 20, 80),
+        margin: const EdgeInsets.fromLTRB(20, 20, 20, 40),
         constraints: const BoxConstraints.expand(),
         decoration: BoxDecoration(
           image: DecorationImage(

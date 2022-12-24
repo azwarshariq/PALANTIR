@@ -35,7 +35,7 @@ class _RegisterPageState extends State<RegisterPage> {
           builder: (context) {
             return Center(
                 child: CircularProgressIndicator(
-                  color: const Color(0xffB62B37),
+                  color: const Color(0xff02BB95),
                 )
             );
           }
@@ -123,7 +123,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         'Fill in the following fields',
                         style: GoogleFonts.raleway(
                           color: const Color(0xff204E7A),
-                          fontWeight: FontWeight.w200,
+                          fontWeight: FontWeight.w300,
                           fontSize: 20,
                         ),
                       ),
@@ -321,8 +321,8 @@ class _RegisterPageState extends State<RegisterPage> {
                           Text(
                               'Already have an account?',
                               style: GoogleFonts.raleway(
-                                color: const Color(0xAA51AFBA),
-                                fontWeight: FontWeight.w300,
+                                color: const Color(0xFF3395A1),
+                                fontWeight: FontWeight.w400,
                                 fontSize: 16
                               )
                           ),
@@ -331,8 +331,8 @@ class _RegisterPageState extends State<RegisterPage> {
                             child: Text(
                                 ' Login',
                                 style: GoogleFonts.raleway(
-                                  color: const Color(0xFF51AFBA),
-                                    fontWeight: FontWeight.w300,
+                                  color: const Color(0xFF3395A1),
+                                    fontWeight: FontWeight.w500,
                                     fontSize: 16
                                 )
                             ),

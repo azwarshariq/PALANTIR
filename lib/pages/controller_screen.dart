@@ -164,7 +164,7 @@ class _ControllerState extends State<Controller> {
                                 padding: const EdgeInsets.all(20),
                                 shadowColor: Color(0xFFCD4F69),
                               ),
-                              onPressed:/* () => Navigator.of(context)
+                              onPressed: (){},/* () => Navigator.of(context)
                                 .push(
                                 MaterialPageRoute(
                                   builder: (context) => UploadRedirectScreen(
@@ -174,7 +174,7 @@ class _ControllerState extends State<Controller> {
                                     routerInstances: this.routerInstances,
                                   )
                                 )
-                              )*/ null,
+                              )*/
                                 child: Text(
                                   "Upload Floor Plan",
                                   style: GoogleFonts.raleway(
@@ -209,12 +209,12 @@ class _ControllerState extends State<Controller> {
                               padding: const EdgeInsets.all(20),
                               shadowColor: Color(0xFFCD4F69),
                             ),
-                            onPressed: /*() => Navigator.of(context)
+                            onPressed: (){},/*() => Navigator.of(context)
                                 .push(
                                 MaterialPageRoute(
                                     builder: (context) => EditRedirectScreen()
                                 )
-                            )*/ null,
+                            )*/
                             child: Text(
                               "Edit Floor Plan",
                               style: GoogleFonts.raleway(

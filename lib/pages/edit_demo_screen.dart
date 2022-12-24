@@ -106,6 +106,15 @@ class _EditDemoScreenState extends State<EditDemoScreen> {
         iconTheme: IconThemeData(
           color: const Color(0xff204E7A), //change your color here
         ),
+        title: Text(
+          "How to edit floorplan",
+          style: GoogleFonts.raleway(
+            color: Color(0xFF204E7A),
+            fontWeight: FontWeight.w400,
+            fontSize: 22,
+          ),
+        ),
+        centerTitle: true,
       ),
       body: Stack(
         fit: StackFit.expand,
@@ -122,22 +131,6 @@ class _EditDemoScreenState extends State<EditDemoScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        SizedBox(
-                          height: 20,
-                        ),
-                         Text(
-                          "How to edit floorplan",
-                          style: GoogleFonts.raleway(
-                            color: Color(0xFF204E7A),
-                            fontWeight: FontWeight.w400,
-                            fontSize: 24,
-                          ),
-                        ),
-
-                        SizedBox(
-                          height: 20,
-                        ),
-
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children:  [
@@ -159,15 +152,22 @@ class _EditDemoScreenState extends State<EditDemoScreen> {
                           height: 20,
                         ),
 
-                        CircleAvatar(
-                          backgroundColor: Color(0xffffffff),
-                          backgroundImage: AssetImage('images/step1.jpeg'),
-                          radius: 120.0,
+                        SizedBox(
+                            height:250,
+                            width: 200,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image: AssetImage("images/step1.jpeg"),
+                                    fit: BoxFit.cover
+                                ),
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                            )
+
                         ),
 
-                        Padding(
-                          padding: EdgeInsets.only(top: 5.0),
-                        ),
+                        SizedBox(height: 20,),
 
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -190,18 +190,18 @@ class _EditDemoScreenState extends State<EditDemoScreen> {
                           height: 20,
                         ),
 
-                        CircleAvatar(
-                          backgroundColor: Color(0xffffffff),
-                          backgroundImage: AssetImage('images/step2.jpeg'),
-                          radius: 120.0,
-                        ),
-
-                        Padding(
-                          padding: EdgeInsets.only(top: 5.0),
-                        ),
-
                         SizedBox(
-                          height: 10,
+                          height:290,
+                          width: 200,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  image: AssetImage("images/step2.jpeg"),
+                                  fit: BoxFit.cover
+                              ),
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                          )
                         ),
 
                         CircleAvatar(
