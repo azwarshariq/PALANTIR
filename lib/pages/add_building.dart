@@ -213,6 +213,7 @@ class _AddBuildingState extends State<AddBuilding> {
           fontSize: 20,
           ),
         ),
+
         centerTitle: true,
         backgroundColor: Colors.transparent,
         shadowColor: const Color(0x00ffffff),
