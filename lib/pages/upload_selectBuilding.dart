@@ -1,13 +1,13 @@
-import 'package:image_picker/image_picker.dart';
 import 'package:palantir_ips/pages/storage_service.dart';
 import 'package:flutter/material.dart';
+import 'package:palantir_ips/pages/upload_redirect_screen.dart';
 import '../classes/building_class.dart';
 import '../classes/floor_class.dart';
 import '../classes/router_class.dart';
 import '../classes/user_class.dart';
 
-class UploadRedirectScreen extends StatefulWidget {
-  UploadRedirectScreen({
+class UploadSelectBuildingScreen extends StatefulWidget {
+  UploadSelectBuildingScreen({
     Key? key,
     required this.userInstance,
     required this.buildingInstances,
@@ -30,8 +30,8 @@ class UploadRedirectScreen extends StatefulWidget {
   List<routerObject> routerInstances = [];
 
 
-@override
-  _MyUploadRedirectScreenState createState() => _MyUploadRedirectScreenState(
+  @override
+  _UploadSelectBuildingScreenState createState() => _UploadSelectBuildingScreenState(
     this.userInstance,
     this.buildingInstances,
     this.floorInstances,
@@ -39,9 +39,9 @@ class UploadRedirectScreen extends StatefulWidget {
   );
 }
 
-class _MyUploadRedirectScreenState extends State<UploadRedirectScreen> {
+class _UploadSelectBuildingScreenState extends State<UploadSelectBuildingScreen> {
 
-  _MyUploadRedirectScreenState(
+  _UploadSelectBuildingScreenState(
       this.userInstance,
       this.buildingInstances,
       this.floorInstances,
@@ -67,20 +67,20 @@ class _MyUploadRedirectScreenState extends State<UploadRedirectScreen> {
   List<floorObject> floorInstances = [];
   List<routerObject> routerInstances = [];
 
-  List<DropdownMenuItem<String>> get dropdownFloorItems{
+  List<DropdownMenuItem<String>> get dropdownBuildingItems{
     List<DropdownMenuItem<String>> menuItems = [];
-    for (int i=0; i<floorInstances.length; i++){
-      if (floorInstances[i].buildingRef == currentBuilding.buildingName){
+    for (int i=0; i<buildingInstances.length; i++){
+      if (buildingInstances[i].userRef == userInstance.referenceId){
         menuItems.add(
             DropdownMenuItem(
                 child: Text(
-                  floorInstances[i].floorName,
+                  buildingInstances[i].buildingName,
                   style: const TextStyle(
                       color: Colors.white60,
                       fontSize: 18
                   ),
                 ),
-                value: floorInstances[i].floorName
+                value: buildingInstances[i].buildingName
             )
         );
       }
@@ -88,9 +88,24 @@ class _MyUploadRedirectScreenState extends State<UploadRedirectScreen> {
     return menuItems;
   }
 
-  String dropdownFloorValue = 'Choose Floor';
+  String dropdownBuildingValue = 'Choose Building';
 
   final Storage storage = Storage();
+
+  buildingObject setCurrentBuilding(String buildingName){
+    for(int i=0; i<buildingInstances.length; i++){
+      if(buildingInstances[i].buildingName == buildingName){
+        return buildingInstances[i];
+      }
+    }
+
+    return new buildingObject(
+        "",
+        "-",
+        "",
+        0
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -108,12 +123,8 @@ class _MyUploadRedirectScreenState extends State<UploadRedirectScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const SizedBox(
-                      height: 10,
-                    ),
-
                     const Text(
-                      "Select Floor",
+                      "Select Building",
                       style: TextStyle(
                         fontSize: 30,
                         color: const Color(0xffB62B37),
@@ -126,26 +137,18 @@ class _MyUploadRedirectScreenState extends State<UploadRedirectScreen> {
                     ),
 
                     DropdownButton(
-                      value: dropdownFloorValue,
+                      value: dropdownBuildingValue,
                       icon: const Icon(Icons.arrow_drop_down_circle_outlined),
-                      items: dropdownFloorItems,
+                      items: dropdownBuildingItems,
                       onChanged: (String? newValue) {
                         setState(() {
-                          dropdownFloorValue = newValue!;
+                          dropdownBuildingValue = newValue!;
+                          currentBuilding = setCurrentBuilding(dropdownBuildingValue);
                         });
                       },
                       dropdownColor: Colors.white60,
                     ),
 
-                    const SizedBox(height: 200),
-
-                    const Text(
-                      "Upload Image",
-                      style: TextStyle(
-                        fontSize: 21,
-                        color: const Color(0xffB62B37),
-                      ),
-                    ),
                     const SizedBox(height: 20),
                     CircleAvatar(
                       //Add Button
@@ -158,40 +161,18 @@ class _MyUploadRedirectScreenState extends State<UploadRedirectScreen> {
                         splashColor: const Color(0xDACD4F69),
                         splashRadius: 45,
                         onPressed: () async {
-                          XFile? file = await ImagePicker().pickImage(
-                          source: ImageSource.gallery,
-                        );
-                        if (file != null) {/*
+
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (context) => ViewScreen(
+                              builder: (context) => UploadRedirectScreen(
                                 userInstance: this.userInstance,
                                 buildingInstances: this.buildingInstances,
                                 floorInstances: this.floorInstances,
                                 routerInstances: this.routerInstances,
-                                currentBuilding: this.currentBuilding,
-                                file: file
                               ),
-                            ),
-                          );*/
+                            )
+                          );
                         }
-
-                        if (file == null) {
-                          // ignore: use_build_context_synchronously
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                  content: Text('No file selected!')));
-                        }
-                        final path = file!.path;
-                        final name = file.name;
-
-                        print("Path: " + path);
-                        print("Name: " + name);
-
-                        storage
-                            .uploadFile(path, name)
-                            .then((value) => print('Done'));
-                        },
                       ),
                     ),
                   ],

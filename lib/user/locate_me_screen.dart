@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:palantir_ips/user/positioning_screen.dart';
 import 'package:wifi_scan/wifi_scan.dart';
 import 'package:vector_math/vector_math.dart';
 
@@ -39,7 +40,8 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
   double count = 0;
   //----------------------------------------------------
   double exponent = 0.0;
-
+  double x_coordinate = 0.0;
+  double y_coordinate = 0.0;
 
   Future<void> _startScan(BuildContext context) async {
     // check if "can" startScan
@@ -233,23 +235,24 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
                 SizedBox(height: 450,),
                 Row(
                   children: [
-                    SizedBox(width: 115,),
+                    SizedBox(width: 110,),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFFFFFFFF), //background color of button
-                        elevation: 4, //elevation of button
+                        animationDuration: const Duration(seconds: 1),
                         shape: RoundedRectangleBorder(
                           //to set border radius to button
-                            borderRadius: BorderRadius.circular(20)
+                          borderRadius: BorderRadius.circular(20),
                         ),
-                        padding: const EdgeInsets.all(20),
-                        shadowColor: Color(0xAA44CDB1),
+                        backgroundColor: Color(0xFFFFFFFF),
+                        shadowColor: Color(0xFFA11C44),
+                        padding: EdgeInsets.all(20),
                       ),
                       onPressed: () => {
                         _startScan(context),
                         _getScannedResults(context),
                         if (accessPoints.isEmpty){
-                          print("No Scanned Results")
+                          _startScan(context),
+                          _getScannedResults(context),
                         }
                         else{
                           distance = [],
@@ -310,7 +313,20 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
                           print(avg_x),
                           print(avg_y),
                           //--------------------------------------------------------
-                        }
+                          x_coordinate = (avg_x/700)*100,
+                          y_coordinate = (avg_y/1200)*100,
+                          print(x_coordinate),
+                          print(y_coordinate),
+
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (context) => PositioningScreen(
+                                  x_coordinate: x_coordinate,
+                                  y_coordinate: y_coordinate,
+                                )
+                            )
+                          ),
+                        },
                       },
                       child: Text(
                         "Locate Me",
@@ -323,16 +339,6 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
                     ),
                   ],
                 ),
-                SizedBox(height: 20),
-                if (avg_x != 0.0 && avg_y != 0.0)
-                  Text(
-                    "X: ${avg_x}, Y: ${avg_y}",
-                    style: GoogleFonts.raleway(
-                      color: Color(0xff325E89),
-                      fontWeight: FontWeight.w300,
-                      fontSize: 20,
-                    ),
-                  ),
               ],
             ),
           ),
