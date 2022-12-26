@@ -91,6 +91,7 @@ class _EditRedirectFloorScreenState extends State<EditRedirectFloorScreen> {
 
   List<String> floorNames = [];
   List<String> floorPlans = [];
+
   List<String> getFloorDetails(){
     for(int i=0; i<floorInstances.length; i++){
       if(floorInstances[i].buildingRef == currentBuilding.referenceId){
@@ -99,6 +100,41 @@ class _EditRedirectFloorScreenState extends State<EditRedirectFloorScreen> {
       }
     }
     return floorNames;
+  }
+
+  bool floorHasPlan = false;
+
+  Text hasFloorPlan(String selectedFloor){
+    for (int i=0; i<floorInstances.length; i++){
+      if (floorInstances[i].floorName == selectedFloor && floorInstances[i].floorPlan == ""){
+        return Text(
+          "${selectedFloor} does not have a floor plan!",
+          style: GoogleFonts.raleway(
+            color: const Color(0xff325E89),
+            fontWeight: FontWeight.w200,
+            fontSize: 20,
+          ),
+        );
+      }
+      else {
+        return Text(
+          "Floor Plan found for ${selectedFloor}",
+          style: GoogleFonts.raleway(
+            color: const Color(0xff325E89),
+            fontWeight: FontWeight.w200,
+            fontSize: 20,
+          )
+        );
+      }
+    }
+    return Text(
+        "Floor Plan found for ${selectedFloor}",
+        style: GoogleFonts.raleway(
+          color: const Color(0xff325E89),
+          fontWeight: FontWeight.w200,
+          fontSize: 20,
+        )
+    );
   }
 
   @override
@@ -142,23 +178,38 @@ class _EditRedirectFloorScreenState extends State<EditRedirectFloorScreen> {
                 behavior: HitTestBehavior.translucent,
                 onTap: () {
                   for(int i=0; i<floorInstances.length; i++){
-                    if (floorInstances[i].floorName == [index]){
+                    if (floorInstances[i].floorName == floorNames[index]){
                       this.currentFloor = floorInstances[i];
                     }
                   }
-
-                  Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => EditDemoScreen(
-                          userInstance: this.userInstance,
-                          buildingInstances: this.buildingInstances,
-                          floorInstances: this.floorInstances,
-                          routerInstances: this.routerInstances,
-                          currentBuilding: this.currentBuilding,
-                          currentFloor: this.currentFloor,
-                        ),
-                      )
-                  );
+                  if(currentFloor.floorPlan != ""){
+                    Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => EditDemoScreen(
+                            userInstance: this.userInstance,
+                            buildingInstances: this.buildingInstances,
+                            floorInstances: this.floorInstances,
+                            routerInstances: this.routerInstances,
+                            currentBuilding: this.currentBuilding,
+                            currentFloor: this.currentFloor,
+                          ),
+                        )
+                    );
+                  }
+                  else{
+                    Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => EditDemoScreen(
+                            userInstance: this.userInstance,
+                            buildingInstances: this.buildingInstances,
+                            floorInstances: this.floorInstances,
+                            routerInstances: this.routerInstances,
+                            currentBuilding: this.currentBuilding,
+                            currentFloor: this.currentFloor,
+                          ),
+                        )
+                    );
+                  }
                 },
                 child: const Icon(
                   Icons.arrow_forward,
@@ -173,13 +224,7 @@ class _EditRedirectFloorScreenState extends State<EditRedirectFloorScreen> {
                     fontSize: 20,
                   ),
                 ),
-              subtitle: Text("${floorPlans[index]}",
-                style: GoogleFonts.raleway(
-                  color: const Color(0xff325E89),
-                  fontWeight: FontWeight.w400,
-                  fontSize: 20,
-                ),
-              ),
+                subtitle: hasFloorPlan(floorNames[index])
             );
           }
       ),
