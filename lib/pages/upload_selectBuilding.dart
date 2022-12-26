@@ -1,6 +1,8 @@
+import 'package:google_fonts/google_fonts.dart';
 import 'package:palantir_ips/pages/storage_service.dart';
 import 'package:flutter/material.dart';
 import 'package:palantir_ips/pages/upload_redirect_screen.dart';
+import 'package:palantir_ips/pages/upload_screen.dart';
 import '../classes/building_class.dart';
 import '../classes/floor_class.dart';
 import '../classes/router_class.dart';
@@ -98,7 +100,6 @@ class _UploadSelectBuildingScreenState extends State<UploadSelectBuildingScreen>
         return buildingInstances[i];
       }
     }
-
     return new buildingObject(
         "",
         "-",
@@ -106,80 +107,88 @@ class _UploadSelectBuildingScreenState extends State<UploadSelectBuildingScreen>
         0
     );
   }
+  List<String> buildingNames = [];
+
+  List<String> getBuildingNames(){
+    for(int i=0; i<buildingInstances.length; i++){
+        buildingNames.add(buildingInstances[i].buildingName);
+    }
+    return buildingNames;
+  }
 
   @override
   Widget build(BuildContext context) {
+    getBuildingNames();
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xff100D49),
-        elevation: 10,
+        flexibleSpace: Image(
+          image: AssetImage('assets/elements/AppBar AddBuilding.png'),
+          fit: BoxFit.cover,
+        ),
+        iconTheme: IconThemeData(
+          color: const Color(0xff325E89), //change your color here
+        ),
+        elevation: 0,
+        title: Text(
+          'Select Building',
+          style: GoogleFonts.raleway(
+            color: const Color(0xff325E89),
+            fontWeight: FontWeight.w400,
+            fontSize: 20,
+          ),
+        ),
+        centerTitle: true,
+        backgroundColor: Colors.transparent,
       ),
-      backgroundColor: const Color(0xff100D49),
-      body: Container(
-          padding: const EdgeInsets.only(left: 60, right: 40, top: 0),
-          child: Form(
-            child: Center(
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      "Select Building",
-                      style: TextStyle(
-                        fontSize: 30,
-                        color: const Color(0xffB62B37),
+      backgroundColor: Colors.white,
+      body: ListView.builder(
+        itemCount: buildingNames.length,
+        shrinkWrap: true,
+        padding: EdgeInsets.all(5),
+        scrollDirection: Axis.vertical,
+        itemBuilder: (BuildContext context, int index) {
+          return ListTile(
+              leading: const Icon(
+                Icons.business,
+                size: 30,
+                color: Color(0xAA44CDB1),
+              ),
+              trailing: GestureDetector(
+                behavior: HitTestBehavior.translucent,
+                onTap: () {
+                  for(int i=0; i<buildingInstances.length; i++){
+                    if (buildingInstances[i].buildingName == buildingNames[index]){
+                      this.currentBuilding=buildingInstances[i];
+                    }
+                  }
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => UploadScreen(
+                        userInstance: this.userInstance,
+                        buildingInstances: this.buildingInstances,
+                        floorInstances: this.floorInstances,
+                        routerInstances: this.routerInstances,
+                        currentBuilding: this.currentBuilding,
                       ),
-                    ),
-
-                    const SizedBox(
-                      height: 30,
-                      width: 220,
-                    ),
-
-                    DropdownButton(
-                      value: dropdownBuildingValue,
-                      icon: const Icon(Icons.arrow_drop_down_circle_outlined),
-                      items: dropdownBuildingItems,
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          dropdownBuildingValue = newValue!;
-                          currentBuilding = setCurrentBuilding(dropdownBuildingValue);
-                        });
-                      },
-                      dropdownColor: Colors.white60,
-                    ),
-
-                    const SizedBox(height: 20),
-                    CircleAvatar(
-                      //Add Button
-                      radius: 35.0,
-                      backgroundColor: const Color(0xFFCD4F69),
-                      child: IconButton(
-                        icon: Icon(Icons.cloud_upload_outlined),
-                        color: Color.fromARGB(255, 255, 254, 254),
-                        iconSize: 30,
-                        splashColor: const Color(0xDACD4F69),
-                        splashRadius: 45,
-                        onPressed: () async {
-
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => UploadRedirectScreen(
-                                userInstance: this.userInstance,
-                                buildingInstances: this.buildingInstances,
-                                floorInstances: this.floorInstances,
-                                routerInstances: this.routerInstances,
-                              ),
-                            )
-                          );
-                        }
-                      ),
-                    ),
-                  ],
+                    )
+                  );
+                },
+                child: const Icon(
+                  Icons.arrow_forward,
+                  size: 30,
+                  color: Color(0xff325E89),
                 ),
               ),
-            ),
-          )),
+              title: Text("${buildingNames[index]}",
+                style: GoogleFonts.raleway(
+                  color: const Color(0xff325E89),
+                  fontWeight: FontWeight.w400,
+                  fontSize: 20,
+                ),
+              )
+          );
+        }
+      ),
     );
   }
 }

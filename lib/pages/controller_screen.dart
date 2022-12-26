@@ -168,7 +168,7 @@ class _ControllerState extends State<Controller> {
                               onPressed: () => Navigator.of(context)
                                 .push(
                                 MaterialPageRoute(
-                                  builder: (context) => UploadSelectBuildingScreen(
+                                  builder: (context) => UploadRedirectScreen(
                                     userInstance: this.userInstance,
                                     buildingInstances: this.buildingInstances,
                                     floorInstances: this.floorInstances,
