@@ -102,11 +102,7 @@ class _HomePageState extends State<HomePage> {
                   color: Colors.white,
                 ),
                 onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => AuthPage(),
-                    ),
-                  );
+                  FirebaseAuth.instance.signOut();
                 },
               )
             ],

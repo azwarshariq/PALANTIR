@@ -1,55 +1,21 @@
 import 'package:google_fonts/google_fonts.dart';
+import 'package:palantir_ips/pages/edit_demo_screen.dart';
 import 'package:palantir_ips/pages/storage_service.dart';
 import 'package:flutter/material.dart';
-import 'package:palantir_ips/pages/upload_redirect_screen.dart';
-import 'package:palantir_ips/pages/upload_screen.dart';
 import '../classes/building_class.dart';
 import '../classes/floor_class.dart';
 import '../classes/router_class.dart';
 import '../classes/user_class.dart';
-import 'edit_redirect_floor_screen.dart';
 
-class EditRedirectScreen extends StatefulWidget {
-  EditRedirectScreen({
+class EditRedirectFloorScreen extends StatefulWidget {
+  EditRedirectFloorScreen({
     Key? key,
     required this.userInstance,
     required this.buildingInstances,
     required this.floorInstances,
     required this.routerInstances,
+    required this.currentBuilding,
   }): super(key: key);
-
-  userObject userInstance = new userObject(
-      '',
-      '',
-      '-',
-      '',
-      0
-  );
-
-  List<buildingObject> buildingInstances = [];
-
-  List<floorObject> floorInstances = [];
-
-  List<routerObject> routerInstances = [];
-
-
-  @override
-  _EditRedirectScreenState createState() => _EditRedirectScreenState(
-    this.userInstance,
-    this.buildingInstances,
-    this.floorInstances,
-    this.routerInstances,
-  );
-}
-
-class _EditRedirectScreenState extends State<EditRedirectScreen> {
-
-  _EditRedirectScreenState(
-      this.userInstance,
-      this.buildingInstances,
-      this.floorInstances,
-      this.routerInstances,
-      );
 
   userObject userInstance = new userObject(
       '',
@@ -67,37 +33,77 @@ class _EditRedirectScreenState extends State<EditRedirectScreen> {
   );
 
   List<buildingObject> buildingInstances = [];
+
+  List<floorObject> floorInstances = [];
+
+  List<routerObject> routerInstances = [];
+
+
+  @override
+  _EditRedirectFloorScreenState createState() => _EditRedirectFloorScreenState(
+    this.userInstance,
+    this.buildingInstances,
+    this.floorInstances,
+    this.routerInstances,
+    this.currentBuilding
+  );
+}
+
+class _EditRedirectFloorScreenState extends State<EditRedirectFloorScreen> {
+
+  _EditRedirectFloorScreenState(
+      this.userInstance,
+      this.buildingInstances,
+      this.floorInstances,
+      this.routerInstances,
+      this.currentBuilding
+      );
+
+  userObject userInstance = new userObject(
+      '',
+      '',
+      '-',
+      '',
+      0
+  );
+
+  buildingObject currentBuilding = new buildingObject(
+      "",
+      "",
+      "",
+      0
+  );
+
+  floorObject currentFloor = new floorObject(
+      "",
+      "",
+      "",
+      0,
+      "",
+  );
+
+  List<buildingObject> buildingInstances = [];
   List<floorObject> floorInstances = [];
   List<routerObject> routerInstances = [];
 
 
   final Storage storage = Storage();
 
-  // buildingObject setCurrentBuilding(String buildingName){
-  //   for(int i=0; i<buildingInstances.length; i++){
-  //     if(buildingInstances[i].buildingName == buildingName){
-  //       return buildingInstances[i];
-  //     }
-  //   }
-  //   return new buildingObject(
-  //       "",
-  //       "-",
-  //       "",
-  //       0
-  //   );
-  // }
-
-  List<String> buildingNames = [];
-  List<String> getBuildingNames(){
-    for(int i=0; i<buildingInstances.length; i++){
-      buildingNames.add(buildingInstances[i].buildingName);
+  List<String> floorNames = [];
+  List<String> floorPlans = [];
+  List<String> getFloorDetails(){
+    for(int i=0; i<floorInstances.length; i++){
+      if(floorInstances[i].buildingRef == currentBuilding.referenceId){
+        floorNames.add(floorInstances[i].floorName);
+        floorPlans.add(floorInstances[i].floorPlan);
+      }
     }
-    return buildingNames;
+    return floorNames;
   }
 
   @override
   Widget build(BuildContext context) {
-    getBuildingNames();
+    getFloorDetails();
     return Scaffold(
       appBar: AppBar(
         flexibleSpace: Image(
@@ -109,7 +115,7 @@ class _EditRedirectScreenState extends State<EditRedirectScreen> {
         ),
         elevation: 0,
         title: Text(
-          'Select Building',
+          'Select Floor',
           style: GoogleFonts.raleway(
             color: const Color(0xff325E89),
             fontWeight: FontWeight.w400,
@@ -121,7 +127,7 @@ class _EditRedirectScreenState extends State<EditRedirectScreen> {
       ),
       backgroundColor: Colors.white,
       body: ListView.builder(
-          itemCount: buildingNames.length,
+          itemCount: floorNames.length,
           shrinkWrap: true,
           padding: EdgeInsets.all(5),
           scrollDirection: Axis.vertical,
@@ -132,39 +138,48 @@ class _EditRedirectScreenState extends State<EditRedirectScreen> {
                   size: 30,
                   color: Color(0xAA44CDB1),
                 ),
-                trailing: GestureDetector(
-                  behavior: HitTestBehavior.translucent,
-                  onTap: () {
-                    for(int i=0; i<buildingInstances.length; i++){
-                      if (buildingInstances[i].buildingName == buildingNames[index]){
-                        this.currentBuilding = buildingInstances[i];
-                      }
+              trailing: GestureDetector(
+                behavior: HitTestBehavior.translucent,
+                onTap: () {
+                  for(int i=0; i<floorInstances.length; i++){
+                    if (floorInstances[i].floorName == [index]){
+                      this.currentFloor = floorInstances[i];
                     }
-                    Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => EditRedirectFloorScreen(
-                            userInstance: this.userInstance,
-                            buildingInstances: this.buildingInstances,
-                            floorInstances: this.floorInstances,
-                            routerInstances: this.routerInstances,
-                            currentBuilding: this.currentBuilding,
-                          ),
-                        )
-                    );
-                  },
-                  child: const Icon(
-                    Icons.arrow_forward,
-                    size: 30,
-                    color: Color(0xff325E89),
-                  ),
+                  }
+
+                  Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => EditDemoScreen(
+                          userInstance: this.userInstance,
+                          buildingInstances: this.buildingInstances,
+                          floorInstances: this.floorInstances,
+                          routerInstances: this.routerInstances,
+                          currentBuilding: this.currentBuilding,
+                          currentFloor: this.currentFloor,
+                        ),
+                      )
+                  );
+                },
+                child: const Icon(
+                  Icons.arrow_forward,
+                  size: 30,
+                  color: Color(0xff325E89),
                 ),
-                title: Text("${buildingNames[index]}",
+              ),
+              title: Text("${floorNames[index]}",
                   style: GoogleFonts.raleway(
                     color: const Color(0xff325E89),
                     fontWeight: FontWeight.w400,
                     fontSize: 20,
                   ),
-                )
+                ),
+              subtitle: Text("${floorPlans[index]}",
+                style: GoogleFonts.raleway(
+                  color: const Color(0xff325E89),
+                  fontWeight: FontWeight.w400,
+                  fontSize: 20,
+                ),
+              ),
             );
           }
       ),

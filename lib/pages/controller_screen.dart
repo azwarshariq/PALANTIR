@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:palantir_ips/pages/home_page.dart';
 import 'package:palantir_ips/pages/upload_redirect_screen.dart';
-import 'package:palantir_ips/pages/upload_selectBuilding.dart';
 import '../classes/building_class.dart';
 import '../classes/floor_class.dart';
 import '../classes/router_class.dart';
@@ -210,12 +209,17 @@ class _ControllerState extends State<Controller> {
                               padding: const EdgeInsets.all(20),
                               shadowColor: Color(0xFFCD4F69),
                             ),
-                            onPressed: (){},/*() => Navigator.of(context)
+                            onPressed: () => Navigator.of(context)
                                 .push(
                                 MaterialPageRoute(
-                                    builder: (context) => EditRedirectScreen()
+                                    builder: (context) => EditRedirectScreen(
+                                      userInstance: this.userInstance,
+                                      buildingInstances: this.buildingInstances,
+                                      floorInstances: this.floorInstances,
+                                      routerInstances: this.routerInstances,
+                                    )
                                 )
-                            )*/
+                            ),
                             child: Text(
                               "Edit Floor Plan",
                               style: GoogleFonts.raleway(
