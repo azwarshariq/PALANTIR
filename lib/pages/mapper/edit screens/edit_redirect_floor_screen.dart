@@ -1,11 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:palantir_ips/pages/edit_demo_screen.dart';
-import 'package:palantir_ips/pages/storage_service.dart';
 import 'package:flutter/material.dart';
-import '../classes/building_class.dart';
-import '../classes/floor_class.dart';
-import '../classes/router_class.dart';
-import '../classes/user_class.dart';
+import 'package:palantir_ips/pages/mapper/edit%20screens/edit_demo_screen.dart';
+import 'package:palantir_ips/pages/mapper/upload%20screens/upload_screen.dart';
+import '../../../classes/building_class.dart';
+import '../../../classes/floor_class.dart';
+import '../../../classes/router_class.dart';
+import '../../../classes/user_class.dart';
+import '../storage_service.dart';
 
 class EditRedirectFloorScreen extends StatefulWidget {
   EditRedirectFloorScreen({
@@ -86,20 +88,18 @@ class _EditRedirectFloorScreenState extends State<EditRedirectFloorScreen> {
   List<floorObject> floorInstances = [];
   List<routerObject> routerInstances = [];
 
-
   final Storage storage = Storage();
 
   List<String> floorNames = [];
   List<String> floorPlans = [];
 
-  List<String> getFloorDetails(){
+  void getFloorDetails(){
     for(int i=0; i<floorInstances.length; i++){
       if(floorInstances[i].buildingRef == currentBuilding.referenceId){
         floorNames.add(floorInstances[i].floorName);
         floorPlans.add(floorInstances[i].floorPlan);
       }
     }
-    return floorNames;
   }
 
   bool floorHasPlan = false;
@@ -199,13 +199,12 @@ class _EditRedirectFloorScreenState extends State<EditRedirectFloorScreen> {
                   else{
                     Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => EditDemoScreen(
+                          builder: (context) => UploadScreen(
                             userInstance: this.userInstance,
                             buildingInstances: this.buildingInstances,
                             floorInstances: this.floorInstances,
                             routerInstances: this.routerInstances,
                             currentBuilding: this.currentBuilding,
-                            currentFloor: this.currentFloor,
                           ),
                         )
                     );
@@ -224,6 +223,13 @@ class _EditRedirectFloorScreenState extends State<EditRedirectFloorScreen> {
                     fontSize: 20,
                   ),
                 ),
+              // subtitle: Text("${floorPlans[index]}",
+              //   style: GoogleFonts.raleway(
+              //     color: const Color(0xff325E89),
+              //     fontWeight: FontWeight.w400,
+              //     fontSize: 20,
+              //   ),
+              // ),
                 subtitle: hasFloorPlan(floorNames[index])
             );
           }
