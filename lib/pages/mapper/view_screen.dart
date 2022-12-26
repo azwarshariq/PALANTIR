@@ -4,12 +4,12 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:palantir_ips/pages/edit_demo_screen.dart';
-import '../classes/building_class.dart';
-import '../classes/floor_class.dart';
-import '../classes/router_class.dart';
-import '../classes/user_class.dart';
-import 'upload_screen.dart';
+import 'package:palantir_ips/pages/mapper/edit%20screens/edit_demo_screen.dart';
+import '../../classes/building_class.dart';
+import '../../classes/floor_class.dart';
+import '../../classes/router_class.dart';
+import '../../classes/user_class.dart';
+import 'upload screens/upload_screen.dart';
 
 class ViewScreen extends StatefulWidget {
   ViewScreen({

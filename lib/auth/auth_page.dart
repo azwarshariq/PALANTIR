@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:palantir_ips/pages/login_page.dart';
-import 'package:palantir_ips/pages/register_page.dart';
+import 'package:palantir_ips/main/login_page.dart';
+import 'package:palantir_ips/main/register_page.dart';
 
 class AuthPage extends StatefulWidget {
   const AuthPage({Key? key}) : super(key: key);

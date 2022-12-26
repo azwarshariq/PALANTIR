@@ -1,12 +1,12 @@
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:palantir_ips/pages/view_screen.dart';
-import 'package:palantir_ips/pages/storage_service.dart';
+import 'package:palantir_ips/pages/mapper/view_screen.dart';
+import 'package:palantir_ips/pages/mapper/storage_service.dart';
 import 'package:flutter/material.dart';
-import '../classes/building_class.dart';
-import '../classes/floor_class.dart';
-import '../classes/router_class.dart';
-import '../classes/user_class.dart';
+import '../../../classes/building_class.dart';
+import '../../../classes/floor_class.dart';
+import '../../../classes/router_class.dart';
+import '../../../classes/user_class.dart';
 
 class UploadScreen extends StatefulWidget {
 
