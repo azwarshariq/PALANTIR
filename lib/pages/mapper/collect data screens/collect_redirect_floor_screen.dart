@@ -1,53 +1,24 @@
 import 'package:google_fonts/google_fonts.dart';
-import 'package:palantir_ips/pages/mapper/storage_service.dart';
 import 'package:flutter/material.dart';
+import 'package:palantir_ips/pages/mapper/collect%20data%20screens/collect_data_screen.dart';
+import 'package:palantir_ips/pages/mapper/edit%20screens/edit_demo_screen.dart';
+import 'package:palantir_ips/pages/mapper/storage_service.dart';
+import 'package:palantir_ips/pages/mapper/upload%20screens/upload_screen.dart';
+
 import '../../../classes/building_class.dart';
 import '../../../classes/floor_class.dart';
 import '../../../classes/router_class.dart';
 import '../../../classes/user_class.dart';
-import 'collect_redirect_floor_screen.dart';
 
-class CollectRedirectScreen extends StatefulWidget {
-  CollectRedirectScreen({
+class CollectRedirectFloorScreen extends StatefulWidget {
+  CollectRedirectFloorScreen({
     Key? key,
     required this.userInstance,
     required this.buildingInstances,
     required this.floorInstances,
     required this.routerInstances,
+    required this.currentBuilding,
   }): super(key: key);
-
-  userObject userInstance = new userObject(
-      '',
-      '',
-      '-',
-      '',
-      0
-  );
-
-  List<buildingObject> buildingInstances = [];
-
-  List<floorObject> floorInstances = [];
-
-  List<routerObject> routerInstances = [];
-
-
-  @override
-  _CollectRedirectScreenState createState() => _CollectRedirectScreenState(
-    this.userInstance,
-    this.buildingInstances,
-    this.floorInstances,
-    this.routerInstances,
-  );
-}
-
-class _CollectRedirectScreenState extends State<CollectRedirectScreen> {
-
-  _CollectRedirectScreenState(
-      this.userInstance,
-      this.buildingInstances,
-      this.floorInstances,
-      this.routerInstances,
-      );
 
   userObject userInstance = new userObject(
       '',
@@ -65,23 +36,104 @@ class _CollectRedirectScreenState extends State<CollectRedirectScreen> {
   );
 
   List<buildingObject> buildingInstances = [];
+
+  List<floorObject> floorInstances = [];
+
+  List<routerObject> routerInstances = [];
+
+
+  @override
+  _CollectRedirectFloorScreenState createState() => _CollectRedirectFloorScreenState(
+      this.userInstance,
+      this.buildingInstances,
+      this.floorInstances,
+      this.routerInstances,
+      this.currentBuilding
+  );
+}
+
+class _CollectRedirectFloorScreenState extends State<CollectRedirectFloorScreen> {
+
+  _CollectRedirectFloorScreenState(
+      this.userInstance,
+      this.buildingInstances,
+      this.floorInstances,
+      this.routerInstances,
+      this.currentBuilding
+      );
+
+  userObject userInstance = new userObject(
+      '',
+      '',
+      '-',
+      '',
+      0
+  );
+
+  buildingObject currentBuilding = new buildingObject(
+      "",
+      "",
+      "",
+      0
+  );
+
+  floorObject currentFloor = new floorObject(
+    "",
+    "",
+    "",
+    0,
+    "",
+  );
+
+  List<buildingObject> buildingInstances = [];
   List<floorObject> floorInstances = [];
   List<routerObject> routerInstances = [];
 
 
   final Storage storage = Storage();
 
-  List<String> buildingNames = [];
-  List<String> getBuildingNames(){
-    for(int i=0; i<buildingInstances.length; i++){
-      buildingNames.add(buildingInstances[i].buildingName);
+  List<String> floorNames = [];
+  List<String> floorPlans = [];
+
+  List<String> getFloorDetails(){
+    for(int i=0; i<floorInstances.length; i++){
+      if(floorInstances[i].buildingRef == currentBuilding.referenceId){
+        floorNames.add(floorInstances[i].floorName);
+        floorPlans.add(floorInstances[i].floorPlan);
+      }
     }
-    return buildingNames;
+    return floorNames;
+  }
+
+  bool floorHasPlan = false;
+
+  Text hasFloorPlan(String selectedFloor, String selectedFloorPlan){
+    if (selectedFloorPlan == ""){
+      floorHasPlan = true;
+      return Text(
+        "${selectedFloor} does not have a floor plan!",
+        style: GoogleFonts.raleway(
+          color: const Color(0xffA11C44),
+          fontWeight: FontWeight.w300,
+          fontSize: 15,
+        ),
+      );
+    }
+    else {
+      return Text(
+          "Floor Plan found for ${selectedFloor}",
+          style: GoogleFonts.raleway(
+            color: const Color(0xAA44CDB1),
+            fontWeight: FontWeight.w300,
+            fontSize: 15,
+          )
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    getBuildingNames();
+    getFloorDetails();
     return Scaffold(
       appBar: AppBar(
         flexibleSpace: Image(
@@ -89,11 +141,11 @@ class _CollectRedirectScreenState extends State<CollectRedirectScreen> {
           fit: BoxFit.cover,
         ),
         iconTheme: IconThemeData(
-          color: const Color(0xff325E89), //change your color here
+          color: const Color(0xff325E89),
         ),
         elevation: 0,
         title: Text(
-          'Select Building',
+          "${ currentBuilding.buildingName + ' - Select Floor'}",
           style: GoogleFonts.raleway(
             color: const Color(0xff325E89),
             fontWeight: FontWeight.w400,
@@ -104,8 +156,9 @@ class _CollectRedirectScreenState extends State<CollectRedirectScreen> {
         backgroundColor: Colors.transparent,
       ),
       backgroundColor: Colors.white,
+
       body: ListView.builder(
-          itemCount: buildingNames.length,
+          itemCount: floorNames.length,
           shrinkWrap: true,
           padding: EdgeInsets.all(5),
           scrollDirection: Axis.vertical,
@@ -119,19 +172,20 @@ class _CollectRedirectScreenState extends State<CollectRedirectScreen> {
                 trailing: GestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () {
-                    for(int i=0; i<buildingInstances.length; i++){
-                      if (buildingInstances[i].buildingName == buildingNames[index]){
-                        this.currentBuilding = buildingInstances[i];
+                    for(int i=0; i<floorInstances.length; i++){
+                      if (floorInstances[i].floorName == floorNames[index]){
+                        this.currentFloor = floorInstances[i];
                       }
                     }
+
                     Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => CollectRedirectFloorScreen(
-                            userInstance: this.userInstance,
-                            buildingInstances: this.buildingInstances,
-                            floorInstances: this.floorInstances,
-                            routerInstances: this.routerInstances,
-                            currentBuilding: this.currentBuilding,
+                          builder: (context) => CollectDataScreen(
+                            // userInstance: this.userInstance,
+                            // buildingInstances: this.buildingInstances,
+                            // floorInstances: this.floorInstances,
+                            // routerInstances: this.routerInstances,
+                            // currentBuilding: this.currentBuilding,
                           ),
                         )
                     );
@@ -142,13 +196,14 @@ class _CollectRedirectScreenState extends State<CollectRedirectScreen> {
                     color: Color(0xff325E89),
                   ),
                 ),
-                title: Text("${buildingNames[index]}",
+                title: Text("${floorNames[index]}",
                   style: GoogleFonts.raleway(
                     color: const Color(0xff325E89),
                     fontWeight: FontWeight.w400,
                     fontSize: 20,
                   ),
-                )
+                ),
+                subtitle: hasFloorPlan(floorNames[index], floorPlans[index])
             );
           }
       ),
