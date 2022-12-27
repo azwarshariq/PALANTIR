@@ -172,11 +172,15 @@ class _EditRedirectFloorScreenState extends State<EditRedirectFloorScreen> {
               behavior: HitTestBehavior.translucent,
               onTap: () {
                 for(int i=0; i<floorInstances.length; i++){
-                  if (floorInstances[i].floorName == floorNames[index]){
+                  if (floorInstances[i].floorName == floorNames[index] && floorInstances[i].buildingRef == currentBuilding.referenceId){
                     this.currentFloor = floorInstances[i];
                   }
                 }
                 if(floorPlans[index] != ""){
+
+                  print(currentBuilding.referenceId);
+                  print(currentFloor.referenceId);
+
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) => EditDemoScreen(

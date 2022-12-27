@@ -63,6 +63,21 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
       0
   );
 
+  buildingObject currentBuilding = new buildingObject(
+      "",
+      "",
+      "",
+      0
+  );
+
+  floorObject currentFloor = new floorObject(
+    "",
+    "",
+    "",
+    0,
+    "",
+  );
+
   List<buildingObject> buildingInstances = [];
 
   List<floorObject> floorInstances = [];
@@ -301,85 +316,112 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
                         padding: EdgeInsets.all(20),
                       ),
                       onPressed: () => {
-
-
                         _startScan(context),
                         _getScannedResults(context),
 
-                        distance = [],
-                        for ( var i=0; i< accessPoints.length; i++ ){
-                          exponent = ((27.55 - (20 * (log(accessPoints[i].frequency))/log(10)) + accessPoints[i].level.abs()) / 20),
-                          distance.add(pow(10, exponent)),
-                          // print(accessPoints[i].bssid),
-                          // print(distance[i]),
-                        },
-                        print(distance),
-                        distance.sort(),
-                        print(distance),
-                        distance = [10.0,8.0,10.0],
-                        Router_X = [469, 469, 224],
-                        Router_Y = [192, 540, 372],
-                        routerDistance = [],
-                        routerDistance = getDistance(distance.length, distance),
-                        //print(routerDistance),
-                        //--------------------------------------------------------
-                        routerPixel = [],
-                        routerPixel = getPixel(distance.length, routerDistance),
-                        //print(routerPixel),
-                        //--------------------------------------------------------
-                        index = [],
-                        index.add(getIntersectingPoints(0 , 1, routerPixel, 360, 360)),
-                        index.add(getIntersectingPoints(0 , 2, routerPixel, 360, 360)),
-                        index.add(getIntersectingPoints(1 , 2, routerPixel, 360, 360)),
-                        //print(index),
-                        //--------------------------------------------------------
-                        intersectingLine = [],
-                        intersectingLine.add(getIntersectingPointsRange( 0 , 1, index[0][0], index[0][1], routerPixel )),
-                        intersectingLine.add(getIntersectingPointsRange( 0 , 2, index[1][0], index[1][1], routerPixel )),
-                        intersectingLine.add(getIntersectingPointsRange( 1 , 2, index[2][0], index[2][1], routerPixel )),
-                        //print(intersectingLine),
-                        //--------------------------------------------------------
-                        index1 = [],
-                        index1.add(getIntersectingPoints(0 , 1, intersectingLine, intersectingLine[0].length, intersectingLine[1].length)),
-                        index1.add(getIntersectingPoints(0 , 2, intersectingLine, intersectingLine[0].length, intersectingLine[2].length)),
-                        index1.add(getIntersectingPoints(1 , 2, intersectingLine, intersectingLine[1].length, intersectingLine[2].length)),
-                        //print(index1),
-                        //--------------------------------------------------------
-                        intersectingRegion = [],
-                        intersectingRegion.add(getIntersectingRegion( 0 , 1, index1[0][0], index1[0][1], intersectingLine )),
-                        intersectingRegion.add(getIntersectingRegion( 0 , 2, index1[1][0], index1[1][1], intersectingLine )),
-                        intersectingRegion.add(getIntersectingRegion( 1 , 2, index1[2][0], index1[2][1], intersectingLine )),
-                        //print(intersectingRegion),
-                        //--------------------------------------------------------
-                        sum_x = 0,
-                        sum_y = 0,
-                        count = 0,
-                        for(var i=0;i<intersectingRegion.length;i++){
-                          for(var j=0;j<intersectingRegion[i].length;j++){
-                            count++,
-                            sum_x = sum_x + intersectingRegion[i][j][0],
-                            sum_y = sum_y + intersectingRegion[i][j][1],
-                          },
-                        },
-                        avg_x = sum_x/count,
-                        avg_y = sum_y/count,
-                        avg_y = 1200 - avg_y,
-                        print(avg_x),
-                        print(avg_y),
-                        //--------------------------------------------------------
-                        x_coordinate = (avg_x/700)*100,
-                        y_coordinate = (avg_y/1200)*100,
-                        print(x_coordinate),
-                        print(y_coordinate),
-
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                              builder: (context) => PositioningScreen(
-                                x_coordinate: x_coordinate,
-                                y_coordinate: y_coordinate,
+                        if (accessPoints.isEmpty){
+                          print("Empty"),
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content: Text(
+                                      'Building Successfully Added')
                               )
-                          )
-                        ),
+                          ),
+                        }
+                        else {
+                          distance = [],
+                          print(accessPoints.length),
+                          for ( var i=0; i< accessPoints.length; i++ ){
+                            exponent = ((27.55 - (20 * (log(accessPoints[i].frequency))/log(10)) + accessPoints[i].level.abs()) / 20),
+                            distance.add(pow(10, exponent)),
+                            print(accessPoints[i].bssid),
+                            print(distance[i]),
+                          },
+                          distance.sort(),
+                          print(distance),
+
+
+                          for(int i=0; i<routerInstances.length; i++){
+                            if(routerInstances[i].BSSID == "Fast - aa"){
+                              print("Router bssid -> "+ routerInstances[i].BSSID),
+                              for(int j=0; j<floorInstances.length; j++){
+                                if(floorInstances[j].referenceId == routerInstances[i].floorRef){
+                                  print(floorInstances[j].referenceId),
+                                  for(int k=0; k<buildingInstances.length; k++){
+                                    if(buildingInstances[k].referenceId == floorInstances[j].buildingRef){
+                                      print(buildingInstances[k].referenceId),
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+
+                          distance = [10.0,8.0,10.0],
+                          Router_X = [469, 469, 224],
+                          Router_Y = [192, 540, 372],
+                          routerDistance = [],
+                          routerDistance = getDistance(distance.length, distance),
+                          //print(routerDistance),
+                          //--------------------------------------------------------
+                          routerPixel = [],
+                          routerPixel = getPixel(distance.length, routerDistance),
+                          //print(routerPixel),
+                          //--------------------------------------------------------
+                          index = [],
+                          index.add(getIntersectingPoints(0 , 1, routerPixel, 360, 360)),
+                          index.add(getIntersectingPoints(0 , 2, routerPixel, 360, 360)),
+                          index.add(getIntersectingPoints(1 , 2, routerPixel, 360, 360)),
+                          //print(index),
+                          //--------------------------------------------------------
+                          intersectingLine = [],
+                          intersectingLine.add(getIntersectingPointsRange( 0 , 1, index[0][0], index[0][1], routerPixel )),
+                          intersectingLine.add(getIntersectingPointsRange( 0 , 2, index[1][0], index[1][1], routerPixel )),
+                          intersectingLine.add(getIntersectingPointsRange( 1 , 2, index[2][0], index[2][1], routerPixel )),
+                          //print(intersectingLine),
+                          //--------------------------------------------------------
+                          index1 = [],
+                          index1.add(getIntersectingPoints(0 , 1, intersectingLine, intersectingLine[0].length, intersectingLine[1].length)),
+                          index1.add(getIntersectingPoints(0 , 2, intersectingLine, intersectingLine[0].length, intersectingLine[2].length)),
+                          index1.add(getIntersectingPoints(1 , 2, intersectingLine, intersectingLine[1].length, intersectingLine[2].length)),
+                          //print(index1),
+                          //--------------------------------------------------------
+                          intersectingRegion = [],
+                          intersectingRegion.add(getIntersectingRegion( 0 , 1, index1[0][0], index1[0][1], intersectingLine )),
+                          intersectingRegion.add(getIntersectingRegion( 0 , 2, index1[1][0], index1[1][1], intersectingLine )),
+                          intersectingRegion.add(getIntersectingRegion( 1 , 2, index1[2][0], index1[2][1], intersectingLine )),
+                          //print(intersectingRegion),
+                          //--------------------------------------------------------
+                          sum_x = 0,
+                          sum_y = 0,
+                          count = 0,
+                          for(var i=0;i<intersectingRegion.length;i++){
+                            for(var j=0;j<intersectingRegion[i].length;j++){
+                              count++,
+                              sum_x = sum_x + intersectingRegion[i][j][0],
+                              sum_y = sum_y + intersectingRegion[i][j][1],
+                            },
+                          },
+                          avg_x = sum_x/count,
+                          avg_y = sum_y/count,
+                          avg_y = 1200 - avg_y,
+                          print(avg_x),
+                          print(avg_y),
+                          //--------------------------------------------------------
+                          x_coordinate = (avg_x/700)*100,
+                          y_coordinate = (avg_y/1200)*100,
+                          print(x_coordinate),
+                          print(y_coordinate),
+
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (context) => PositioningScreen(
+                                  x_coordinate: x_coordinate,
+                                  y_coordinate: y_coordinate,
+                                )
+                            )
+                          ),
+                        }
                       },
                       child: Text(
                         "Locate Me",

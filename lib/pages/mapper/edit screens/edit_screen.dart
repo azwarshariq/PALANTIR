@@ -455,6 +455,7 @@ class _EditScreenState extends State<EditScreen> {
                           splashColor: const Color(0xAAA11C44),
                           splashRadius: 45,
                           onPressed: () {
+                            //listOfRouters = [];
                             Navigator.of(context).push(
                               MaterialPageRoute(
                                 builder: (context) => CollectDataScreen(),
@@ -894,6 +895,7 @@ class _PopUpItemBodyState extends State<PopUpItemBody> {
 
                     ElevatedButton(
                       onPressed: () => {
+
                         if (xVar == 0 || yVar == 0)
                           {
                             ScaffoldMessenger.of(context).showSnackBar(
