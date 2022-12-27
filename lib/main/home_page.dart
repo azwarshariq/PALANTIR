@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:palantir_ips/classes/building_class.dart';
 import 'package:palantir_ips/pages/mapper/controller_screen.dart';
 import 'package:palantir_ips/read_data/get_user_name.dart';
+import '../auth/auth_page.dart';
 import '../classes/floor_class.dart';
 import '../classes/router_class.dart';
 import '../classes/user_class.dart';
@@ -208,7 +209,12 @@ class _HomePageState extends State<HomePage> {
                   onPressed: () => Navigator.of(context)
                       .push(
                       MaterialPageRoute(
-                          builder: (context) => LocateMeScreen()
+                          builder: (context) => LocateMeScreen(
+                            userInstance: userInstance,
+                            buildingInstances: buildingInstances,
+                            floorInstances: floorInstances,
+                            routerInstances: routerInstances,
+                          )
                       )
                   ),
 
