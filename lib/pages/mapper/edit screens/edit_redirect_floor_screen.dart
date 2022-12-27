@@ -1,11 +1,12 @@
 import 'package:google_fonts/google_fonts.dart';
-import 'package:palantir_ips/pages/edit_demo_screen.dart';
-import 'package:palantir_ips/pages/storage_service.dart';
 import 'package:flutter/material.dart';
-import '../classes/building_class.dart';
-import '../classes/floor_class.dart';
-import '../classes/router_class.dart';
-import '../classes/user_class.dart';
+import 'package:palantir_ips/pages/mapper/edit%20screens/edit_demo_screen.dart';
+import 'package:palantir_ips/pages/mapper/storage_service.dart';
+
+import '../../../classes/building_class.dart';
+import '../../../classes/floor_class.dart';
+import '../../../classes/router_class.dart';
+import '../../../classes/user_class.dart';
 
 class EditRedirectFloorScreen extends StatefulWidget {
   EditRedirectFloorScreen({
