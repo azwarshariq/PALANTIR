@@ -107,6 +107,7 @@ class _EditRedirectFloorScreenState extends State<EditRedirectFloorScreen> {
   Text hasFloorPlan(String selectedFloor){
     for (int i=0; i<floorInstances.length; i++){
       if (floorInstances[i].floorName == selectedFloor && floorInstances[i].floorPlan == ""){
+        print("${selectedFloor} has floor plan: ${floorInstances[i].floorPlan}");
         return Text(
           "${selectedFloor} does not have a floor plan!",
           style: GoogleFonts.raleway(
@@ -117,6 +118,7 @@ class _EditRedirectFloorScreenState extends State<EditRedirectFloorScreen> {
         );
       }
       else {
+        print("${selectedFloor} has floor plan: ${floorInstances[i].floorPlan}");
         return Text(
           "Floor Plan found for ${selectedFloor}",
           style: GoogleFonts.raleway(
@@ -147,7 +149,7 @@ class _EditRedirectFloorScreenState extends State<EditRedirectFloorScreen> {
           fit: BoxFit.cover,
         ),
         iconTheme: IconThemeData(
-          color: const Color(0xff325E89), //change your color here
+          color: const Color(0xff325E89),
         ),
         elevation: 0,
         title: Text(
@@ -163,70 +165,70 @@ class _EditRedirectFloorScreenState extends State<EditRedirectFloorScreen> {
       ),
       backgroundColor: Colors.white,
       body: ListView.builder(
-          itemCount: floorNames.length,
-          shrinkWrap: true,
-          padding: EdgeInsets.all(5),
-          scrollDirection: Axis.vertical,
-          itemBuilder: (BuildContext context, int index) {
-            return ListTile(
-                leading: const Icon(
-                  Icons.business,
-                  size: 30,
-                  color: Color(0xAA44CDB1),
-                ),
-              trailing: GestureDetector(
-                behavior: HitTestBehavior.translucent,
-                onTap: () {
-                  for(int i=0; i<floorInstances.length; i++){
-                    if (floorInstances[i].floorName == floorNames[index]){
-                      this.currentFloor = floorInstances[i];
-                    }
+        itemCount: floorNames.length,
+        shrinkWrap: true,
+        padding: EdgeInsets.all(5),
+        scrollDirection: Axis.vertical,
+        itemBuilder: (BuildContext context, int index) {
+          return ListTile(
+              leading: const Icon(
+                Icons.business,
+                size: 30,
+                color: Color(0xAA44CDB1),
+              ),
+            trailing: GestureDetector(
+              behavior: HitTestBehavior.translucent,
+              onTap: () {
+                for(int i=0; i<floorInstances.length; i++){
+                  if (floorInstances[i].floorName == floorNames[index]){
+                    this.currentFloor = floorInstances[i];
                   }
-                  if(currentFloor.floorPlan != ""){
-                    Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => EditDemoScreen(
-                            userInstance: this.userInstance,
-                            buildingInstances: this.buildingInstances,
-                            floorInstances: this.floorInstances,
-                            routerInstances: this.routerInstances,
-                            currentBuilding: this.currentBuilding,
-                            currentFloor: this.currentFloor,
-                          ),
-                        )
-                    );
-                  }
-                  else{
-                    Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => EditDemoScreen(
-                            userInstance: this.userInstance,
-                            buildingInstances: this.buildingInstances,
-                            floorInstances: this.floorInstances,
-                            routerInstances: this.routerInstances,
-                            currentBuilding: this.currentBuilding,
-                            currentFloor: this.currentFloor,
-                          ),
-                        )
-                    );
-                  }
-                },
-                child: const Icon(
-                  Icons.arrow_forward,
-                  size: 30,
-                  color: Color(0xff325E89),
+                }
+                if(currentFloor.floorPlan.contains(".")){
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => EditDemoScreen(
+                        userInstance: this.userInstance,
+                        buildingInstances: this.buildingInstances,
+                        floorInstances: this.floorInstances,
+                        routerInstances: this.routerInstances,
+                        currentBuilding: this.currentBuilding,
+                        currentFloor: this.currentFloor,
+                      ),
+                    )
+                  );
+                }
+                else{
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => EditDemoScreen(
+                        userInstance: this.userInstance,
+                        buildingInstances: this.buildingInstances,
+                        floorInstances: this.floorInstances,
+                        routerInstances: this.routerInstances,
+                        currentBuilding: this.currentBuilding,
+                        currentFloor: this.currentFloor,
+                      ),
+                    )
+                  );
+                }
+              },
+              child: const Icon(
+                Icons.arrow_forward,
+                size: 30,
+                color: Color(0xff325E89),
+              ),
+            ),
+            title: Text("${floorPlans[index]}",
+                style: GoogleFonts.raleway(
+                  color: const Color(0xff325E89),
+                  fontWeight: FontWeight.w400,
+                  fontSize: 20,
                 ),
               ),
-              title: Text("${floorNames[index]}",
-                  style: GoogleFonts.raleway(
-                    color: const Color(0xff325E89),
-                    fontWeight: FontWeight.w400,
-                    fontSize: 20,
-                  ),
-                ),
-                subtitle: hasFloorPlan(floorNames[index])
-            );
-          }
+              subtitle: hasFloorPlan(floorNames[index])
+          );
+        }
       ),
     );
   }

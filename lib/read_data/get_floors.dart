@@ -85,7 +85,7 @@ class GetFloors extends StatelessWidget {
                 data['floorName'],
                 data['buildingRef'],
                 data['numRouters'],
-                '-'
+                data['floorPlan']
             );
 
             floorInstances.add(floorInstance);
