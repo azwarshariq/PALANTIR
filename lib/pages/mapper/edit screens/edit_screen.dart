@@ -2,17 +2,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../classes/building_class.dart';
-import '../classes/elevators_class.dart';
-import '../classes/floor_class.dart';
-import '../classes/room_class.dart';
-import '../classes/router_class.dart';
-import '../classes/stairs_class.dart';
-import '../classes/user_class.dart';
-import 'collect_data_screen.dart';
+import '../../../classes/building_class.dart';
+import '../../../classes/elevators_class.dart';
+import '../../../classes/floor_class.dart';
+import '../../../classes/room_class.dart';
+import '../../../classes/router_class.dart';
+import '../../../classes/stairs_class.dart';
+import '../../../classes/user_class.dart';
+import '../collect data screens/collect_data_screen.dart';
 import 'hero_dialog_route.dart';
-import 'dart:math';
-import 'dart:ui' as ui;
 
 
 String checkNull = "false";

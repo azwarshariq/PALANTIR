@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../classes/building_class.dart';
-import '../classes/floor_class.dart';
-import '../classes/router_class.dart';
-import '../classes/user_class.dart';
+import '../../../classes/building_class.dart';
+import '../../../classes/floor_class.dart';
+import '../../../classes/router_class.dart';
+import '../../../classes/user_class.dart';
 import 'edit_screen.dart';
 
 class EditDemoScreen extends StatefulWidget {

@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:palantir_ips/pages/forgot_pw_page.dart';
+import 'package:palantir_ips/main/forgot_pw_page.dart';
 
 class LoginPage extends StatefulWidget {
   final VoidCallback showRegisterPage;
@@ -30,7 +30,7 @@ class _LoginPageState extends State<LoginPage> {
       builder: (context) {
         return Center(
           child: CircularProgressIndicator(
-            color: const Color(0xffA11C44),
+            color: const Color(0xff02BB95),
             backgroundColor: const Color(0x00ffffff),
           )
         );

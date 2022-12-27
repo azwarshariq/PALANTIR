@@ -1,14 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:palantir_ips/pages/home_page.dart';
-import 'package:palantir_ips/pages/upload_redirect_screen.dart';
-import '../classes/building_class.dart';
-import '../classes/floor_class.dart';
-import '../classes/router_class.dart';
-import '../classes/user_class.dart';
+import 'package:palantir_ips/main/home_page.dart';
+import 'package:palantir_ips/pages/mapper/upload%20screens/upload_redirect_screen.dart';
+import '../../classes/building_class.dart';
+import '../../classes/floor_class.dart';
+import '../../classes/router_class.dart';
+import '../../classes/user_class.dart';
 import 'add_building.dart';
-import 'edit_redirect_screen.dart';
+import 'collect data screens/collect_redirect_screen.dart';
+import 'edit screens/edit_redirect_screen.dart';
 
 class Controller extends StatefulWidget {
   Controller({Key? key, required this.userInstance,
@@ -254,9 +255,17 @@ class _ControllerState extends State<Controller> {
                                 padding: const EdgeInsets.all(20),
                                 shadowColor: Color(0xFFCD4F69),
                               ),
-                              onPressed: () {
-                                //code to execute when this button is pressed.
-                              },
+                              onPressed: () => Navigator.of(context)
+                                  .push(
+                                  MaterialPageRoute(
+                                      builder: (context) => CollectRedirectScreen(
+                                        userInstance: this.userInstance,
+                                        buildingInstances: this.buildingInstances,
+                                        floorInstances: this.floorInstances,
+                                        routerInstances: this.routerInstances,
+                                      )
+                                  )
+                              ),
                               child: Text(
                                 "Collect Position Data",
                                 style: GoogleFonts.raleway(

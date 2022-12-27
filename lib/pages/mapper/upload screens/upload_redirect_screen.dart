@@ -1,16 +1,14 @@
 import 'package:google_fonts/google_fonts.dart';
-import 'package:palantir_ips/pages/storage_service.dart';
+import 'package:palantir_ips/pages/mapper/storage_service.dart';
 import 'package:flutter/material.dart';
-import 'package:palantir_ips/pages/upload_redirect_screen.dart';
-import 'package:palantir_ips/pages/upload_screen.dart';
-import '../classes/building_class.dart';
-import '../classes/floor_class.dart';
-import '../classes/router_class.dart';
-import '../classes/user_class.dart';
-import 'edit_redirect_floor_screen.dart';
+import 'package:palantir_ips/pages/mapper/upload%20screens/upload_screen.dart';
+import '../../../classes/building_class.dart';
+import '../../../classes/floor_class.dart';
+import '../../../classes/router_class.dart';
+import '../../../classes/user_class.dart';
 
-class EditRedirectScreen extends StatefulWidget {
-  EditRedirectScreen({
+class UploadRedirectScreen extends StatefulWidget {
+  UploadRedirectScreen({
     Key? key,
     required this.userInstance,
     required this.buildingInstances,
@@ -34,7 +32,7 @@ class EditRedirectScreen extends StatefulWidget {
 
 
   @override
-  _EditRedirectScreenState createState() => _EditRedirectScreenState(
+  _UploadRedirectScreenState createState() => _UploadRedirectScreenState(
     this.userInstance,
     this.buildingInstances,
     this.floorInstances,
@@ -42,9 +40,9 @@ class EditRedirectScreen extends StatefulWidget {
   );
 }
 
-class _EditRedirectScreenState extends State<EditRedirectScreen> {
+class _UploadRedirectScreenState extends State<UploadRedirectScreen> {
 
-  _EditRedirectScreenState(
+  _UploadRedirectScreenState(
       this.userInstance,
       this.buildingInstances,
       this.floorInstances,
@@ -137,12 +135,12 @@ class _EditRedirectScreenState extends State<EditRedirectScreen> {
                   onTap: () {
                     for(int i=0; i<buildingInstances.length; i++){
                       if (buildingInstances[i].buildingName == buildingNames[index]){
-                        this.currentBuilding = buildingInstances[i];
+                        this.currentBuilding=buildingInstances[i];
                       }
                     }
                     Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => EditRedirectFloorScreen(
+                          builder: (context) => UploadScreen(
                             userInstance: this.userInstance,
                             buildingInstances: this.buildingInstances,
                             floorInstances: this.floorInstances,
