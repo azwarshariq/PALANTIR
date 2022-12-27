@@ -2,6 +2,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:palantir_ips/pages/mapper/edit%20screens/edit_demo_screen.dart';
 import 'package:palantir_ips/pages/mapper/storage_service.dart';
+import 'package:palantir_ips/pages/mapper/upload%20screens/upload_screen.dart';
 
 import '../../../classes/building_class.dart';
 import '../../../classes/floor_class.dart';
@@ -105,39 +106,28 @@ class _EditRedirectFloorScreenState extends State<EditRedirectFloorScreen> {
 
   bool floorHasPlan = false;
 
-  Text hasFloorPlan(String selectedFloor){
-    for (int i=0; i<floorInstances.length; i++){
-      if (floorInstances[i].floorName == selectedFloor && floorInstances[i].floorPlan == ""){
-        print("${selectedFloor} has floor plan: ${floorInstances[i].floorPlan}");
-        return Text(
-          "${selectedFloor} does not have a floor plan!",
-          style: GoogleFonts.raleway(
-            color: const Color(0xff325E89),
-            fontWeight: FontWeight.w200,
-            fontSize: 20,
-          ),
-        );
-      }
-      else {
-        print("${selectedFloor} has floor plan: ${floorInstances[i].floorPlan}");
-        return Text(
+  Text hasFloorPlan(String selectedFloor, String selectedFloorPlan){
+    if (selectedFloorPlan == ""){
+      floorHasPlan = true;
+      return Text(
+        "${selectedFloor} does not have a floor plan!",
+        style: GoogleFonts.raleway(
+          color: const Color(0xffA11C44),
+          fontWeight: FontWeight.w300,
+          fontSize: 15,
+        ),
+      );
+    }
+    else {
+      return Text(
           "Floor Plan found for ${selectedFloor}",
           style: GoogleFonts.raleway(
-            color: const Color(0xff325E89),
-            fontWeight: FontWeight.w200,
-            fontSize: 20,
+            color: const Color(0xAA44CDB1),
+            fontWeight: FontWeight.w300,
+            fontSize: 15,
           )
-        );
-      }
+      );
     }
-    return Text(
-        "Floor Plan found for ${selectedFloor}",
-        style: GoogleFonts.raleway(
-          color: const Color(0xff325E89),
-          fontWeight: FontWeight.w200,
-          fontSize: 20,
-        )
-    );
   }
 
   @override
@@ -154,7 +144,7 @@ class _EditRedirectFloorScreenState extends State<EditRedirectFloorScreen> {
         ),
         elevation: 0,
         title: Text(
-          'Select Floor',
+          "${ currentBuilding.buildingName + ' - Select Floor'}",
           style: GoogleFonts.raleway(
             color: const Color(0xff325E89),
             fontWeight: FontWeight.w400,
@@ -165,6 +155,7 @@ class _EditRedirectFloorScreenState extends State<EditRedirectFloorScreen> {
         backgroundColor: Colors.transparent,
       ),
       backgroundColor: Colors.white,
+
       body: ListView.builder(
         itemCount: floorNames.length,
         shrinkWrap: true,
@@ -185,7 +176,7 @@ class _EditRedirectFloorScreenState extends State<EditRedirectFloorScreen> {
                     this.currentFloor = floorInstances[i];
                   }
                 }
-                if(currentFloor.floorPlan.contains(".")){
+                if(floorPlans[index] != ""){
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) => EditDemoScreen(
@@ -202,13 +193,12 @@ class _EditRedirectFloorScreenState extends State<EditRedirectFloorScreen> {
                 else{
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => EditDemoScreen(
+                      builder: (context) => UploadScreen(
                         userInstance: this.userInstance,
                         buildingInstances: this.buildingInstances,
                         floorInstances: this.floorInstances,
                         routerInstances: this.routerInstances,
                         currentBuilding: this.currentBuilding,
-                        currentFloor: this.currentFloor,
                       ),
                     )
                   );
@@ -220,14 +210,14 @@ class _EditRedirectFloorScreenState extends State<EditRedirectFloorScreen> {
                 color: Color(0xff325E89),
               ),
             ),
-            title: Text("${floorPlans[index]}",
+            title: Text("${floorNames[index]}",
                 style: GoogleFonts.raleway(
                   color: const Color(0xff325E89),
                   fontWeight: FontWeight.w400,
                   fontSize: 20,
                 ),
               ),
-              subtitle: hasFloorPlan(floorNames[index])
+              subtitle: hasFloorPlan(floorNames[index], floorPlans[index])
           );
         }
       ),
