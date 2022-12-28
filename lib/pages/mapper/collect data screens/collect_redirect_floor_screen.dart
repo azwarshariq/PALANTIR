@@ -105,6 +105,56 @@ class _CollectRedirectFloorScreenState extends State<CollectRedirectFloorScreen>
     return floorNames;
   }
 
+  void nextScreen(){
+    print(currentFloor.referenceId);
+    if(currentFloor.floorPlan != ""){
+      Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => CollectDataScreen(
+              // userInstance: this.userInstance,
+              // buildingInstances: this.buildingInstances,
+              // floorInstances: this.floorInstances,
+              // routerInstances: this.routerInstances,
+              // currentBuilding: this.currentBuilding,
+              // currentFloor: this.currentFloor,
+            ),
+          )
+      );
+    }
+    else {
+      Navigator.of(context).push(
+          MaterialPageRoute(
+              builder: (context) => UploadScreen(
+                  userInstance: this.userInstance,
+                  buildingInstances: this.buildingInstances,
+                  floorInstances: this.floorInstances,
+                  routerInstances: this.routerInstances,
+                  currentBuilding: this.currentBuilding)
+          )
+      );
+    }
+  }
+
+  Icon nextIcon(String selectedFloor, String selectedFloorPlan){
+    if (selectedFloorPlan == ""){
+      floorHasPlan = true;
+      return Icon(
+        Icons.add_photo_alternate_outlined,
+        size: 30,
+        color: Color(0xff325E89),
+      );
+    }
+    else {
+      floorHasPlan = false;
+      return Icon(
+        Icons.arrow_forward,
+        size: 30,
+        color: Color(0xff325E89),
+      );
+    }
+  }
+
+
   bool floorHasPlan = false;
 
   Text hasFloorPlan(String selectedFloor, String selectedFloorPlan){
@@ -173,28 +223,15 @@ class _CollectRedirectFloorScreenState extends State<CollectRedirectFloorScreen>
                   behavior: HitTestBehavior.translucent,
                   onTap: () {
                     for(int i=0; i<floorInstances.length; i++){
-                      if (floorInstances[i].floorName == floorNames[index]){
+                      if (floorInstances[i].floorName == floorNames[index] && floorInstances[i].buildingRef == currentBuilding.referenceId){
                         this.currentFloor = floorInstances[i];
                       }
                     }
-
-                    Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => CollectDataScreen(
-                            // userInstance: this.userInstance,
-                            // buildingInstances: this.buildingInstances,
-                            // floorInstances: this.floorInstances,
-                            // routerInstances: this.routerInstances,
-                            // currentBuilding: this.currentBuilding,
-                          ),
-                        )
-                    );
+                    print(currentBuilding.referenceId);
+                    print(currentFloor.referenceId);
+                    nextScreen();
                   },
-                  child: const Icon(
-                    Icons.arrow_forward,
-                    size: 30,
-                    color: Color(0xff325E89),
-                  ),
+                  child: nextIcon(floorNames[index], floorPlans[index]),
                 ),
                 title: Text("${floorNames[index]}",
                   style: GoogleFonts.raleway(
