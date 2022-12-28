@@ -185,7 +185,8 @@ class _AddBuildingState extends State<AddBuilding> {
         'floorPlan' : ''
       }) // <-- Your data
     .then((_) => print('Added ' + Name + ' with buildingRef ' + buildingRef))
-    .catchError((error) => print('Add failed: $error'));
+    .catchError((error) => print('Add failed: $error')
+    );
   }
 
   @override

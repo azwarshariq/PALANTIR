@@ -181,11 +181,9 @@ class _CollectRedirectFloorScreenState extends State<CollectRedirectFloorScreen>
                     Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) => CollectDataScreen(
-                            // userInstance: this.userInstance,
-                            // buildingInstances: this.buildingInstances,
-                            // floorInstances: this.floorInstances,
-                            // routerInstances: this.routerInstances,
-                            // currentBuilding: this.currentBuilding,
+                            userInstance: this.userInstance,
+                            currentBuilding: this.currentBuilding,
+                            currentFloor: this.currentFloor,
                           ),
                         )
                     );

@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
@@ -5,13 +7,49 @@ import 'package:flutter/foundation.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:palantir_ips/main/home_page.dart';
 import 'package:wifi_scan/wifi_scan.dart';
+import '../../../classes/building_class.dart';
+import '../../../classes/floor_class.dart';
+import '../../../classes/router_class.dart';
+import '../../../classes/user_class.dart';
 import '../edit screens/hero_dialog_route.dart';
 
 class CollectDataScreen extends StatefulWidget {
-  const CollectDataScreen({Key? key}) : super(key: key);
+  CollectDataScreen({
+    super.key,
+    required this.userInstance,
+    required this.currentBuilding,
+    required this.currentFloor
+  });
+
+  userObject userInstance = new userObject(
+      '',
+      '',
+      '-',
+      '',
+      0
+  );
+  buildingObject currentBuilding = new buildingObject(
+      "",
+      "",
+      "",
+      0
+  );
+  floorObject currentFloor = new floorObject(
+      "",
+      "",
+      "",
+      0,
+      ""
+  );
+
+  List<routerObject> routerInstances = [];
 
   @override
-  State<CollectDataScreen> createState() => _CollectDataScreenState();
+  State<CollectDataScreen> createState() => _CollectDataScreenState(
+    this.userInstance,
+    this.currentBuilding,
+    this.currentFloor
+  );
 }
 
 final formKey = GlobalKey<FormState>(); //key for form
@@ -23,7 +61,40 @@ double yVar = 0;
 int xyAxis = 100;
 int value = 0;
 
+List<String> listOfBSSIDs = [];
+List<int> listOfStrengths = [];
+List<int> listOfFrequencies = [];
+
 class _CollectDataScreenState extends State<CollectDataScreen> {
+  _CollectDataScreenState(
+    this.userInstance,
+    this.currentBuilding,
+    this.currentFloor
+  );
+
+  userObject userInstance = new userObject(
+      '',
+      '',
+      '-',
+      '',
+      0
+  );
+  buildingObject currentBuilding = new buildingObject(
+      "",
+      "",
+      "",
+      0
+  );
+  floorObject currentFloor = new floorObject(
+      "",
+      "",
+      "",
+      0,
+      ""
+  );
+
+  List<routerObject> routerInstances = [];
+
 
   String? Url = " ";
 
@@ -34,7 +105,9 @@ class _CollectDataScreenState extends State<CollectDataScreen> {
 
     return url.toString();
   }
+
   Offset? _tapPosition;
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -92,55 +165,58 @@ class _CollectDataScreenState extends State<CollectDataScreen> {
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.05,
                       ),
-                      // Container(
-                      //   child: Column(
-                      //     children: [
-                      //       FutureBuilder<String>(
-                      //           future: getURL(currentFloor.floorPlan),
-                      //           builder: (BuildContext context, AsyncSnapshot<String> url)
-                      //           {
-                      //             Url = url.data;
-                      //             var check = Url;
-                      //             if (check != null) {
-                      //               return Image.network(
-                      //                 Url!,
-                      //                 height: MediaQuery.of(context).size.height * 0.70,
-                      //                 width: MediaQuery.of(context).size.width * 0.90,
-                      //                 fit:BoxFit.contain,
-                      //               ); // Safe
-                      //             }
-                      //             else{
-                      //               return Center(
-                      //                 child: Column(
-                      //                   crossAxisAlignment: CrossAxisAlignment.center,
-                      //                   children: [
-                      //                     Text("Loading...",
-                      //                         style: TextStyle(
-                      //                           fontSize: 17,
-                      //                           color: Colors.white60,)
-                      //                     ),
-                      //                   ],
-                      //                 ),
-                      //               );
-                      //             }
-                      //           }
-                      //       ),
-                      //     ],
-                      //   ),
-                      // ),
-
                       Container(
+                        child: Column(
+                          children: [
+                            FutureBuilder<String>(
+                              future: getURL(currentFloor.floorPlan),
+                              builder: (BuildContext context, AsyncSnapshot<String> url)
+                              {
+                                Url = url.data;
+                                var check = Url;
+                                if (check != null) {
+                                  return Image.network(
+                                    Url!,
+                                    height: MediaQuery.of(context).size.height * 0.70,
+                                    width: MediaQuery.of(context).size.width * 0.90,
+                                    fit:BoxFit.contain,
+                                  ); // Safe
+                                }
+                                else{
+                                  return Center(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          "Loading...",
+                                          style: TextStyle(
+                                            fontSize: 17,
+                                            color: Colors.white60,
+                                          )
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                }
+                              }
+                            ),
+                          ],
+                        ),
+                      ),
+/*                      Container(
                         child: Image.asset(
                           'assets/floorplan.jpeg',
                           height: MediaQuery.of(context).size.height * 0.70,
                           width: MediaQuery.of(context).size.width * 0.9,
                           //fit: BoxFit.fitWidth,
-                        )),
+                        )
+                      ),*/
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.05,
                       ),
                     ],
                   ),
+
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.03,
                   ),
@@ -148,15 +224,21 @@ class _CollectDataScreenState extends State<CollectDataScreen> {
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.02,
                   ),
+
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
 
                       GestureDetector(
                         onTap: () {
-                          Navigator.of(context)
-                            .push(HeroDialogRoute(builder: (context) {
-                              return PopUpItemBodyAccessPoints();
+                          Navigator.of(context).push(
+                            HeroDialogRoute(builder: (context) {
+                              return PopUpItemBodyAccessPoints(
+                                userInstance: this.userInstance,
+                                currentBuilding: this.currentBuilding,
+                                currentFloor: this.currentFloor,
+                                routerInstances: this.routerInstances,
+                              );
                             })
                           );
                         },
@@ -212,13 +294,77 @@ class _CollectDataScreenState extends State<CollectDataScreen> {
 }
 
 class PopUpItemBodyAccessPoints extends StatefulWidget {
-  PopUpItemBodyAccessPoints({Key? key}) : super(key: key);
+  PopUpItemBodyAccessPoints({
+    super.key,
+    required this.userInstance,
+    required this.currentBuilding,
+    required this.currentFloor,
+    required this.routerInstances
+  });
+
+  userObject userInstance = new userObject(
+      '',
+      '',
+      '-',
+      '',
+      0
+  );
+  buildingObject currentBuilding = new buildingObject(
+      "",
+      "",
+      "",
+      0
+  );
+  floorObject currentFloor = new floorObject(
+      "",
+      "",
+      "",
+      0,
+      ""
+  );
+
+  List<routerObject> routerInstances = [];
+
 
   @override
-  State<PopUpItemBodyAccessPoints> createState() => _PopUpItemBodyAccessPointsState();
+  State<PopUpItemBodyAccessPoints> createState() => _PopUpItemBodyAccessPointsState(
+      this.userInstance,
+      this.currentBuilding,
+      this.currentFloor,
+      this.routerInstances
+  );
 }
 class _PopUpItemBodyAccessPointsState extends State<PopUpItemBodyAccessPoints> {
 
+  _PopUpItemBodyAccessPointsState(
+    this.userInstance,
+    this.currentBuilding,
+    this.currentFloor,
+    this.routerInstances
+  );
+
+  userObject userInstance = new userObject(
+      '',
+      '',
+      '-',
+      '',
+      0
+  );
+  buildingObject currentBuilding = new buildingObject(
+      "",
+      "",
+      "",
+      0
+  );
+  floorObject currentFloor = new floorObject(
+      "",
+      "",
+      "",
+      0,
+      ""
+  );
+
+  List<routerObject> routerInstances = [];
 
   List<WiFiAccessPoint> accessPoints = <WiFiAccessPoint>[];
   StreamSubscription<List<WiFiAccessPoint>>? subscription;
@@ -267,6 +413,40 @@ class _PopUpItemBodyAccessPointsState extends State<PopUpItemBodyAccessPoints> {
     }
   }
 
+  Future<void> uploadData() async {
+
+    List<routerObject> currentRouters = [];
+
+    for (int i=0; i<routerInstances.length; i++){
+      if (listOfBSSIDs.contains(routerInstances[i].BSSID)){
+        currentRouters.add(routerInstances[i]);
+      }
+    }
+
+    await FirebaseFirestore.instance.collection('Users')
+      .where('email', isEqualTo:FirebaseAuth.instance.currentUser!.email)
+      .get()
+      .then(
+        (snapshot) => snapshot.docs.forEach(
+            (element) {
+          print("User reference is ${element.reference}");
+        }
+      ),
+    );
+
+    await FirebaseFirestore.instance.collection('Data')
+      .doc(currentFloor.referenceId)
+      .set({
+        'x': xVar,
+        'y': yVar,
+        'listOfBSSIDs': listOfBSSIDs,
+        'listOfFrequencies': listOfFrequencies,
+        'listOfStrengths': listOfStrengths
+      })
+      .then((value) => print("Data Added"))
+      .catchError((error) => print("Failed to add data: $error"));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -287,80 +467,117 @@ class _PopUpItemBodyAccessPointsState extends State<PopUpItemBodyAccessPoints> {
                     color: Colors.white,
                     elevation: 2,
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(32)),
+                      borderRadius: BorderRadius.circular(32)
+                    ),
                     child: accessPoints.isEmpty
-                        ? Text("NO SCANNED RESULTS",
-                            style: GoogleFonts.raleway(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w300,
-                              fontSize: 24,
-                            ),
+                      ? Text(
+                        "NO SCANNED RESULTS",
+                        style: GoogleFonts.raleway(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w300,
+                          fontSize: 24,
+                        ),
+                        )
+                        : ListView.builder(
+                        itemCount: accessPoints.length,
+                        itemBuilder: (context, i) =>
+                          _AccessPointTile(
+                            accessPoint: accessPoints[i],
+                            userInstance: this.userInstance,
+                            currentBuilding: this.currentBuilding,
+                            currentFloor: this.currentFloor,
+                            routerInstances: this.routerInstances,
                           )
-                          : ListView.builder(
-                          itemCount: accessPoints.length,
-                          itemBuilder: (context, i) =>
-                            _AccessPointTile(accessPoint: accessPoints[i])),
+                    ),
                   ),
                 ),
               ),
             ),
+
             SizedBox(
               height: 50
             ),
 
             accessPoints.isEmpty ?
             ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xffB62B37), //background color of button
-                  elevation: 8, //elevation of button
-                  shape: RoundedRectangleBorder(
-                    //to set border radius to button
-                      borderRadius: BorderRadius.circular(20)
-                  ),
-                  padding: const EdgeInsets.all(20),
-                  shadowColor: Color(0xFFCD4F69),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color(0xffB62B37), //background color of button
+                elevation: 8, //elevation of button
+                shape: RoundedRectangleBorder(
+                  //to set border radius to button
+                    borderRadius: BorderRadius.circular(20)
                 ),
-                onPressed: () => {
-                  _startScan(context),
-                  _getScannedResults(context),
-                },
-                child: Text(
-                  "Scan",
-                  style: GoogleFonts.raleway(
-                    color: Colors.white60,
-                    fontWeight: FontWeight.w300,
-                    fontSize: 20,
-                  ),
-                )
+                padding: const EdgeInsets.all(20),
+                shadowColor: Color(0xFFCD4F69),
+              ),
+              onPressed: () => {
+                _startScan(context),
+                _getScannedResults(context),
+              },
+              child: Text(
+                "Scan",
+                style: GoogleFonts.raleway(
+                  color: Colors.white60,
+                  fontWeight: FontWeight.w300,
+                  fontSize: 20,
+                ),
               )
+            )
 
-              : ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xffB62B37), //background color of button
-                  elevation: 8, //elevation of button
-                  shape: RoundedRectangleBorder(
-                    //to set border radius to button
-                      borderRadius: BorderRadius.circular(20)
-                  ),
-                  padding: const EdgeInsets.all(20),
-                  shadowColor: Color(0xFFCD4F69),
+            : ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color(0xffB62B37), //background color of button
+                elevation: 8, //elevation of button
+                shape: RoundedRectangleBorder(
+                  //to set border radius to button
+                  borderRadius: BorderRadius.circular(20)
                 ),
-                onPressed: () => {
+                padding: const EdgeInsets.all(20),
+                shadowColor: Color(0xFFCD4F69),
+              ),
+              onPressed: () => {
+                if (xVar == 0 || yVar == 0)
+                  {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          'Please tap on screen to select x and y coordinates!',
+                          style: GoogleFonts.raleway(
+                            color: Colors.white60,
+                            fontWeight: FontWeight.w300,
+                            fontSize: 20,
+                          ),
+                        )
+                      )
+                    ),
+                  }
+                else{
                   Navigator.pop(context),
+                  uploadData(),
                   ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                          content:
-                          Text('Data Successfully Uploaded!'))),
-                },
-                child: Text(
-                  "Upload Data",
-                  style: GoogleFonts.raleway(
-                    color: Colors.white60,
-                    fontWeight: FontWeight.w300,
-                    fontSize: 20,
+                    SnackBar(
+                      content:
+                      Text(
+                        'Data Successfully Uploaded!',
+                        style: GoogleFonts.raleway(
+                          color: Colors.white60,
+                          fontWeight: FontWeight.w300,
+                          fontSize: 20,
+                        ),
+                      )
+                    )
                   ),
-                )
+                }
+              },
+              child: Text(
+                "Upload Data",
+                style: GoogleFonts.raleway(
+                  color: Colors.white60,
+                  fontWeight: FontWeight.w300,
+                  fontSize: 20,
+                ),
               )
+            )
           ]
         )
       ),
@@ -369,23 +586,66 @@ class _PopUpItemBodyAccessPointsState extends State<PopUpItemBodyAccessPoints> {
 }
 
 class _AccessPointTile extends StatelessWidget {
+
+  userObject userInstance = new userObject(
+      '',
+      '',
+      '-',
+      '',
+      0
+  );
+  buildingObject currentBuilding = new buildingObject(
+      "",
+      "",
+      "",
+      0
+  );
+  floorObject currentFloor = new floorObject(
+      "",
+      "",
+      "",
+      0,
+      ""
+  );
+
+  List<routerObject> routerInstances = [];
+
   final WiFiAccessPoint accessPoint;
 
-  const _AccessPointTile({Key? key, required this.accessPoint})
-      : super(key: key);
+  _AccessPointTile({
+    super.key,
+    required this.accessPoint,
+    required this.userInstance,
+    required this.currentBuilding,
+    required this.currentFloor,
+    required this.routerInstances
+  });
 
   // build row that can display info, based on label: value pair.
   Widget _buildInfo(String label, dynamic value) => Container(
     decoration: const BoxDecoration(
-      border: Border(bottom: BorderSide(color: Colors.grey)),
+      border: Border(
+        bottom: BorderSide(color: Colors.grey)
+      ),
     ),
     child: Row(
       children: [
         Text(
           "$label: ",
-          style: const TextStyle(fontWeight: FontWeight.bold),
+          style: GoogleFonts.raleway(
+            color: Colors.white60,
+            fontWeight: FontWeight.w300,
+          ),
         ),
-        Expanded(child: Text(value.toString()))
+        Expanded(
+          child: Text(
+            value.toString(),
+            style: GoogleFonts.raleway(
+              color: Colors.white60,
+              fontWeight: FontWeight.w300,
+            ),
+          )
+        )
       ],
     ),
   );
@@ -400,10 +660,22 @@ class _AccessPointTile extends StatelessWidget {
       visualDensity: VisualDensity.compact,
       leading: Icon(signalIcon),
       title: Text(title),
-      subtitle: Text(accessPoint.capabilities),
+      subtitle: Text(
+        accessPoint.capabilities,
+        style: GoogleFonts.raleway(
+          color: Colors.blueGrey,
+          fontWeight: FontWeight.w200,
+        ),
+      ),
       onTap: () {
         print(accessPoint.bssid);
+        listOfBSSIDs.add(accessPoint.bssid);
+
         print(accessPoint.frequency);
+        listOfFrequencies.add(accessPoint.frequency);
+
+        print(accessPoint.level);
+        listOfStrengths.add(accessPoint.level);
       },
 
       /* print("Index number is:");

@@ -267,10 +267,11 @@ class _EditScreenState extends State<EditScreen> {
                                           crossAxisAlignment: CrossAxisAlignment.center,
                                           children: [
                                             Text("Loading...",
-                                              style: TextStyle(
+                                              style: GoogleFonts.raleway(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w300,
                                                 fontSize: 17,
-                                                color: Colors.white60,
-                                              )
+                                              ),
                                             ),
                                           ],
                                         ),
@@ -498,7 +499,11 @@ class _EditScreenState extends State<EditScreen> {
                             //listOfRouters = [];
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (context) => CollectDataScreen(),
+                                builder: (context) => CollectDataScreen(
+                                  userInstance: this.userInstance,
+                                  currentBuilding: this.currentBuilding,
+                                  currentFloor: this.currentFloor,
+                                ),
                               ),
                             );
                           },

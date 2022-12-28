@@ -1,5 +1,5 @@
 name: palantir_ips
-description: A new Flutter project.
+description: An Indoor Positioning System with an in-built mapping and data collecting solution
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
