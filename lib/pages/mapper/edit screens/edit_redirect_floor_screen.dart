@@ -107,6 +107,7 @@ class _EditRedirectFloorScreenState extends State<EditRedirectFloorScreen> {
   bool floorHasPlan = false;
 
   void nextScreen(){
+    print(currentFloor.referenceId);
     if(currentFloor.floorPlan != ""){
       Navigator.of(context).push(
         MaterialPageRoute(
@@ -135,18 +136,19 @@ class _EditRedirectFloorScreenState extends State<EditRedirectFloorScreen> {
     }
   }
 
-  Icon nextIcon(){
-    if(currentFloor.floorPlan != ""){
-      print("${currentFloor.floorName} has floorplan ${currentFloor.floorPlan}");
+  Icon nextIcon(String selectedFloor, String selectedFloorPlan){
+    if (selectedFloorPlan == ""){
+      floorHasPlan = true;
       return Icon(
-        Icons.arrow_forward,
+        Icons.add_photo_alternate_outlined,
         size: 30,
         color: Color(0xff325E89),
       );
     }
-    else{
+    else {
+      floorHasPlan = false;
       return Icon(
-        Icons.add_photo_alternate_outlined,
+        Icons.arrow_forward,
         size: 30,
         color: Color(0xff325E89),
       );
@@ -228,7 +230,7 @@ class _EditRedirectFloorScreenState extends State<EditRedirectFloorScreen> {
                 print(currentFloor.referenceId);
                 nextScreen();
               },
-              child: nextIcon(),
+              child: nextIcon(floorNames[index], floorPlans[index]),
             ),
             title: Text("${floorNames[index]}",
                 style: GoogleFonts.raleway(
