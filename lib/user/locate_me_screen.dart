@@ -10,6 +10,7 @@ import '../classes/building_class.dart';
 import '../classes/floor_class.dart';
 import '../classes/router_class.dart';
 import '../classes/user_class.dart';
+import '../main/home_page.dart';
 
 
 
@@ -280,6 +281,20 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
             fontSize: 20,
           ),
         ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.home_filled,
+              color: const Color(0xffffffff),
+            ),
+            onPressed: () => Navigator.of(context)
+                .push(
+                MaterialPageRoute(
+                  builder: (context) => HomePage(),
+                )
+            ),
+          )
+        ],
         iconTheme: IconThemeData(
           color: const Color(0xffffffff), //change your color here
         ),
@@ -342,13 +357,15 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
 
 
                           for(int i=0; i<routerInstances.length; i++){
-                            if(routerInstances[i].BSSID == "Fast - aa"){
+                            if(routerInstances[i].BSSID == "hey"){
                               print("Router bssid -> "+ routerInstances[i].BSSID),
                               for(int j=0; j<floorInstances.length; j++){
                                 if(floorInstances[j].referenceId == routerInstances[i].floorRef){
+                                  this.currentFloor = floorInstances[j],
                                   print(floorInstances[j].referenceId),
                                   for(int k=0; k<buildingInstances.length; k++){
                                     if(buildingInstances[k].referenceId == floorInstances[j].buildingRef){
+                                      this.currentBuilding = buildingInstances[k],
                                       print(buildingInstances[k].referenceId),
                                     }
                                   }
@@ -416,6 +433,12 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
                           Navigator.of(context).push(
                             MaterialPageRoute(
                                 builder: (context) => PositioningScreen(
+                                  userInstance: userInstance,
+                                  buildingInstances: buildingInstances,
+                                  floorInstances: floorInstances,
+                                  routerInstances: routerInstances,
+                                  currentBuilding: currentBuilding,
+                                  currentFloor: currentFloor,
                                   x_coordinate: x_coordinate,
                                   y_coordinate: y_coordinate,
                                 )

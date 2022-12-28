@@ -9,6 +9,7 @@ import '../../../classes/room_class.dart';
 import '../../../classes/router_class.dart';
 import '../../../classes/stairs_class.dart';
 import '../../../classes/user_class.dart';
+import '../../../main/home_page.dart';
 import '../collect data screens/collect_data_screen.dart';
 import 'hero_dialog_route.dart';
 
@@ -218,6 +219,20 @@ class _EditScreenState extends State<EditScreen> {
               fontSize: 20,
             ),
           ),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(
+                Icons.home_filled,
+                color: const Color(0xffffffff),
+              ),
+              onPressed: () => Navigator.of(context)
+                  .push(
+                  MaterialPageRoute(
+                    builder: (context) => HomePage(),
+                  )
+              ),
+            )
+          ],
           centerTitle: true,
           backgroundColor: Colors.transparent,
           shadowColor: const Color(0x00ffffff),
@@ -245,7 +260,6 @@ class _EditScreenState extends State<EditScreen> {
                           Container(
                             child: Column(
                               children: [
-
                                 FutureBuilder<String>(
                                   future: getURL(currentFloor.floorPlan),
                                   builder: (BuildContext context, AsyncSnapshot<String> url)

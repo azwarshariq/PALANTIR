@@ -1,21 +1,65 @@
-import 'dart:math';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'dart:async';
-import 'package:flutter/foundation.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../classes/building_class.dart';
+import '../classes/floor_class.dart';
+import '../classes/router_class.dart';
+import '../classes/user_class.dart';
+import '../main/home_page.dart';
 
 class PositioningScreen extends StatefulWidget {
   PositioningScreen({
     Key? key,
+    required this.userInstance,
+    required this.buildingInstances,
+    required this.floorInstances,
+    required this.routerInstances,
+    required this.currentBuilding,
+    required this.currentFloor,
     required this.x_coordinate,
     required this.y_coordinate,
   }):super(key: key);
+
+  userObject userInstance = new userObject(
+      '',
+      '',
+      '-',
+      '',
+      0
+  );
+
+  buildingObject currentBuilding = new buildingObject(
+      "",
+      "",
+      "",
+      0
+  );
+
+  floorObject currentFloor = new floorObject(
+    "",
+    "",
+    "",
+    0,
+    "",
+  );
+
+  List<buildingObject> buildingInstances = [];
+
+  List<floorObject> floorInstances = [];
+
+  List<routerObject> routerInstances = [];
 
   final x_coordinate;
   final y_coordinate;
 
   @override
   State<PositioningScreen> createState() => _PositioningScreenState(
+    this.userInstance,
+    this.buildingInstances,
+    this.floorInstances,
+    this.routerInstances,
+    this.currentBuilding,
+    this.currentFloor,
     this.x_coordinate,
     this.y_coordinate,
   );
@@ -23,12 +67,55 @@ class PositioningScreen extends StatefulWidget {
 
 class _PositioningScreenState extends State<PositioningScreen> {
   _PositioningScreenState(
+    this.userInstance,
+    this.buildingInstances,
+    this.floorInstances,
+    this.routerInstances,
+    this.currentBuilding,
+    this.currentFloor,
     this.x_coordinate,
     this.y_coordinate,
   );
 
+  userObject userInstance = new userObject(
+      '',
+      '',
+      '-',
+      '',
+      0
+  );
+
+  buildingObject currentBuilding = new buildingObject(
+      "",
+      "",
+      "",
+      0
+  );
+
+  floorObject currentFloor = new floorObject(
+    "",
+    "",
+    "",
+    0,
+    "",
+  );
+
+  List<buildingObject> buildingInstances = [];
+
+  List<floorObject> floorInstances = [];
+
+  List<routerObject> routerInstances = [];
+
   final x_coordinate;
   final y_coordinate;
+
+  Future<String> getURL(image) async{
+    final ref = FirebaseStorage.instance.ref().child('files/' + image);
+    var url =  await ref.getDownloadURL();
+    return url.toString();
+  }
+
+  String? Url = " ";
 
   @override
   Widget build(BuildContext context) {
@@ -40,19 +127,33 @@ class _PositioningScreenState extends State<PositioningScreen> {
         ),
         elevation: 0,
         title: Text(
-          'You are here!',
+            "${ currentBuilding.buildingName +" - "+ currentFloor.floorName}",
           style: GoogleFonts.raleway(
             color: const Color(0xffA11C44),
             fontWeight: FontWeight.w400,
             fontSize: 20,
           ),
         ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.home_filled,
+              color: const Color(0xffA11C44),
+            ),
+            onPressed: () => Navigator.of(context)
+                .push(
+                MaterialPageRoute(
+                  builder: (context) => HomePage(),
+                )
+            ),
+          )
+        ],
         centerTitle: true,
       ),
       backgroundColor: Colors.white,
       body: Container(
         padding: const EdgeInsets.fromLTRB(10, 50, 10, 40),
-        margin: const EdgeInsets.fromLTRB(10, 30, 10, 30),
+        margin: const EdgeInsets.fromLTRB(10, 20, 10, 30),
         constraints: const BoxConstraints.expand(),
         decoration: BoxDecoration(
           image: DecorationImage(
@@ -70,16 +171,42 @@ class _PositioningScreenState extends State<PositioningScreen> {
         child: Stack(
           children: [
             Container(
-              height: 600,
-              width: 350,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage("assets/floorplan.jpeg"),
-                    fit: BoxFit.cover
-                ),
+              child: Column(
+                children: [
+                  FutureBuilder<String>(
+                      future: getURL(currentFloor.floorPlan),
+                      builder: (BuildContext context, AsyncSnapshot<String> url)
+                      {
+                        Url = url.data;
+                        var check = Url;
+                        if (check != null) {
+                          return Image.network(
+                            Url!,
+                            height: MediaQuery.of(context).size.height * 0.70,
+                            width: MediaQuery.of(context).size.width * 0.90,
+                            fit:BoxFit.contain,
+                          ); // Safe
+                        }
+                        else{
+                          return Center(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text("Loading...",
+                                    style: TextStyle(
+                                      fontSize: 17,
+                                      color: Colors.white60,
+                                    )
+                                ),
+                              ],
+                            ),
+                          );
+                        }
+                      }
+                  ),
+                ],
               ),
             ),
-
             Container(
               alignment: Alignment(((x_coordinate*2)/100)-1, ((y_coordinate*2)/100)-1),
               height: 600,

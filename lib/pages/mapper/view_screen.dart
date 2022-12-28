@@ -9,6 +9,7 @@ import '../../classes/building_class.dart';
 import '../../classes/floor_class.dart';
 import '../../classes/router_class.dart';
 import '../../classes/user_class.dart';
+import '../../main/home_page.dart';
 import 'upload screens/upload_screen.dart';
 
 class ViewScreen extends StatefulWidget {
@@ -145,6 +146,20 @@ class _ViewScreenState extends State<ViewScreen> {
           ),
         ),
         centerTitle: true,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.home_filled,
+              color: const Color(0xffA11C44),
+            ),
+            onPressed: () => Navigator.of(context)
+                .push(
+                MaterialPageRoute(
+                  builder: (context) => HomePage(),
+                )
+            ),
+          )
+        ],
       ),
       backgroundColor:const Color(0xffffffff),
       body: Container(
@@ -182,6 +197,7 @@ class _ViewScreenState extends State<ViewScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+
                       CircleAvatar(
                         //Edit Button
                         radius: 35.0,
@@ -235,6 +251,7 @@ class _ViewScreenState extends State<ViewScreen> {
                           }
                         ),
                       ),
+
                     ],
                   ),
                 ),

@@ -144,6 +144,20 @@ class _CollectDataScreenState extends State<CollectDataScreen> {
               fontSize: 20,
             ),
           ),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(
+                Icons.home_filled,
+                color: const Color(0xffffffff),
+              ),
+              onPressed: () => Navigator.of(context)
+                  .push(
+                  MaterialPageRoute(
+                    builder: (context) => HomePage(),
+                  )
+              ),
+            )
+          ],
           centerTitle: true,
           backgroundColor: Colors.transparent,
           shadowColor: const Color(0x00ffffff),
@@ -242,7 +256,6 @@ class _CollectDataScreenState extends State<CollectDataScreen> {
                             })
                           );
                         },
-
                         child: Hero(
                           tag: 'btn2',
                           child: Material(
@@ -261,25 +274,6 @@ class _CollectDataScreenState extends State<CollectDataScreen> {
                       ),
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.05,
-                      ),
-                      CircleAvatar(
-                        //Add Button
-                        radius: 35.0,
-                        backgroundColor: const Color(0xFFFFFFFF),
-                        child: IconButton(
-                          icon: Icon(Icons.home_filled),
-                          color: Color(0xFFA11C44),
-                          iconSize: 30,
-                          splashColor: const Color(0xDACD4F69),
-                          splashRadius: 45,
-                          onPressed: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => HomePage(),
-                              ),
-                            );
-                          },
-                        ),
                       ),
                     ]
                   )
