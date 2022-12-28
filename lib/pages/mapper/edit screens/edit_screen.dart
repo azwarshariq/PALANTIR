@@ -91,7 +91,6 @@ String elevatorID = "";
 String typeID = "";
 
 List<String> listOfBSSIDs = [];
-
 List<String> listOfRouters = [];
 List<String> listOfRooms = [];
 List<String> listOfStairs = [];
@@ -149,6 +148,39 @@ class _EditScreenState extends State<EditScreen> {
      final ref = FirebaseStorage.instance.ref().child('files/' + image);
      var url =  await ref.getDownloadURL();
      return url.toString();
+  }
+
+  void buildLists(){
+    listOfBSSIDs = [];
+    listOfRouters = [];
+    listOfElevators = [];
+    listOfRooms = [];
+    listOfStairs = [];
+
+    for (int i=0; i<this.routerInstances.length; i++){
+      if (routerInstances[i].floorRef == currentFloor.referenceId){
+        listOfRouters.add(routerInstances[i].routerName);
+        listOfBSSIDs.add(routerInstances[i].BSSID);
+      }
+    }
+
+    for (int i=0; i<this.elevatorsInstances.length; i++){
+      if (elevatorsInstances[i].floorRef == currentFloor.referenceId){
+        listOfElevators.add(elevatorsInstances[i].elevatorName);
+      }
+    }
+
+    for (int i=0; i<this.roomInstances.length; i++){
+      if (roomInstances[i].floorRef == currentFloor.referenceId){
+        listOfRooms.add(roomInstances[i].roomName);
+      }
+    }
+
+    for (int i=0; i<this.stairsInstances.length; i++){
+      if (stairsInstances[i].floorRef == currentFloor.referenceId){
+        listOfStairs.add(stairsInstances[i].stairsName);
+      }
+    }
   }
 
   @override
@@ -209,59 +241,60 @@ class _EditScreenState extends State<EditScreen> {
                       ),
                       //displayFloorplan(currentFloor: currentFloor, height1: 700, width1: 400,),
                       Stack(
+                        children: [
+                          Container(
+                            child: Column(
+                              children: [
 
-                          children: [
-
-                            Container(
-                              child: Column(
-                                children: [
-
-                                  FutureBuilder<String>(
-                                      future: getURL(currentFloor.floorPlan),
-                                      builder: (BuildContext context, AsyncSnapshot<String> url)
-                                      {
-                                        Url = url.data;
-                                        var check = Url;
-                                        if (check != null) {
-                                          checkNull = "true";
-                                          return Image.network(
-                                            Url!,
-                                            height: MediaQuery.of(context).size.height * 0.70,
-                                            width: MediaQuery.of(context).size.width * 0.90,
-                                            fit:BoxFit.contain,
-                                          ); // Safe
-                                        }
-                                        else{
-                                          return Center(
-                                            child: Column(
-                                              crossAxisAlignment: CrossAxisAlignment.center,
-                                              children: [
-                                                Text("Loading...",
-                                                    style: TextStyle(
-                                                      fontSize: 17,
-                                                      color: Colors.white60,
-                                                    )
-                                                ),
-                                              ],
+                                FutureBuilder<String>(
+                                  future: getURL(currentFloor.floorPlan),
+                                  builder: (BuildContext context, AsyncSnapshot<String> url)
+                                  {
+                                    Url = url.data;
+                                    var check = Url;
+                                    if (check != null) {
+                                      checkNull = "true";
+                                      return Image.network(
+                                        Url!,
+                                        height: MediaQuery.of(context).size.height * 0.70,
+                                        width: MediaQuery.of(context).size.width * 0.90,
+                                        fit:BoxFit.contain,
+                                      ); // Safe
+                                    }
+                                    else{
+                                      return Center(
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            Text("Loading...",
+                                              style: TextStyle(
+                                                fontSize: 17,
+                                                color: Colors.white60,
+                                              )
                                             ),
-                                          );
-                                        }
-                                      }
-                                  ),
-                                ],
-                              ),
+                                          ],
+                                        ),
+                                      );
+                                    }
+                                  }
+                                ),
+                              ],
                             ),
+                          ),
 
-                            Container(
-                              alignment: Alignment(alignment_x, alignment_y),
-                              height: 600,
-                              width: 350,
-                              child: CustomPaint(
-                                size: Size(MediaQuery.of(context).size.width * 0.05, (MediaQuery.of(context).size.width * 0.05*1.375).toDouble()), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
-                                painter: RPSCustomPainter(),
-                              ),
+                          Container(
+                            alignment: Alignment(alignment_x, alignment_y),
+                            height: 600,
+                            width: 350,
+                            child: CustomPaint(
+                              size: Size(
+                                MediaQuery.of(context).size.width * 0.05,
+                                (MediaQuery.of(context).size.width * 0.05*1.375).toDouble()
+                              ), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
+                              painter: RPSCustomPainter(),
                             ),
-                          ]
+                          ),
+                        ]
                       ),
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.05,
@@ -272,18 +305,21 @@ class _EditScreenState extends State<EditScreen> {
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.03,
                   ),
+
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.10,
                       ),
+
                       GestureDetector(
                         onTap: () {
                           Navigator.of(context)
                           .push(
                             HeroDialogRoute(
                               builder: (context) {
+                                buildLists();
                                 return PopUpItemBody(
                                     userInstance: this.userInstance,
                                     buildingInstances: this.buildingInstances,
@@ -340,6 +376,7 @@ class _EditScreenState extends State<EditScreen> {
                               .push(
                                 HeroDialogRoute(
                                   builder: (context) {
+                                    buildLists();
                                     return PopUpItemBodyRouter(
                                       userInstance: this.userInstance,
                                       buildingInstances: this.buildingInstances,
@@ -360,6 +397,7 @@ class _EditScreenState extends State<EditScreen> {
                               .push(
                                 HeroDialogRoute(
                                   builder: (context) {
+                                    buildLists();
                                     return PopUpItemBodyRoom(
                                       userInstance: this.userInstance,
                                       buildingInstances: this.buildingInstances,
@@ -380,6 +418,7 @@ class _EditScreenState extends State<EditScreen> {
                               .push(
                                 HeroDialogRoute(
                                   builder: (context) {
+                                    buildLists();
                                     return PopUpItemBodyStairs(
                                       userInstance: this.userInstance,
                                       buildingInstances: this.buildingInstances,
@@ -400,6 +439,7 @@ class _EditScreenState extends State<EditScreen> {
                               .push(
                                 HeroDialogRoute(
                                   builder: (context) {
+                                    buildLists();
                                     return PopUpItemBodyElevator(
                                       userInstance: this.userInstance,
                                       buildingInstances: this.buildingInstances,
@@ -833,7 +873,7 @@ class _PopUpItemBodyState extends State<PopUpItemBody> {
                         updateRoom(value);
                       },
                       decoration: const InputDecoration(
-                        hintText: 'Enter Room ID e.g Room1',
+                        hintText: 'Enter Room ID (e.g Room1)',
                         border: InputBorder.none,
                       ),
                       cursorColor: Color.fromARGB(0, 0, 0, 0),
@@ -998,7 +1038,9 @@ class _PopUpItemBodyState extends State<PopUpItemBody> {
                                   {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                         const SnackBar(
-                                            content: Text('Please enter room ID'))),
+                                            content: Text('Please enter room ID')
+                                        )
+                                    ),
                                   }
                                 else
                                   {
@@ -1011,7 +1053,9 @@ class _PopUpItemBodyState extends State<PopUpItemBody> {
                                             ScaffoldMessenger.of(context).showSnackBar(
                                                 const SnackBar(
                                                     content: Text(
-                                                        'Room ID already exists'))),
+                                                        'Room ID already exists')
+                                                )
+                                            ),
                                           }
                                       },
                                     if (check == false)
@@ -1020,7 +1064,9 @@ class _PopUpItemBodyState extends State<PopUpItemBody> {
                                         ScaffoldMessenger.of(context).showSnackBar(
                                             const SnackBar(
                                                 content:
-                                                Text('Room Successfully Added'))),
+                                                Text('Room Successfully Added')
+                                            )
+                                        ),
                                         print(xVar),
                                         print(yVar),
                                         print(roomID),
@@ -1038,7 +1084,9 @@ class _PopUpItemBodyState extends State<PopUpItemBody> {
                                   {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                         const SnackBar(
-                                            content: Text('Please enter stairs ID'))),
+                                            content: Text('Please enter stairs ID')
+                                        )
+                                    ),
                                   }
                                 else
                                   {
@@ -1051,7 +1099,9 @@ class _PopUpItemBodyState extends State<PopUpItemBody> {
                                             ScaffoldMessenger.of(context).showSnackBar(
                                                 const SnackBar(
                                                     content: Text(
-                                                        'Stairs ID already exists'))),
+                                                        'Stairs ID already exists')
+                                                )
+                                            ),
                                           }
                                       },
                                     if (check == false)
@@ -1076,7 +1126,9 @@ class _PopUpItemBodyState extends State<PopUpItemBody> {
                                   {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                         const SnackBar(
-                                            content: Text('Please enter elevator ID'))),
+                                            content: Text('Please enter elevator ID')
+                                        )
+                                    ),
                                   }
                                 else
                                   {
@@ -1089,7 +1141,9 @@ class _PopUpItemBodyState extends State<PopUpItemBody> {
                                             ScaffoldMessenger.of(context).showSnackBar(
                                                 const SnackBar(
                                                     content: Text(
-                                                        'Elevator ID already exists'))),
+                                                        'Elevator ID already exists')
+                                                )
+                                            ),
                                           }
                                       },
                                     if (check == false)
@@ -1098,7 +1152,9 @@ class _PopUpItemBodyState extends State<PopUpItemBody> {
                                         ScaffoldMessenger.of(context).showSnackBar(
                                             const SnackBar(
                                                 content:
-                                                Text('Elevator Successfully Added'))),
+                                                Text('Elevator Successfully Added')
+                                            )
+                                        ),
                                         print(xVar),
                                         print(yVar),
                                         addElevatorsData(elevatorID, xVar, yVar),
@@ -1117,7 +1173,8 @@ class _PopUpItemBodyState extends State<PopUpItemBody> {
                           style: TextStyle(
                               fontSize: 17,
                               color: Colors.white,
-                              fontWeight: FontWeight.w500)),
+                              fontWeight: FontWeight.w500)
+                      ),
                     ),
 
                   ],

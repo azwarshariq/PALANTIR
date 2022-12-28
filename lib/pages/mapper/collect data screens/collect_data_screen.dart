@@ -29,7 +29,7 @@ class _CollectDataScreenState extends State<CollectDataScreen> {
 
   Future<String> getURL(image) async{
     final ref = FirebaseStorage.instance.ref().child('files/' + image);
-// no need of the file extension, the name will do fine.
+    // no need of the file extension, the name will do fine.
     var url =  await ref.getDownloadURL();
 
     return url.toString();
@@ -38,173 +38,175 @@ class _CollectDataScreenState extends State<CollectDataScreen> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        onTapDown: (position) {
-          setState(() {
-            _tapPosition = position.globalPosition;
-            xVar = (((_tapPosition?.dx ?? 0) -
-                (MediaQuery.of(context).size.width * 0.05)) /
-                (MediaQuery.of(context).size.width * 0.9)) *
-                xyAxis;
+      onTapDown: (position) {
+        setState(() {
+          _tapPosition = position.globalPosition;
+          xVar = (((_tapPosition?.dx ?? 0) -
+              (MediaQuery.of(context).size.width * 0.05)) /
+              (MediaQuery.of(context).size.width * 0.9)) *
+              xyAxis;
 
-            yVar = (((_tapPosition?.dy ?? 0) -
-                (MediaQuery.of(context).padding.top + kToolbarHeight)) /
-                (MediaQuery.of(context).size.height * 0.7)) *
-                xyAxis;
-          });
-        },
-        //
-        child: Scaffold(
-            appBar: AppBar(
-              flexibleSpace: Image(
-                image: AssetImage('assets/elements/AppBar Edit.png'),
-                fit: BoxFit.cover,
-              ),
-              iconTheme: IconThemeData(
-                color: const Color(0xffffffff), //change your color here
-              ),
-              elevation: 0,
-              title: Text(
-                'Collect Data',
-                style: GoogleFonts.raleway(
-                  color: const Color(0xffffffff),
-                  fontWeight: FontWeight.w400,
-                  fontSize: 20,
-                ),
-              ),
-              centerTitle: true,
-              backgroundColor: Colors.transparent,
-              shadowColor: const Color(0x00ffffff),
+          yVar = (((_tapPosition?.dy ?? 0) -
+              (MediaQuery.of(context).padding.top + kToolbarHeight)) /
+              (MediaQuery.of(context).size.height * 0.7)) *
+              xyAxis;
+        });
+      },
+      //
+      child: Scaffold(
+        appBar: AppBar(
+          flexibleSpace: Image(
+            image: AssetImage('assets/elements/AppBar Edit.png'),
+            fit: BoxFit.cover,
+          ),
+          iconTheme: IconThemeData(
+            color: const Color(0xffffffff), //change your color here
+          ),
+          elevation: 0,
+          title: Text(
+            'Collect Data',
+            style: GoogleFonts.raleway(
+              color: const Color(0xffffffff),
+              fontWeight: FontWeight.w400,
+              fontSize: 20,
             ),
-            body: Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/backgrounds/Controller Screen.png"),
-                fit: BoxFit.cover
+          ),
+          centerTitle: true,
+          backgroundColor: Colors.transparent,
+          shadowColor: const Color(0x00ffffff),
+        ),
+        body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/backgrounds/Controller Screen.png"),
+            fit: BoxFit.cover
+          )
+        ),
+          child: Center(
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Row(
+                    children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.05,
+                      ),
+                      // Container(
+                      //   child: Column(
+                      //     children: [
+                      //       FutureBuilder<String>(
+                      //           future: getURL(currentFloor.floorPlan),
+                      //           builder: (BuildContext context, AsyncSnapshot<String> url)
+                      //           {
+                      //             Url = url.data;
+                      //             var check = Url;
+                      //             if (check != null) {
+                      //               return Image.network(
+                      //                 Url!,
+                      //                 height: MediaQuery.of(context).size.height * 0.70,
+                      //                 width: MediaQuery.of(context).size.width * 0.90,
+                      //                 fit:BoxFit.contain,
+                      //               ); // Safe
+                      //             }
+                      //             else{
+                      //               return Center(
+                      //                 child: Column(
+                      //                   crossAxisAlignment: CrossAxisAlignment.center,
+                      //                   children: [
+                      //                     Text("Loading...",
+                      //                         style: TextStyle(
+                      //                           fontSize: 17,
+                      //                           color: Colors.white60,)
+                      //                     ),
+                      //                   ],
+                      //                 ),
+                      //               );
+                      //             }
+                      //           }
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
+
+                      Container(
+                        child: Image.asset(
+                          'assets/floorplan.jpeg',
+                          height: MediaQuery.of(context).size.height * 0.70,
+                          width: MediaQuery.of(context).size.width * 0.9,
+                          //fit: BoxFit.fitWidth,
+                        )),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.05,
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.03,
+                  ),
+
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.02,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context)
+                            .push(HeroDialogRoute(builder: (context) {
+                              return PopUpItemBodyAccessPoints();
+                            })
+                          );
+                        },
+
+                        child: Hero(
+                          tag: 'btn2',
+                          child: Material(
+                            color: Colors.white,
+                            elevation: 2,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(32)
+                            ),
+                            child: const Icon(
+                              Icons.add,
+                              size: 56,
+                              color: Color(0xff44CDB1),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.05,
+                      ),
+                      CircleAvatar(
+                        //Add Button
+                        radius: 35.0,
+                        backgroundColor: const Color(0xFFFFFFFF),
+                        child: IconButton(
+                          icon: Icon(Icons.home_filled),
+                          color: Color(0xFFA11C44),
+                          iconSize: 30,
+                          splashColor: const Color(0xDACD4F69),
+                          splashRadius: 45,
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => HomePage(),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ]
+                  )
+                ]
               )
-            ),
-              child: Center(
-                child: SingleChildScrollView(
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Row(
-                            children: [
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.05,
-                              ),
-                              // Container(
-                              //   child: Column(
-                              //     children: [
-                              //       FutureBuilder<String>(
-                              //           future: getURL(currentFloor.floorPlan),
-                              //           builder: (BuildContext context, AsyncSnapshot<String> url)
-                              //           {
-                              //             Url = url.data;
-                              //             var check = Url;
-                              //             if (check != null) {
-                              //               return Image.network(
-                              //                 Url!,
-                              //                 height: MediaQuery.of(context).size.height * 0.70,
-                              //                 width: MediaQuery.of(context).size.width * 0.90,
-                              //                 fit:BoxFit.contain,
-                              //               ); // Safe
-                              //             }
-                              //             else{
-                              //               return Center(
-                              //                 child: Column(
-                              //                   crossAxisAlignment: CrossAxisAlignment.center,
-                              //                   children: [
-                              //                     Text("Loading...",
-                              //                         style: TextStyle(
-                              //                           fontSize: 17,
-                              //                           color: Colors.white60,)
-                              //                     ),
-                              //                   ],
-                              //                 ),
-                              //               );
-                              //             }
-                              //           }
-                              //       ),
-                              //     ],
-                              //   ),
-                              // ),
-
-                              Container(
-                                  child: Image.asset(
-                                    'assets/floorplan.jpeg',
-                                    height: MediaQuery.of(context).size.height * 0.70,
-                                    width: MediaQuery.of(context).size.width * 0.9,
-                                    //fit: BoxFit.fitWidth,
-                                  )),
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.05,
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.03,
-                          ),
-
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.02,
-                          ),
-                          Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-
-                                GestureDetector(
-                                  onTap: () {
-                                    Navigator.of(context)
-                                        .push(HeroDialogRoute(builder: (context) {
-                                      return PopUpItemBodyAccessPoints();
-                                    }));
-                                  },
-                                  child: Hero(
-                                    tag: 'btn2',
-                                    child: Material(
-                                      color: Colors.white,
-                                      elevation: 2,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(32)),
-                                      child: const Icon(
-                                        Icons.add,
-                                        size: 56,
-                                        color: Color(0xff44CDB1),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: MediaQuery.of(context).size.width * 0.05,
-                                ),
-                                CircleAvatar(
-                                  //Add Button
-                                  radius: 35.0,
-                                  backgroundColor: const Color(0xFFFFFFFF),
-                                  child: IconButton(
-                                    icon: Icon(Icons.home_filled),
-                                    color: Color(0xFFA11C44),
-                                    iconSize: 30,
-                                    splashColor: const Color(0xDACD4F69),
-                                    splashRadius: 45,
-                                    onPressed: () {
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (context) => HomePage(),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ),
-                                ]
-                          )
-
-                        ]
-                    )
-                )
-              ),
-            ),
-        )
+            )
+          ),
+        ),
+      )
     );
   }
 }
@@ -288,10 +290,10 @@ class _PopUpItemBodyAccessPointsState extends State<PopUpItemBodyAccessPoints> {
                         borderRadius: BorderRadius.circular(32)),
                     child: accessPoints.isEmpty
                         ? Text("NO SCANNED RESULTS",
-                                style: GoogleFonts.raleway(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w300,
-                                fontSize: 24,
+                            style: GoogleFonts.raleway(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w300,
+                              fontSize: 24,
                             ),
                           )
                           : ListView.builder(

@@ -106,11 +106,58 @@ class _EditRedirectFloorScreenState extends State<EditRedirectFloorScreen> {
 
   bool floorHasPlan = false;
 
+  void nextScreen(){
+    if(currentFloor.floorPlan != ""){
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => EditDemoScreen(
+            userInstance: this.userInstance,
+            buildingInstances: this.buildingInstances,
+            floorInstances: this.floorInstances,
+            routerInstances: this.routerInstances,
+            currentBuilding: this.currentBuilding,
+            currentFloor: this.currentFloor,
+          ),
+        )
+      );
+    }
+    else {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => UploadScreen(
+              userInstance: this.userInstance,
+              buildingInstances: this.buildingInstances,
+              floorInstances: this.floorInstances,
+              routerInstances: this.routerInstances,
+              currentBuilding: this.currentBuilding)
+        )
+      );
+    }
+  }
+
+  Icon nextIcon(){
+    if(currentFloor.floorPlan != ""){
+      print("${currentFloor.floorName} has floorplan ${currentFloor.floorPlan}");
+      return Icon(
+        Icons.arrow_forward,
+        size: 30,
+        color: Color(0xff325E89),
+      );
+    }
+    else{
+      return Icon(
+        Icons.add_photo_alternate_outlined,
+        size: 30,
+        color: Color(0xff325E89),
+      );
+    }
+  }
+
   Text hasFloorPlan(String selectedFloor, String selectedFloorPlan){
     if (selectedFloorPlan == ""){
       floorHasPlan = true;
       return Text(
-        "${selectedFloor} does not have a floor plan!",
+        "No floor plan found! Please add a floor plan",
         style: GoogleFonts.raleway(
           color: const Color(0xffA11C44),
           fontWeight: FontWeight.w300,
@@ -119,8 +166,9 @@ class _EditRedirectFloorScreenState extends State<EditRedirectFloorScreen> {
       );
     }
     else {
+      floorHasPlan = false;
       return Text(
-          "Floor Plan found for ${selectedFloor}",
+          "Floor Plan found",
           style: GoogleFonts.raleway(
             color: const Color(0xAA44CDB1),
             fontWeight: FontWeight.w300,
@@ -176,43 +224,11 @@ class _EditRedirectFloorScreenState extends State<EditRedirectFloorScreen> {
                     this.currentFloor = floorInstances[i];
                   }
                 }
-                if(floorPlans[index] != ""){
-
-                  print(currentBuilding.referenceId);
-                  print(currentFloor.referenceId);
-
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => EditDemoScreen(
-                        userInstance: this.userInstance,
-                        buildingInstances: this.buildingInstances,
-                        floorInstances: this.floorInstances,
-                        routerInstances: this.routerInstances,
-                        currentBuilding: this.currentBuilding,
-                        currentFloor: this.currentFloor,
-                      ),
-                    )
-                  );
-                }
-                else{
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => UploadScreen(
-                        userInstance: this.userInstance,
-                        buildingInstances: this.buildingInstances,
-                        floorInstances: this.floorInstances,
-                        routerInstances: this.routerInstances,
-                        currentBuilding: this.currentBuilding,
-                      ),
-                    )
-                  );
-                }
+                print(currentBuilding.referenceId);
+                print(currentFloor.referenceId);
+                nextScreen();
               },
-              child: const Icon(
-                Icons.arrow_forward,
-                size: 30,
-                color: Color(0xff325E89),
-              ),
+              child: nextIcon(),
             ),
             title: Text("${floorNames[index]}",
                 style: GoogleFonts.raleway(

@@ -57,6 +57,7 @@ dev_dependencies:
   flutter_launcher_icons: "^0.9.0"
 
 flutter_icons:
+  # flutter pub run flutter_launcher_icons:main
   image_path: "icon/logo.png"
   android: true
   # The "flutter_lints" package below contains a set of recommended lints to
