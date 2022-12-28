@@ -10,6 +10,7 @@ import '../../classes/building_class.dart';
 import '../../classes/floor_class.dart';
 import '../../classes/router_class.dart';
 import '../../classes/user_class.dart';
+import '../../main/home_page.dart';
 
 
 
@@ -212,6 +213,20 @@ class _AddBuildingState extends State<AddBuilding> {
           fontSize: 20,
           ),
         ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.home_filled,
+              color: const Color(0xff325E89),
+            ),
+            onPressed: () => Navigator.of(context)
+                .push(
+                MaterialPageRoute(
+                  builder: (context) => HomePage(),
+                )
+            ),
+          )
+        ],
 
         centerTitle: true,
         backgroundColor: Colors.transparent,
@@ -335,7 +350,7 @@ class _AddBuildingState extends State<AddBuilding> {
                 FloatingActionButton(
                   child: Icon(Icons.arrow_forward),
                   splashColor:  Color(0x88A11C44),
-                  heroTag: 'btn2',
+                  heroTag: 'btn3',
                   backgroundColor: Colors.white,
                   foregroundColor: Color(0xFFA11C44),
                   onPressed: () => Navigator.of(context)
@@ -351,11 +366,11 @@ class _AddBuildingState extends State<AddBuilding> {
                     )
                   ),
                 ),
-               ],
-             ),
+              ],
             ),
           ),
         ),
+      ),
     );
   }
 }
