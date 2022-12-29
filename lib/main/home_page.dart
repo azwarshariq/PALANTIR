@@ -121,15 +121,15 @@ class _HomePageState extends State<HomePage> {
               height: 250,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: AssetImage("assets/backgrounds/Controller Screen.png"),
-                    fit: BoxFit.cover
+                  image: AssetImage("assets/backgrounds/Controller Screen.png"),
+                  fit: BoxFit.cover
                 ),
                 borderRadius: BorderRadius.circular(30),
                 boxShadow: [
                   BoxShadow(
-                      color: Colors.grey, //New
-                      blurRadius: 5.0,
-                      offset: Offset(0, -1))
+                    color: Colors.grey, //New
+                    blurRadius: 5.0,
+                    offset: Offset(0, -1))
                 ],
               ),
               padding: const EdgeInsets.only(left: 40, right: 40, top: 50, bottom: 40),
@@ -180,38 +180,45 @@ class _HomePageState extends State<HomePage> {
                 GestureDetector(
                   onTap: () {
                     Navigator.of(context)
-                        .push(
-                        HeroDialogRoute(
-                            builder: (context) {
-                              return PopUpItemBodyBuilding(
-                                userInstance: this.userInstance,
-                                buildingInstances: this.buildingInstances,
-                                floorInstances: this.floorInstances,
-                                routerInstances: this.routerInstances,
-                              );
-                            }
-                        )
+                      .push(
+                      HeroDialogRoute(
+                        builder: (context) {
+                          return PopUpItemBodyBuilding(
+                            userInstance: this.userInstance,
+                            buildingInstances: this.buildingInstances,
+                            floorInstances: this.floorInstances,
+                            routerInstances: this.routerInstances,
+                          );
+                        }
+                      )
                     );
                   },
+
                   child: Container(
                     alignment: Alignment.center,
                     height: 100,
                     width: 120,
                     margin: const EdgeInsets.fromLTRB(10, 10, 5, 10),
                     decoration: BoxDecoration(
-                      color: Color(0xFF204E7A),
+                      image: DecorationImage(
+                        image: AssetImage('assets/elements/HomePage Buildings Button.png'),
+                        fit: BoxFit.fitWidth
+                      ),
                       borderRadius: BorderRadius.circular(30),
+/*
                       boxShadow: [
                         BoxShadow(
-                            color: Colors.grey, //New
-                            blurRadius: 5.0,
-                            offset: Offset(0, -1))
+                          color: Colors.grey, //New
+                          blurRadius: 5.0,
+                          offset: Offset(0, -1)
+                        )
                       ],
+*/
                     ),
                     child: Text(
                       'Buildings',
                       style: GoogleFonts.raleway(
-                        color: Color(0xFFFFFFFF),
+                        color: Color(0xFFA11C44),
                         fontWeight: FontWeight.w200,
                         fontSize: 20,
                       ),
@@ -222,90 +229,103 @@ class _HomePageState extends State<HomePage> {
                 GestureDetector(
                   onTap: () {
                     Navigator.of(context)
-                        .push(
-                        HeroDialogRoute(
-                            builder: (context) {
-                              return PopUpItemBodyFloor(
-                                userInstance: this.userInstance,
-                                buildingInstances: this.buildingInstances,
-                                floorInstances: this.floorInstances,
-                                routerInstances: this.routerInstances,
-                              );
-                            }
-                        )
+                      .push(
+                      HeroDialogRoute(
+                        builder: (context) {
+                          return PopUpItemBodyFloor(
+                            userInstance: this.userInstance,
+                            buildingInstances: this.buildingInstances,
+                            floorInstances: this.floorInstances,
+                            routerInstances: this.routerInstances,
+                          );
+                        }
+                      )
                     );
                   },
-                    child: Container(
-                      alignment: Alignment.center,
-                      height: 100,
-                      width: 100,
-                      margin: const EdgeInsets.fromLTRB(5, 10, 5, 10),
-                      decoration: BoxDecoration(
-                        color: Color(0xFF44CDB1),
-                        borderRadius: BorderRadius.circular(30),
-                        boxShadow: [
-                          BoxShadow(
-                              color: Colors.grey, //New
-                              blurRadius: 5.0,
-                              offset: Offset(0, -1))
-                        ],
+
+                  child: Container(
+                    alignment: Alignment.center,
+                    height: 100,
+                    width: 100,
+                    margin: const EdgeInsets.fromLTRB(5, 10, 5, 10),
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage('assets/elements/HomePage Floors Button.png'),
+                          fit: BoxFit.fitWidth
                       ),
-                      child: Text(
-                        'Floors',
-                        style: GoogleFonts.raleway(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w200,
-                          fontSize: 20,
-                        ),
+                      borderRadius: BorderRadius.circular(30),
+/*
+                      boxShadow: [
+                        BoxShadow(
+                            color: Colors.grey, //New
+                            blurRadius: 5.0,
+                            offset: Offset(0, -1))
+                      ],
+*/
+                    ),
+                    child: Text(
+                      'Floors',
+                      style: GoogleFonts.raleway(
+                        color: Color(0xFFA11C44),
+                        fontWeight: FontWeight.w200,
+                        fontSize: 20,
                       ),
-                    )
+                    ),
+                  )
                 ),
                 GestureDetector(
                   onTap: () {
                     Navigator.of(context)
-                        .push(
-                        HeroDialogRoute(
-                            builder: (context) {
-                              return PopUpItemBodyRouter(
-                                userInstance: this.userInstance,
-                                buildingInstances: this.buildingInstances,
-                                floorInstances: this.floorInstances,
-                                routerInstances: this.routerInstances,
-                              );
-                            }
-                        )
+                      .push(
+                      HeroDialogRoute(
+                        builder: (context) {
+                          return PopUpItemBodyRouter(
+                            userInstance: this.userInstance,
+                            buildingInstances: this.buildingInstances,
+                            floorInstances: this.floorInstances,
+                            routerInstances: this.routerInstances,
+                          );
+                        }
+                      )
                     );
                   },
-                    child: Container(
-                      alignment: Alignment.center,
-                      height: 100,
-                      width: 120,
-                      margin: const EdgeInsets.fromLTRB(5, 10, 10, 10),
-                      decoration: BoxDecoration(
-                        color: Color(0xffA11C44),
-                        borderRadius: BorderRadius.circular(30),
-                        boxShadow: [
-                          BoxShadow(
-                              color: Colors.grey, //New
-                              blurRadius: 5.0,
-                              offset: Offset(0, -1))
-                        ],
+
+                  child: Container(
+                    alignment: Alignment.center,
+                    height: 100,
+                    width: 120,
+                    margin: const EdgeInsets.fromLTRB(5, 10, 10, 10),
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage('assets/elements/HomePage Routers Button.png'),
+                          fit: BoxFit.fitWidth
                       ),
-                      padding: const EdgeInsets.only(left: 0, right: 0, top: 0, bottom: 0),
-                      child: Text(
-                        'Routers',
-                        style: GoogleFonts.raleway(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w200,
-                          fontSize: 20,
-                        ),
+                      borderRadius: BorderRadius.circular(30),
+/*
+                      boxShadow: [
+                        BoxShadow(
+                            color: Colors.grey, //New
+                            blurRadius: 5.0,
+                            offset: Offset(0, -1))
+                      ],
+*/
+                    ),
+                    padding: const EdgeInsets.only(left: 0, right: 0, top: 0, bottom: 0),
+                    child: Text(
+                      'Routers',
+                      style: GoogleFonts.raleway(
+                        color: Color(0xFFA11C44),
+                        fontWeight: FontWeight.w200,
+                        fontSize: 20,
                       ),
-                    )
+                    ),
+                  )
                 ),
               ],
             ),
 
             SizedBox(height: 40,),
+
             // Button to proceed as Mapper
             ElevatedButton(
               onPressed: () => Navigator.of(context)

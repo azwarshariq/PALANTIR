@@ -442,6 +442,9 @@ class _PopUpItemBodyAccessPointsState extends State<PopUpItemBodyAccessPoints> {
       .catchError((error) => print("Failed to add data: $error"));
 
     collectedPoints++;
+    listOfBSSIDs = [];
+    listOfFrequencies = [];
+    listOfStrengths = [];
   }
 
   @override
