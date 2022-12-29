@@ -47,7 +47,7 @@ dependencies:
   popup_card: ^0.1.0
   _flutterfire_internals: ^1.0.6
   wifi_scan: ^0.4.0+1
-  path: ^1.8.3
+  path: ^1.8.2
 
 
 dev_dependencies:
@@ -86,19 +86,26 @@ flutter:
     - images/logos/PALANTIR logo.png
     - images/step1.jpeg
     - images/step2.jpeg
+    -
     - assets/Home Page.png
     - assets/Splash Screen.png
     - assets/Controller.png
+
     - assets/backgrounds/Splash Screen.png
     - assets/backgrounds/Login Screen.png
     - assets/backgrounds/Register Screen.png
     - assets/backgrounds/Home Page 1.png
     - assets/backgrounds/Controller Screen.png
+
     - assets/elements/AppBar AddBuilding.png
     - assets/elements/AppBar Upload.png
     - assets/elements/AppBar Edit.png
     - assets/elements/AddBuilding Hero.png
     - assets/elements/Home Page Hero.png
+    - assets/elements/HomePage Buildings Button.png
+    - assets/elements/HomePage Floors Button.png
+    - assets/elements/HomePage Routers Button.png
+
     - assets/backgrounds/White Background.png
     - assets/backgrounds/Locate Me.png
 
