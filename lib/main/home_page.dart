@@ -325,7 +325,7 @@ class _HomePageState extends State<HomePage> {
                   //to set border radius to button
                   borderRadius: BorderRadius.circular(20),
                 ),
-                backgroundColor: Color(0xFF4EBEA7),
+                backgroundColor: Color(0xFF577EA4),
                 shadowColor: Color(0xAA4EBEA7),
                 padding: EdgeInsets.all(20),
               ),
