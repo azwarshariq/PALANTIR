@@ -166,7 +166,7 @@ class GetUserName extends StatelessWidget {
       );
     }catch(e){
       return Text(
-        '-',
+        '...',
         style: GoogleFonts.raleway(
           color: const Color(0xffffffff),
           fontWeight: FontWeight.w200,
