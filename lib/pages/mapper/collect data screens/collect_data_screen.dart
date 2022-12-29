@@ -65,6 +65,8 @@ List<String> listOfBSSIDs = [];
 List<int> listOfStrengths = [];
 List<int> listOfFrequencies = [];
 
+int collectedPoints = 0;
+
 class _CollectDataScreenState extends State<CollectDataScreen> {
   _CollectDataScreenState(
     this.userInstance,
@@ -94,7 +96,6 @@ class _CollectDataScreenState extends State<CollectDataScreen> {
   );
 
   List<routerObject> routerInstances = [];
-
 
   String? Url = " ";
 
@@ -429,7 +430,7 @@ class _PopUpItemBodyAccessPointsState extends State<PopUpItemBodyAccessPoints> {
     );
 
     await FirebaseFirestore.instance.collection('Data')
-      .doc(currentFloor.referenceId)
+      .doc(currentFloor.referenceId + " " + collectedPoints.toString())
       .set({
         'x': xVar,
         'y': yVar,
@@ -439,6 +440,8 @@ class _PopUpItemBodyAccessPointsState extends State<PopUpItemBodyAccessPoints> {
       })
       .then((value) => print("Data Added"))
       .catchError((error) => print("Failed to add data: $error"));
+
+    collectedPoints++;
   }
 
   @override
