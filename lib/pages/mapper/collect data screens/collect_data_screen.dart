@@ -409,14 +409,23 @@ class _PopUpItemBodyAccessPointsState extends State<PopUpItemBodyAccessPoints> {
   }
 
   Future<void> uploadData() async {
-
-    List<routerObject> currentRouters = [];
+    List<String> newBSSIDs = [];
+    List<int> newFrequencies = [];
+    List<int> newStrengths = [];
 
     for (int i=0; i<routerInstances.length; i++){
-      if (listOfBSSIDs.contains(routerInstances[i].BSSID)){
-        currentRouters.add(routerInstances[i]);
+      for (int j=0; j<listOfBSSIDs.length; j++){
+        if (listOfBSSIDs[j] == routerInstances[i].BSSID){
+          newBSSIDs.add(listOfBSSIDs[j]);
+          newFrequencies.add(listOfFrequencies[j]);
+          newStrengths.add(listOfStrengths[j]);
+        }
       }
     }
+
+    listOfBSSIDs = newBSSIDs;
+    listOfFrequencies = newFrequencies;
+    listOfStrengths = newStrengths;
 
     await FirebaseFirestore.instance.collection('Users')
       .where('email', isEqualTo:FirebaseAuth.instance.currentUser!.email)
