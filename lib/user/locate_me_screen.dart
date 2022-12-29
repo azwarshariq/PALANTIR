@@ -93,6 +93,7 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
   //----------------------------------------------------
   List distance = [];
   List sorted_distance = [];
+  List<floorObject> currentLocation = [];
   List Router_X = [];
   List Router_Y = [];
   //----------------------------------------------------
@@ -301,6 +302,16 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
     return distance;
   }
 
+  int countOccurrencesUsingWhereMethod(List<floorObject> list, String element) {
+    int count = 0;
+    for (int i = 0; i < list.length; i++) {
+      if (list[i].referenceId == element) {
+        count++;
+      }
+    }
+    return count;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -392,26 +403,44 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
                           sorted_distance = sortDistanceArray(distance, distance.length),
                           print(distance),
                           print(sorted_distance),
-
+                          currentLocation = [],
                           for(int outerLoop = 0;  outerLoop < sorted_distance.length; outerLoop++){
                             for(int innerLoop = 0;  innerLoop < distance.length; innerLoop++){
                               if(distance[innerLoop] == sorted_distance[outerLoop]){
+                                print(distance[innerLoop]),
                                 for(int i=0; i<routerInstances.length; i++){
                                   if(routerInstances[i].BSSID == accessPoints[innerLoop].bssid){
                                     print("Router bssid -> "+ routerInstances[i].BSSID),
                                     for(int j=0; j<floorInstances.length; j++){
                                       if(floorInstances[j].referenceId == routerInstances[i].floorRef){
-                                        this.currentFloor = floorInstances[j],
+                                        currentLocation.add(floorInstances[j]),
                                         print(floorInstances[j].referenceId),
-                                        for(int k=0; k<buildingInstances.length; k++){
-                                          if(buildingInstances[k].referenceId == floorInstances[j].buildingRef){
-                                            this.currentBuilding = buildingInstances[k],
-                                            print(buildingInstances[k].referenceId),
-                                          }
-                                        }
                                       }
                                     }
                                   }
+                                }
+                              }
+                            }
+                          },
+
+                          print(currentLocation),
+                          for(int i = 0; i<currentLocation.length;i++ ){
+                            print(countOccurrencesUsingWhereMethod(currentLocation, currentLocation[i].referenceId)),
+                            if(countOccurrencesUsingWhereMethod(currentLocation, currentLocation[i].referenceId) >= 2){
+                              this.currentFloor = currentLocation[i],
+                              for(int j=0; j<buildingInstances.length; j++){
+                                if(buildingInstances[j].referenceId == currentLocation[i].buildingRef){
+                                  this.currentBuilding = buildingInstances[j],
+                                  print(buildingInstances[j].referenceId),
+                                }
+                              }
+                            }
+                            else if(countOccurrencesUsingWhereMethod(currentLocation, currentLocation[i].referenceId) <= 1){
+                              this.currentFloor = currentLocation[0],
+                              for(int j=0; j<buildingInstances.length; j++){
+                                if(buildingInstances[j].referenceId == currentLocation[0].buildingRef){
+                                  this.currentBuilding = buildingInstances[j],
+                                  print(buildingInstances[j].referenceId),
                                 }
                               }
                             }

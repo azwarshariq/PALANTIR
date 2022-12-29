@@ -326,7 +326,7 @@ class _HomePageState extends State<HomePage> {
                   borderRadius: BorderRadius.circular(20),
                 ),
                 backgroundColor: Color(0xFF577EA4),
-                shadowColor: Color(0xAA4EBEA7),
+                shadowColor: Color(0xAA577EA4),
                 padding: EdgeInsets.all(20),
               ),
 
@@ -775,6 +775,29 @@ class _PopUpItemBodyRouterState extends State<PopUpItemBodyRouter> {
     );
   }
 
+  Text getFloorName(FloorRef){
+    for(int i = 0; i<floorInstances.length; i++)
+    {
+      if (FloorRef == floorInstances[i].referenceId){
+        return Text(
+          "Floor ID: ${floorInstances[i].floorName}",
+          style: GoogleFonts.raleway(
+            color: Color(0xFF44CDB1),
+            fontWeight: FontWeight.w300,
+            fontSize: 20,
+          ),
+        );
+      }
+    }
+    return Text(
+      "Floor ID: Not found!",
+      style: GoogleFonts.raleway(
+        color: Color(0xFF44CDB1),
+        fontWeight: FontWeight.w300,
+        fontSize: 20,
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -790,14 +813,7 @@ class _PopUpItemBodyRouterState extends State<PopUpItemBodyRouter> {
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      "Floor ID: ${routerInstances[index].floorRef}",
-                      style: GoogleFonts.raleway(
-                        color: Color(0xFF44CDB1),
-                        fontWeight: FontWeight.w300,
-                        fontSize: 20,
-                      ),
-                    ),
+                    getFloorName(routerInstances[index].floorRef),
                     Text(
                       "Router ID: ${routerInstances[index].routerName}",
                       style: GoogleFonts.raleway(
