@@ -92,10 +92,14 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
 
   //----------------------------------------------------
   List distance = [];
-  List sorted_distance = [];
+  List floor_distance = [];
+  List<routerObject> floorRouters = [];
+  List<dynamic> sorted_distance = [];
+  int floorPlanLength = 0;
   List<floorObject> currentLocation = [];
   List Router_X = [];
   List Router_Y = [];
+  List temp_bssids = [];
   //----------------------------------------------------
   List routerDistance = [];
   List routerPixel = [];
@@ -266,40 +270,49 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
   }
   //-------------------------------------------------------------------------
 
-  List sortDistanceArray(array, n)
+  List<dynamic> sortDistanceArray(array, n, List<routerObject> floorRouters)
   {
     List distance = [];
-    List indices = [];
     double firstMin = 1000, secondMin = 1000, thirdMin = 1000;
-    int firstIndex = 0, secondIndex = 0, thirdIndex = 0;
-    for (int i = 0; i < n; i++)
-    {
-      if (array[i] < firstMin)
-      {
-        thirdMin = secondMin;
-        secondMin = firstMin;
-        firstMin = array[i];
-        firstIndex = i;
-      }
-      else if (array[i] < secondMin)
-      {
-        thirdMin = secondMin;
-        secondMin = array[i];
-        secondIndex = i;
-      }
-      else if (array[i] < thirdMin)
-        thirdMin = array[i];
-        thirdIndex = i;
-    }
-    distance.add(firstMin);
-    distance.add(secondMin);
-    distance.add(thirdMin);
+    routerObject firstIndex = new routerObject(
+      "",
+      "",
+      "",
+      "",
+      0.0,
+      0.0,
+    );
+    routerObject secondIndex = firstIndex, thirdIndex = firstIndex ;
+    // for (int i = 0; i < n; i++)
+    // {
+    //   if (array[i] < firstMin)
+    //   {
+    //     thirdMin = secondMin;
+    //     secondMin = firstMin;
+    //     firstMin = array[i];
+    //     firstIndex = floorRouters[i];
+    //   }
+    //   else if (array[i] < secondMin)
+    //   {
+    //     thirdMin = secondMin;
+    //     secondMin = array[i];
+    //     secondIndex = floorRouters[i];
+    //   }
+    //   else if (array[i] < thirdMin)
+    //     thirdMin = array[i];
+    //     thirdIndex = floorRouters[i];
+    // }
+    // distance.add(firstMin);
+    // distance.add(secondMin);
+    // distance.add(thirdMin);
+    //
+    // floorRouters = [];
+    // floorRouters.add(firstIndex);
+    // floorRouters.add(secondIndex);
+    // floorRouters.add(thirdIndex);
+    //
+     return [distance, floorRouters];
 
-    indices.add(firstIndex);
-    indices.add(secondIndex);
-    indices.add(thirdIndex);
-
-    return distance;
   }
 
   int countOccurrencesUsingWhereMethod(List<floorObject> list, String element) {
@@ -393,23 +406,42 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
                         }
                         else {
                           distance = [],
-                          print(accessPoints.length),
                           for ( var i=0; i< accessPoints.length; i++ ){
                             exponent = ((27.55 - (20 * (log(accessPoints[i].frequency))/log(10)) + accessPoints[i].level.abs()) / 20),
                             distance.add(pow(10, exponent)),
-                            print(accessPoints[i].bssid),
-                            print(distance[i]),
+                            // print(accessPoints[i].bssid),
+                            // print(distance[i]),
                           },
-                          sorted_distance = sortDistanceArray(distance, distance.length),
+
+                          for (int i = 0; i<accessPoints.length; i++){
+                            for (int j = 0; j<routerInstances.length; j++){
+                              if( accessPoints[i].bssid == routerInstances[j].BSSID ){
+                                floorRouters.add(routerInstances[j]),
+                                floor_distance.add(distance[i]),
+                              }
+                            },
+                          },
+                          floorRouters.toSet().toList(),
+                          for (int j = 0; j< floorRouters.length; j++){
+                             print("-->"+floorRouters[j].BSSID),
+                             print(floor_distance[j]),
+                          },
+
+                          sorted_distance = sortDistanceArray(floor_distance, floor_distance.length, floorRouters),
+                          distance =  sorted_distance[0],
+                          floorRouters =  sorted_distance[1],
+                          print("1"),
                           print(distance),
-                          print(sorted_distance),
+                          print(floorRouters[0].BSSID + " , "+ floorRouters[1].BSSID+ " , " + floorRouters[2].BSSID),
+                          print("\n"),
                           currentLocation = [],
-                          for(int outerLoop = 0;  outerLoop < sorted_distance.length; outerLoop++){
-                            for(int innerLoop = 0;  innerLoop < distance.length; innerLoop++){
-                              if(distance[innerLoop] == sorted_distance[outerLoop]){
-                                print(distance[innerLoop]),
+                          print("2"),
+                          for(int outerLoop = 0;  outerLoop < distance.length; outerLoop++){
+                            for(int innerLoop = 0;  innerLoop < floor_distance.length; innerLoop++){
+                              if(floor_distance[innerLoop] == distance[outerLoop]){
+                                print(floor_distance[innerLoop]),
                                 for(int i=0; i<routerInstances.length; i++){
-                                  if(routerInstances[i].BSSID == accessPoints[innerLoop].bssid){
+                                  if(routerInstances[i].BSSID == floorRouters[innerLoop].BSSID){
                                     print("Router bssid -> "+ routerInstances[i].BSSID),
                                     for(int j=0; j<floorInstances.length; j++){
                                       if(floorInstances[j].referenceId == routerInstances[i].floorRef){
@@ -422,8 +454,9 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
                               }
                             }
                           },
+                          print("\n"),
 
-                          print(currentLocation),
+                          //print(currentLocation),
                           for(int i = 0; i<currentLocation.length;i++ ){
                             print(countOccurrencesUsingWhereMethod(currentLocation, currentLocation[i].referenceId)),
                             if(countOccurrencesUsingWhereMethod(currentLocation, currentLocation[i].referenceId) >= 2){
@@ -431,7 +464,7 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
                               for(int j=0; j<buildingInstances.length; j++){
                                 if(buildingInstances[j].referenceId == currentLocation[i].buildingRef){
                                   this.currentBuilding = buildingInstances[j],
-                                  print(buildingInstances[j].referenceId),
+                                  //print(buildingInstances[j].referenceId),
                                 }
                               }
                             }
@@ -440,14 +473,19 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
                               for(int j=0; j<buildingInstances.length; j++){
                                 if(buildingInstances[j].referenceId == currentLocation[0].buildingRef){
                                   this.currentBuilding = buildingInstances[j],
-                                  print(buildingInstances[j].referenceId),
+                                  //print(buildingInstances[j].referenceId),
                                 }
                               }
                             }
                           },
+                          //distance = [10.0,8.0,10.0],
+                          print("3"),
+                          for(int i = 0 ;i<floorRouters.length;i++){
+                            print(floorRouters[i].BSSID),
+                            print(distance[i]),
+                            print(floorRouters[i].x.toString() + " , " + floorRouters[i].y.toString())
+                          },
 
-
-                          distance = [10.0,8.0,10.0],
                           Router_X = [469, 469, 224],
                           Router_Y = [192, 540, 372],
                           routerDistance = [],

@@ -668,10 +668,10 @@ class _AccessPointTile extends StatelessWidget {
         ),
       ),
       onTap: () {
-        print(accessPoint.bssid);
+        print("-->"+accessPoint.bssid);
         listOfBSSIDs.add(accessPoint.bssid);
 
-        print(accessPoint.frequency);
+        //print(accessPoint.frequency);
         listOfFrequencies.add(accessPoint.frequency);
 
         print(accessPoint.level);
