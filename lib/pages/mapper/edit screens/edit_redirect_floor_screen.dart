@@ -82,6 +82,7 @@ class _EditRedirectFloorScreenState extends State<EditRedirectFloorScreen> {
       "",
       0,
       "",
+      0
   );
 
   List<buildingObject> buildingInstances = [];

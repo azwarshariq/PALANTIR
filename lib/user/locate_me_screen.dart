@@ -1,8 +1,10 @@
 import 'dart:math';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:palantir_ips/classes/collected_data_class.dart';
 import 'package:palantir_ips/user/positioning_screen.dart';
 import 'package:wifi_scan/wifi_scan.dart';
 import 'package:vector_math/vector_math.dart';
@@ -77,6 +79,7 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
     "",
     0,
     "",
+    0
   );
 
   List<buildingObject> buildingInstances = [];
@@ -84,6 +87,8 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
   List<floorObject> floorInstances = [];
 
   List<routerObject> routerInstances = [];
+
+  List<collectedData> collectedDataPoints = [];
 
   List<WiFiAccessPoint> accessPoints = <WiFiAccessPoint>[];
   StreamSubscription<List<WiFiAccessPoint>>? subscription;
@@ -117,6 +122,26 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
   double exponent = 0.0;
   double x_coordinate = 0.0;
   double y_coordinate = 0.0;
+
+  Future<void> getCollectedPointsData() async {
+
+    CollectionReference firebaseData = await FirebaseFirestore.instance.collection('Data');
+
+    for (int i=0; i<currentFloor.collectedDataPoints; i++){
+      DocumentSnapshot data = await firebaseData.doc(currentFloor.referenceId + " " + i.toString()).get();
+
+      final dataPoint = new collectedData(
+          currentFloor.referenceId + " " + i.toString(),
+          data['listOfBSSIDs'],
+          data['listOfFrequencies'],
+          data['listOfStrengths'],
+          data['x'],
+          data['y']
+      );
+
+      collectedDataPoints.add(dataPoint);
+    }
+  }
 
   Future<void> _startScan(BuildContext context) async {
     // check if "can" startScan
@@ -176,6 +201,7 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
     }
     return array;
   }
+
   //-------------------------------------------------------------------------
   List getPixel(noOfRouters, routerDistance){
     var temp = [];
@@ -212,6 +238,7 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
     }
     return [index1, index2];
   }
+
   //-------------------------------------------------------------------------
   List<List> getIntersectingPointsRange(router1, router2, index1, index2, routerPixel){
     List<List> intersectingLine = [];
@@ -253,6 +280,7 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
     }
     return intersectingLine;
   }
+
   //-------------------------------------------------------------------------
   List getIntersectingRegion(router1, router2, index1, index2, intersectingLine){
     List intersectingRegion = [];
@@ -273,8 +301,8 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
   List<dynamic> sortDistanceArray(array, n, List<routerObject> floorRouters)
   {
     List distance = [];
-    double firstMin = 1000, secondMin = 1000, thirdMin = 1000;
-    routerObject firstIndex = new routerObject(
+    int temp = 0;
+    routerObject tempRouter = new routerObject(
       "",
       "",
       "",
@@ -282,7 +310,19 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
       0.0,
       0.0,
     );
-    routerObject secondIndex = firstIndex, thirdIndex = firstIndex ;
+    for (int i=0; i<n; i++){
+      for (int j=0; j<n-i-1; i++){
+        if (array[j+1] < array[j]){
+          temp = array[j];
+          array[j] = array[j+1];
+          array[j+1] = temp;
+
+          tempRouter = floorRouters[j];
+          floorRouters[j] = floorRouters[j+1];
+          floorRouters[j+1] = tempRouter;
+        }
+      }
+    }
     // for (int i = 0; i < n; i++)
     // {
     //   if (array[i] < firstMin)
@@ -310,9 +350,9 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
     // floorRouters.add(firstIndex);
     // floorRouters.add(secondIndex);
     // floorRouters.add(thirdIndex);
-    //
-     return [distance, floorRouters];
 
+    distance = array;
+    return [distance, floorRouters];
   }
 
   int countOccurrencesUsingWhereMethod(List<floorObject> list, String element) {

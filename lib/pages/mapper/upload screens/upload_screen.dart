@@ -75,7 +75,8 @@ class _MyUploadScreenState extends State<UploadScreen> {
     "",
     "",
     0,
-    ""
+    "",
+      0
   );
 
   List<buildingObject> buildingInstances = [];

@@ -110,7 +110,8 @@ class _AddBuildingState extends State<AddBuilding> {
             'Ground Floor',
             _NameController.text.trim(),
             0,
-            ''
+            '',
+            0
         );
 
         // 2. Adding the created Floor class instance into list of buildingInstances
@@ -131,7 +132,8 @@ class _AddBuildingState extends State<AddBuilding> {
             'Floor ' + i.toString(),
             _NameController.text.trim(),
             0,
-            ''
+            '',
+            0
         );
 
         // 2. Adding the created Floor class instance into list of buildingInstances
@@ -183,7 +185,8 @@ class _AddBuildingState extends State<AddBuilding> {
         'floorName': Name,
         'buildingRef': buildingRef,
         'numRouters': numRouters,
-        'floorPlan' : ''
+        'floorPlan' : '',
+        'collectedDataPoints': 0
       }) // <-- Your data
     .then((_) => print('Added ' + Name + ' with buildingRef ' + buildingRef))
     .catchError((error) => print('Add failed: $error')

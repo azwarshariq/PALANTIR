@@ -41,6 +41,7 @@ class PositioningScreen extends StatefulWidget {
     "",
     0,
     "",
+    0
   );
 
   List<buildingObject> buildingInstances = [];
@@ -98,6 +99,7 @@ class _PositioningScreenState extends State<PositioningScreen> {
     "",
     0,
     "",
+    0
   );
 
   List<buildingObject> buildingInstances = [];

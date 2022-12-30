@@ -6,6 +6,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:palantir_ips/main/home_page.dart';
+import 'package:path/path.dart';
 import 'package:wifi_scan/wifi_scan.dart';
 import '../../../classes/building_class.dart';
 import '../../../classes/floor_class.dart';
@@ -39,7 +40,8 @@ class CollectDataScreen extends StatefulWidget {
       "",
       "",
       0,
-      ""
+      "",
+      0
   );
 
   List<routerObject> routerInstances = [];
@@ -92,7 +94,8 @@ class _CollectDataScreenState extends State<CollectDataScreen> {
       "",
       "",
       0,
-      ""
+      "",
+      0
   );
 
   List<routerObject> routerInstances = [];
@@ -315,7 +318,8 @@ class PopUpItemBodyAccessPoints extends StatefulWidget {
       "",
       "",
       0,
-      ""
+      "",
+      0
   );
 
   List<routerObject> routerInstances = [];
@@ -356,7 +360,8 @@ class _PopUpItemBodyAccessPointsState extends State<PopUpItemBodyAccessPoints> {
       "",
       "",
       0,
-      ""
+      "",
+      0
   );
 
   List<routerObject> routerInstances = [];
@@ -442,12 +447,22 @@ class _PopUpItemBodyAccessPointsState extends State<PopUpItemBodyAccessPoints> {
         'y': yVar,
         'listOfBSSIDs': listOfBSSIDs,
         'listOfFrequencies': listOfFrequencies,
-        'listOfStrengths': listOfStrengths
+        'listOfStrengths': listOfStrengths,
+        'floorRef' : currentFloor.referenceId
       })
       .then((value) => print("Data Added"))
       .catchError((error) => print("Failed to add data: $error"));
 
-    collectedPoints++;
+    currentFloor.collectedDataPoints++;
+
+    await FirebaseFirestore.instance.collection('Floors')
+      .doc(currentFloor.referenceId)
+      .update({
+      'collectedDataPoints': currentFloor.collectedDataPoints
+      })
+        .then((value) => print("Data Added"))
+        .catchError((error) => print("Failed to add data: $error"));
+
     listOfBSSIDs = [];
     listOfFrequencies = [];
     listOfStrengths = [];
@@ -613,7 +628,8 @@ class _AccessPointTile extends StatelessWidget {
       "",
       "",
       0,
-      ""
+      "",
+      0
   );
 
   List<routerObject> routerInstances = [];

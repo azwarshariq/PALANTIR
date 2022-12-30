@@ -46,7 +46,8 @@ class ViewScreen extends StatefulWidget {
       "",
       "",
       0,
-      ""
+      "",
+      0
   );
 
   List<buildingObject> buildingInstances = [];
@@ -101,7 +102,8 @@ class _ViewScreenState extends State<ViewScreen> {
       "",
       "",
       0,
-      ""
+      "",
+      0
   );
 
   List<buildingObject> buildingInstances = [];

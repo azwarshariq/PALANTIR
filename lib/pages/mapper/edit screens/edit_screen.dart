@@ -50,7 +50,8 @@ class EditScreen extends StatefulWidget {
       "",
       "",
       0,
-      ""
+      "",
+      0
   );
   List<buildingObject> buildingInstances = [];
   List<floorObject> floorInstances = [];
@@ -130,7 +131,8 @@ class _EditScreenState extends State<EditScreen> {
       "",
       "",
       0,
-      ""
+      "",
+      0
   );
   List<buildingObject> buildingInstances = [];
   List<floorObject> floorInstances = [];
@@ -595,7 +597,8 @@ class PopUpItemBody extends StatefulWidget {
       "",
       "",
       0,
-      ""
+      "",
+      0
   );
   List<buildingObject> buildingInstances = [];
   List<floorObject> floorInstances = [];
@@ -650,7 +653,8 @@ class _PopUpItemBodyState extends State<PopUpItemBody> {
       "",
       "",
       0,
-      ""
+      "",
+      0
   );
   List<buildingObject> buildingInstances = [];
   List<floorObject> floorInstances = [];
@@ -1239,7 +1243,8 @@ class PopUpItemBodyRouter extends StatefulWidget {
       "",
       "",
       0,
-      ""
+      "",
+      0
   );
   List<buildingObject> buildingInstances = [];
   List<floorObject> floorInstances = [];
@@ -1295,7 +1300,8 @@ class _PopUpItemBodyRouterState extends State<PopUpItemBodyRouter> {
       "",
       "",
       0,
-      ""
+      "",
+      0
   );
   List<buildingObject> buildingInstances = [];
   List<floorObject> floorInstances = [];
@@ -1411,7 +1417,8 @@ class PopUpItemBodyRoom extends StatefulWidget {
       "",
       "",
       0,
-      ""
+      "",
+      0
   );
   List<buildingObject> buildingInstances = [];
   List<floorObject> floorInstances = [];
@@ -1465,7 +1472,8 @@ class _PopUpItemBodyRoomState extends State<PopUpItemBodyRoom> {
       "",
       "",
       0,
-      ""
+      "",
+      0
   );
   List<buildingObject> buildingInstances = [];
   List<floorObject> floorInstances = [];
@@ -1571,7 +1579,8 @@ class PopUpItemBodyStairs extends StatefulWidget {
       "",
       "",
       0,
-      ""
+      "",
+      0
   );
   List<buildingObject> buildingInstances = [];
   List<floorObject> floorInstances = [];
@@ -1625,7 +1634,8 @@ class _PopUpItemBodyStairsState extends State<PopUpItemBodyStairs> {
       "",
       "",
       0,
-      ""
+      "",
+      0
   );
   List<buildingObject> buildingInstances = [];
   List<floorObject> floorInstances = [];
@@ -1731,7 +1741,8 @@ class PopUpItemBodyElevator extends StatefulWidget {
       "",
       "",
       0,
-      ""
+      "",
+      0
   );
   List<buildingObject> buildingInstances = [];
   List<floorObject> floorInstances = [];
@@ -1785,7 +1796,8 @@ class _PopUpItemBodyElevatorState extends State<PopUpItemBodyElevator> {
       "",
       "",
       0,
-      ""
+      "",
+      0
   );
   List<buildingObject> buildingInstances = [];
   List<floorObject> floorInstances = [];

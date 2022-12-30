@@ -83,6 +83,7 @@ class _CollectRedirectFloorScreenState extends State<CollectRedirectFloorScreen>
     "",
     0,
     "",
+    0
   );
 
   List<buildingObject> buildingInstances = [];

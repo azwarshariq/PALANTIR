@@ -38,7 +38,8 @@ class EditDemoScreen extends StatefulWidget {
       "",
       "",
       0,
-      ""
+      "",
+      0
   );
 
   List<buildingObject> buildingInstances = [];
@@ -88,7 +89,8 @@ class _EditDemoScreenState extends State<EditDemoScreen> {
       "",
       "",
       0,
-      ""
+      "",
+      0
   );
 
   List<buildingObject> buildingInstances = [];
