@@ -408,15 +408,21 @@ class _PopUpItemBodyAccessPointsState extends State<PopUpItemBodyAccessPoints> {
     }
   }
 
-  Future<void> uploadData() async {
-
-    List<routerObject> currentRouters = [];
+  List<WiFiAccessPoint> filterAccessPoints(List<WiFiAccessPoint> accessPoints) {
+    List<WiFiAccessPoint> filteredAccessPoints = [];
 
     for (int i=0; i<routerInstances.length; i++){
-      if (listOfBSSIDs.contains(routerInstances[i].BSSID)){
-        currentRouters.add(routerInstances[i]);
+      for (int j=0; j<accessPoints.length; j++){
+        if (accessPoints[j].bssid == routerInstances[i].BSSID){
+          filteredAccessPoints.add(accessPoints[j]);
+        }
       }
     }
+
+    return filteredAccessPoints;
+  }
+
+  Future<void> uploadData() async {
 
     await FirebaseFirestore.instance.collection('Users')
       .where('email', isEqualTo:FirebaseAuth.instance.currentUser!.email)
@@ -424,7 +430,7 @@ class _PopUpItemBodyAccessPointsState extends State<PopUpItemBodyAccessPoints> {
       .then(
         (snapshot) => snapshot.docs.forEach(
             (element) {
-          print("User reference is ${element.reference}");
+          print("User ${element.reference} is collecting data");
         }
       ),
     );
@@ -449,6 +455,8 @@ class _PopUpItemBodyAccessPointsState extends State<PopUpItemBodyAccessPoints> {
 
   @override
   Widget build(BuildContext context) {
+    accessPoints = filterAccessPoints(accessPoints);
+
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(32.0),
@@ -656,6 +664,16 @@ class _AccessPointTile extends StatelessWidget {
     final signalIcon = accessPoint.level >= -80
         ? Icons.signal_wifi_4_bar
         : Icons.signal_wifi_0_bar;
+
+    print(accessPoint.bssid);
+    listOfBSSIDs.add(accessPoint.bssid);
+
+    print(accessPoint.frequency);
+    listOfFrequencies.add(accessPoint.frequency);
+
+    print(accessPoint.level);
+    listOfStrengths.add(accessPoint.level);
+
     return ListTile(
       visualDensity: VisualDensity.compact,
       leading: Icon(signalIcon),
@@ -667,16 +685,6 @@ class _AccessPointTile extends StatelessWidget {
           fontWeight: FontWeight.w200,
         ),
       ),
-      onTap: () {
-        print("-->"+accessPoint.bssid);
-        listOfBSSIDs.add(accessPoint.bssid);
-
-        //print(accessPoint.frequency);
-        listOfFrequencies.add(accessPoint.frequency);
-
-        print(accessPoint.level);
-        listOfStrengths.add(accessPoint.level);
-      },
 
       /* print("Index number is:");
         context: context,
