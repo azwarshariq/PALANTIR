@@ -407,6 +407,7 @@ class _PopUpItemBodyAccessPointsState extends State<PopUpItemBodyAccessPoints> {
     return true;
   }
 
+
   Future<void> _getScannedResults(BuildContext context) async {
     if (await _canGetScannedResults(context)) {
       // get scanned results
