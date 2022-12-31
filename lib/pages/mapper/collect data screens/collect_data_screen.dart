@@ -6,7 +6,6 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:palantir_ips/main/home_page.dart';
-import 'package:path/path.dart';
 import 'package:wifi_scan/wifi_scan.dart';
 import '../../../classes/building_class.dart';
 import '../../../classes/floor_class.dart';
@@ -446,7 +445,7 @@ class _PopUpItemBodyAccessPointsState extends State<PopUpItemBodyAccessPoints> {
     );
 
     await FirebaseFirestore.instance.collection('Data')
-      .doc(currentFloor.referenceId + " " + collectedPoints.toString())
+      .doc(currentFloor.referenceId + " " + currentFloor.collectedDataPoints.toString())
       .set({
         'x': xVar,
         'y': yVar,
@@ -459,6 +458,7 @@ class _PopUpItemBodyAccessPointsState extends State<PopUpItemBodyAccessPoints> {
       .catchError((error) => print("Failed to add data: $error"));
 
     currentFloor.collectedDataPoints++;
+    collectedPoints++;
 
     await FirebaseFirestore.instance.collection('Floors')
       .doc(currentFloor.referenceId)
