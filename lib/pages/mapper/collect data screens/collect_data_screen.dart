@@ -19,7 +19,8 @@ class CollectDataScreen extends StatefulWidget {
     super.key,
     required this.userInstance,
     required this.currentBuilding,
-    required this.currentFloor
+    required this.currentFloor,
+    required this.routerInstances
   });
 
   userObject userInstance = new userObject(
@@ -50,7 +51,8 @@ class CollectDataScreen extends StatefulWidget {
   State<CollectDataScreen> createState() => _CollectDataScreenState(
     this.userInstance,
     this.currentBuilding,
-    this.currentFloor
+    this.currentFloor,
+    this.routerInstances
   );
 }
 
@@ -73,7 +75,8 @@ class _CollectDataScreenState extends State<CollectDataScreen> {
   _CollectDataScreenState(
     this.userInstance,
     this.currentBuilding,
-    this.currentFloor
+    this.currentFloor,
+    this.routerInstances
   );
 
   userObject userInstance = new userObject(
@@ -414,11 +417,12 @@ class _PopUpItemBodyAccessPointsState extends State<PopUpItemBodyAccessPoints> {
   }
 
   List<WiFiAccessPoint> filterAccessPoints(List<WiFiAccessPoint> accessPoints) {
+
     List<WiFiAccessPoint> filteredAccessPoints = [];
 
     for (int i=0; i<routerInstances.length; i++){
       for (int j=0; j<accessPoints.length; j++){
-        if (accessPoints[j].bssid == routerInstances[i].BSSID){
+        if (accessPoints[j].bssid.trim() == routerInstances[i].BSSID.trim()){
           filteredAccessPoints.add(accessPoints[j]);
         }
       }

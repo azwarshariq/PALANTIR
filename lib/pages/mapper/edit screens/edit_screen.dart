@@ -519,6 +519,7 @@ class _EditScreenState extends State<EditScreen> {
                                   userInstance: this.userInstance,
                                   currentBuilding: this.currentBuilding,
                                   currentFloor: this.currentFloor,
+                                  routerInstances: this.routerInstances,
                                 ),
                               ),
                             );

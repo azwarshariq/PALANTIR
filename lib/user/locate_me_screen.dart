@@ -484,7 +484,7 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
                                 print(floor_distance[innerLoop]),
                                 for(int i=0; i<routerInstances.length; i++){
                                   if(routerInstances[i].BSSID == floorRouters[innerLoop].BSSID){
-                                    print("Router bssid -> "+ routerInstances[i].BSSID),
+                                    print("Router bssid -> " + routerInstances[i].BSSID),
                                     for(int j=0; j<floorInstances.length; j++){
                                       if(floorInstances[j].referenceId == routerInstances[i].floorRef){
                                         currentLocation.add(floorInstances[j]),
@@ -532,6 +532,7 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
 
                           Router_X = [floorRouters[0].x, floorRouters[1].x, floorRouters[2].x],
                           Router_Y = [floorRouters[0].y, floorRouters[1].y, floorRouters[2].y],
+
                           routerDistance = [],
                           routerDistance = getDistance(distance.length, distance),
                           //print(routerDistance),
