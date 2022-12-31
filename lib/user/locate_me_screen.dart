@@ -461,6 +461,7 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
                               }
                             },
                           },
+
                           floorRouters.toSet().toList(),
                           for (int j = 0; j< floorRouters.length; j++){
                              print("-->"+floorRouters[j].BSSID),
@@ -470,6 +471,7 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
                           sorted_distance = sortDistanceArray(floor_distance, floor_distance.length, floorRouters),
                           distance =  sorted_distance[0],
                           floorRouters =  sorted_distance[1],
+
                           print("1"),
                           print(distance),
                           print(floorRouters[0].BSSID + " , "+ floorRouters[1].BSSID+ " , " + floorRouters[2].BSSID),
@@ -494,6 +496,7 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
                               }
                             }
                           },
+
                           print("\n"),
 
                           //print(currentLocation),
@@ -520,14 +523,15 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
                           },
                           //distance = [10.0,8.0,10.0],
                           print("3"),
+
                           for(int i = 0 ;i<floorRouters.length;i++){
                             print(floorRouters[i].BSSID),
                             print(distance[i]),
                             print(floorRouters[i].x.toString() + " , " + floorRouters[i].y.toString())
                           },
 
-                          Router_X = [469, 469, 224],
-                          Router_Y = [192, 540, 372],
+                          Router_X = [floorRouters[0].x, floorRouters[1].x, floorRouters[2].x],
+                          Router_Y = [floorRouters[0].y, floorRouters[1].y, floorRouters[2].y],
                           routerDistance = [],
                           routerDistance = getDistance(distance.length, distance),
                           //print(routerDistance),
@@ -563,6 +567,7 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
                           sum_x = 0,
                           sum_y = 0,
                           count = 0,
+
                           for(var i=0;i<intersectingRegion.length;i++){
                             for(var j=0;j<intersectingRegion[i].length;j++){
                               count++,
@@ -570,12 +575,15 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
                               sum_y = sum_y + intersectingRegion[i][j][1],
                             },
                           },
+
                           avg_x = sum_x/count,
                           avg_y = sum_y/count,
                           avg_y = 1200 - avg_y,
                           print(avg_x),
                           print(avg_y),
+
                           //--------------------------------------------------------
+
                           x_coordinate = (avg_x/700)*100,
                           y_coordinate = (avg_y/1200)*100,
                           print(x_coordinate),
