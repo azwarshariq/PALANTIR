@@ -1,8 +1,8 @@
 class collectedData {
   String referenceId = '';
-  List<String> listOfBSSIDs = [];
-  List<int> listOfFrequencies = [];
-  List<int> listOfStrengths = [];
+  List<dynamic> listOfBSSIDs = [];
+  List<dynamic> listOfFrequencies = [];
+  List<dynamic> listOfStrengths = [];
   double x = 0.0;
   double y = 0.0;
 

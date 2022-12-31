@@ -99,6 +99,7 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
   List distance = [];
   List floor_distance = [];
   List<routerObject> floorRouters = [];
+  List<WiFiAccessPoint> floorAccessPoints = [];
   List<dynamic> sorted_distance = [];
   int floorPlanLength = 0;
   List<floorObject> currentLocation = [];
@@ -122,26 +123,6 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
   double exponent = 0.0;
   double x_coordinate = 0.0;
   double y_coordinate = 0.0;
-
-  Future<void> getCollectedPointsData() async {
-
-    CollectionReference firebaseData = await FirebaseFirestore.instance.collection('Data');
-
-    for (int i=0; i<currentFloor.collectedDataPoints; i++){
-      DocumentSnapshot data = await firebaseData.doc(currentFloor.referenceId + " " + i.toString()).get();
-
-      final dataPoint = new collectedData(
-          currentFloor.referenceId + " " + i.toString(),
-          data['listOfBSSIDs'],
-          data['listOfFrequencies'],
-          data['listOfStrengths'],
-          data['x'],
-          data['y']
-      );
-
-      collectedDataPoints.add(dataPoint);
-    }
-  }
 
   Future<void> _startScan(BuildContext context) async {
     // check if "can" startScan
@@ -301,7 +282,7 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
   List<dynamic> sortDistanceArray(array, n, List<routerObject> floorRouters)
   {
     List distance = [];
-    int temp = 0;
+    double temp = 0.0;
     routerObject tempRouter = new routerObject(
       "",
       "",
@@ -311,7 +292,7 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
       0.0,
     );
     for (int i=0; i<n; i++){
-      for (int j=0; j<n-i-1; i++){
+      for (int j=0; j<n-i-1; j++){
         if (array[j+1] < array[j]){
           temp = array[j];
           array[j] = array[j+1];
@@ -323,34 +304,6 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
         }
       }
     }
-    // for (int i = 0; i < n; i++)
-    // {
-    //   if (array[i] < firstMin)
-    //   {
-    //     thirdMin = secondMin;
-    //     secondMin = firstMin;
-    //     firstMin = array[i];
-    //     firstIndex = floorRouters[i];
-    //   }
-    //   else if (array[i] < secondMin)
-    //   {
-    //     thirdMin = secondMin;
-    //     secondMin = array[i];
-    //     secondIndex = floorRouters[i];
-    //   }
-    //   else if (array[i] < thirdMin)
-    //     thirdMin = array[i];
-    //     thirdIndex = floorRouters[i];
-    // }
-    // distance.add(firstMin);
-    // distance.add(secondMin);
-    // distance.add(thirdMin);
-    //
-    // floorRouters = [];
-    // floorRouters.add(firstIndex);
-    // floorRouters.add(secondIndex);
-    // floorRouters.add(thirdIndex);
-
     distance = array;
     return [distance, floorRouters];
   }
@@ -365,8 +318,45 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
     return count;
   }
 
+  int countCounterOccurrences(List<String> list, String element) {
+    int count = 0;
+    for (int i = 0; i < list.length; i++) {
+      if (list[i] == element) {
+        count++;
+      }
+    }
+    return count;
+  }
+
+  Future<List<collectedData>> getCollectedPointsData() async {
+
+    CollectionReference firebaseData = await FirebaseFirestore.instance.collection('Data');
+    List<collectedData> temp = [];
+    for (int i=0; i<currentFloor.collectedDataPoints; i++){
+      DocumentSnapshot data = await firebaseData.doc(currentFloor.referenceId + " " + i.toString()).get();
+
+      final dataPoint = new collectedData(
+        currentFloor.referenceId + " " + i.toString(),
+        data['listOfBSSIDs'],
+        data['listOfFrequencies'],
+        data['listOfStrengths'],
+        data['x'],
+        data['y'],
+      );
+      temp.add(dataPoint);
+    }
+    return temp;
+  }
+
+
+  List<int> listOfLevels = [];
+  List<String> listOfBssids = [];
+  List<String> counter = [];
+  List<int> intCounter = [];
+
   @override
   Widget build(BuildContext context) {
+    int maximum = -1;
     return Scaffold(
       appBar: AppBar(
         flexibleSpace: Image(
@@ -431,7 +421,7 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
                         shadowColor: Color(0xFFA11C44),
                         padding: EdgeInsets.all(20),
                       ),
-                      onPressed: () => {
+                      onPressed: () async => {
                         _startScan(context),
                         _getScannedResults(context),
 
@@ -457,6 +447,7 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
                             for (int j = 0; j<routerInstances.length; j++){
                               if( accessPoints[i].bssid == routerInstances[j].BSSID ){
                                 floorRouters.add(routerInstances[j]),
+                                floorAccessPoints.add(accessPoints[i]),
                                 floor_distance.add(distance[i]),
                               }
                             },
@@ -472,9 +463,9 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
                           distance =  sorted_distance[0],
                           floorRouters =  sorted_distance[1],
 
-                          print("1"),
-                          print(distance),
-                          print(floorRouters[0].BSSID + " , "+ floorRouters[1].BSSID+ " , " + floorRouters[2].BSSID),
+                          //print("1"),
+                          //print(distance),
+                          //print(floorRouters[0].BSSID + " , "+ floorRouters[1].BSSID+ " , " + floorRouters[2].BSSID),
                           print("\n"),
                           currentLocation = [],
                           print("2"),
@@ -521,74 +512,123 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
                               }
                             }
                           },
-                          //distance = [10.0,8.0,10.0],
-                          print("3"),
 
                           for(int i = 0 ;i<floorRouters.length;i++){
                             print(floorRouters[i].BSSID),
                             print(distance[i]),
                             print(floorRouters[i].x.toString() + " , " + floorRouters[i].y.toString())
                           },
+                          this.collectedDataPoints = await getCollectedPointsData(),
 
-                          Router_X = [floorRouters[0].x, floorRouters[1].x, floorRouters[2].x],
-                          Router_Y = [floorRouters[0].y, floorRouters[1].y, floorRouters[2].y],
-
-                          routerDistance = [],
-                          routerDistance = getDistance(distance.length, distance),
-                          //print(routerDistance),
-                          //--------------------------------------------------------
-                          routerPixel = [],
-                          routerPixel = getPixel(distance.length, routerDistance),
-                          //print(routerPixel),
-                          //--------------------------------------------------------
-                          index = [],
-                          index.add(getIntersectingPoints(0 , 1, routerPixel, 360, 360)),
-                          index.add(getIntersectingPoints(0 , 2, routerPixel, 360, 360)),
-                          index.add(getIntersectingPoints(1 , 2, routerPixel, 360, 360)),
-                          //print(index),
-                          //--------------------------------------------------------
-                          intersectingLine = [],
-                          intersectingLine.add(getIntersectingPointsRange( 0 , 1, index[0][0], index[0][1], routerPixel )),
-                          intersectingLine.add(getIntersectingPointsRange( 0 , 2, index[1][0], index[1][1], routerPixel )),
-                          intersectingLine.add(getIntersectingPointsRange( 1 , 2, index[2][0], index[2][1], routerPixel )),
-                          //print(intersectingLine),
-                          //--------------------------------------------------------
-                          index1 = [],
-                          index1.add(getIntersectingPoints(0 , 1, intersectingLine, intersectingLine[0].length, intersectingLine[1].length)),
-                          index1.add(getIntersectingPoints(0 , 2, intersectingLine, intersectingLine[0].length, intersectingLine[2].length)),
-                          index1.add(getIntersectingPoints(1 , 2, intersectingLine, intersectingLine[1].length, intersectingLine[2].length)),
-                          //print(index1),
-                          //--------------------------------------------------------
-                          intersectingRegion = [],
-                          intersectingRegion.add(getIntersectingRegion( 0 , 1, index1[0][0], index1[0][1], intersectingLine )),
-                          intersectingRegion.add(getIntersectingRegion( 0 , 2, index1[1][0], index1[1][1], intersectingLine )),
-                          intersectingRegion.add(getIntersectingRegion( 1 , 2, index1[2][0], index1[2][1], intersectingLine )),
-                          //print(intersectingRegion),
-                          //--------------------------------------------------------
-                          sum_x = 0,
-                          sum_y = 0,
-                          count = 0,
-
-                          for(var i=0;i<intersectingRegion.length;i++){
-                            for(var j=0;j<intersectingRegion[i].length;j++){
-                              count++,
-                              sum_x = sum_x + intersectingRegion[i][j][0],
-                              sum_y = sum_y + intersectingRegion[i][j][1],
+                          if(floorRouters.length < 3){
+                            print("\nAccess point levels"),
+                            for(int i = 0; i<floorAccessPoints.length; i++){
+                              listOfBssids.add(floorAccessPoints[i].bssid),
+                              listOfLevels.add(floorAccessPoints[i].level),
                             },
+                            print(listOfBssids),
+                            print(listOfLevels),
+
+                            for( int i = 0; i<this.collectedDataPoints.length; i++){
+                              for( int j = 0; j<collectedDataPoints[i].listOfStrengths.length; j++){
+                                for( int k = 0; k< listOfLevels.length;k++){
+                                  if(listOfBssids[k] == collectedDataPoints[i].listOfBSSIDs[j]){
+                                    if((listOfLevels[k] - collectedDataPoints[i].listOfStrengths[j]).abs() <= 5){
+                                      print("--> Collected Data Info"),
+                                      print(collectedDataPoints[i].listOfBSSIDs[j]),
+                                      print(collectedDataPoints[i].listOfStrengths[j]),
+                                      print(collectedDataPoints[i].referenceId),
+                                      counter.add(collectedDataPoints[i].referenceId),
+                                    }
+                                  }
+                                },
+                              }
+                            },
+                            print("counter"),
+                            print(counter),
+                            for(int i = 0; i<counter.length; i++)
+                              intCounter.add(countCounterOccurrences(counter, counter[i])),
+
+                            for(int i = 0; i<intCounter.length; i++){
+                              if(intCounter[i] > maximum){
+                                maximum = i
+                              }
+                            },
+                            for( int i = 0; i<this.collectedDataPoints.length; i++){
+                              if (this.collectedDataPoints[i].referenceId == counter[maximum]){
+                                x_coordinate = collectedDataPoints[i].x,
+                                y_coordinate = collectedDataPoints[i].y,
+                              }
+                            },
+                            print(x_coordinate),
+                            print(y_coordinate),
+
+                          }
+                          else{
+                            Router_X = [(floorRouters[0].x/100)*700, (floorRouters[1].x/100)*700, (floorRouters[2].x/100)*700],
+                            Router_Y = [(floorRouters[0].y/100)*1200, (floorRouters[1].y/100)*1200, (floorRouters[2].y/100)*1200],
+                            print("Router: "),
+                            print(Router_X),
+                            print(Router_Y),
+
+                            routerDistance = [],
+                            routerDistance = getDistance(distance.length, distance),
+                            //print(routerDistance),
+                            //--------------------------------------------------------
+                            routerPixel = [],
+                            routerPixel = getPixel(distance.length, routerDistance),
+                            //print(routerPixel),
+                            //--------------------------------------------------------
+                            index = [],
+                            index.add(getIntersectingPoints(0 , 1, routerPixel, 360, 360)),
+                            index.add(getIntersectingPoints(0 , 2, routerPixel, 360, 360)),
+                            index.add(getIntersectingPoints(1 , 2, routerPixel, 360, 360)),
+                            //print(index),
+                            //--------------------------------------------------------
+                            intersectingLine = [],
+                            intersectingLine.add(getIntersectingPointsRange( 0 , 1, index[0][0], index[0][1], routerPixel )),
+                            intersectingLine.add(getIntersectingPointsRange( 0 , 2, index[1][0], index[1][1], routerPixel )),
+                            intersectingLine.add(getIntersectingPointsRange( 1 , 2, index[2][0], index[2][1], routerPixel )),
+                            //print(intersectingLine),
+                            //--------------------------------------------------------
+                            index1 = [],
+                            index1.add(getIntersectingPoints(0 , 1, intersectingLine, intersectingLine[0].length, intersectingLine[1].length)),
+                            index1.add(getIntersectingPoints(0 , 2, intersectingLine, intersectingLine[0].length, intersectingLine[2].length)),
+                            index1.add(getIntersectingPoints(1 , 2, intersectingLine, intersectingLine[1].length, intersectingLine[2].length)),
+                            //print(index1),
+                            //--------------------------------------------------------
+                            intersectingRegion = [],
+                            intersectingRegion.add(getIntersectingRegion( 0 , 1, index1[0][0], index1[0][1], intersectingLine )),
+                            intersectingRegion.add(getIntersectingRegion( 0 , 2, index1[1][0], index1[1][1], intersectingLine )),
+                            intersectingRegion.add(getIntersectingRegion( 1 , 2, index1[2][0], index1[2][1], intersectingLine )),
+                            //print(intersectingRegion),
+                            //--------------------------------------------------------
+                            sum_x = 0,
+                            sum_y = 0,
+                            count = 0,
+
+                            for(var i=0;i<intersectingRegion.length;i++){
+                              for(var j=0;j<intersectingRegion[i].length;j++){
+                                count++,
+                                sum_x = sum_x + intersectingRegion[i][j][0],
+                                sum_y = sum_y + intersectingRegion[i][j][1],
+                              },
+                            },
+
+                            avg_x = sum_x/count,
+                            avg_y = sum_y/count,
+                            avg_y = 1200 - avg_y,
+                            print(avg_x),
+                            print(avg_y),
+
+                            //--------------------------------------------------------
+
+                            x_coordinate = (avg_x/700)*100,
+                            y_coordinate = (avg_y/1200)*100,
+                            print(x_coordinate),
+                            print(y_coordinate),
+
                           },
-
-                          avg_x = sum_x/count,
-                          avg_y = sum_y/count,
-                          avg_y = 1200 - avg_y,
-                          print(avg_x),
-                          print(avg_y),
-
-                          //--------------------------------------------------------
-
-                          x_coordinate = (avg_x/700)*100,
-                          y_coordinate = (avg_y/1200)*100,
-                          print(x_coordinate),
-                          print(y_coordinate),
 
                           Navigator.of(context).push(
                             MaterialPageRoute(

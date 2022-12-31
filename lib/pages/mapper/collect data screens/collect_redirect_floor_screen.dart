@@ -1,7 +1,6 @@
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:palantir_ips/pages/mapper/collect%20data%20screens/collect_data_screen.dart';
-import 'package:palantir_ips/pages/mapper/edit%20screens/edit_demo_screen.dart';
 import 'package:palantir_ips/pages/mapper/storage_service.dart';
 import 'package:palantir_ips/pages/mapper/upload%20screens/upload_screen.dart';
 
@@ -106,6 +105,53 @@ class _CollectRedirectFloorScreenState extends State<CollectRedirectFloorScreen>
     return floorNames;
   }
 
+  void nextScreen(){
+    print(currentFloor.referenceId);
+    if(currentFloor.floorPlan != ""){
+      Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => CollectDataScreen(
+              userInstance: this.userInstance,
+              routerInstances: this.routerInstances,
+              currentBuilding: this.currentBuilding,
+              currentFloor: this.currentFloor,
+            ),
+          )
+      );
+    }
+    else {
+      Navigator.of(context).push(
+          MaterialPageRoute(
+              builder: (context) => UploadScreen(
+                  userInstance: this.userInstance,
+                  buildingInstances: this.buildingInstances,
+                  floorInstances: this.floorInstances,
+                  routerInstances: this.routerInstances,
+                  currentBuilding: this.currentBuilding)
+          )
+      );
+    }
+  }
+
+  Icon nextIcon(String selectedFloor, String selectedFloorPlan){
+    if (selectedFloorPlan == ""){
+      floorHasPlan = true;
+      return Icon(
+        Icons.add_photo_alternate_outlined,
+        size: 30,
+        color: Color(0xff325E89),
+      );
+    }
+    else {
+      floorHasPlan = false;
+      return Icon(
+        Icons.arrow_forward,
+        size: 30,
+        color: Color(0xff325E89),
+      );
+    }
+  }
+
   bool floorHasPlan = false;
 
   Text hasFloorPlan(String selectedFloor, String selectedFloorPlan){
@@ -178,23 +224,9 @@ class _CollectRedirectFloorScreenState extends State<CollectRedirectFloorScreen>
                         this.currentFloor = floorInstances[i];
                       }
                     }
-
-                    Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => CollectDataScreen(
-                            userInstance: this.userInstance,
-                            currentBuilding: this.currentBuilding,
-                            currentFloor: this.currentFloor,
-                            routerInstances: this.routerInstances,
-                          ),
-                        )
-                    );
+                    nextScreen();
                   },
-                  child: const Icon(
-                    Icons.arrow_forward,
-                    size: 30,
-                    color: Color(0xff325E89),
-                  ),
+                  child: nextIcon(floorNames[index], floorPlans[index])
                 ),
                 title: Text("${floorNames[index]}",
                   style: GoogleFonts.raleway(
