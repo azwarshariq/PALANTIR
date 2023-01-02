@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:palantir_ips/auth/main_page.dart';
 import 'package:palantir_ips/classes/building_class.dart';
 import 'package:palantir_ips/pages/mapper/controller_screen.dart';
 import 'package:palantir_ips/read_data/get_user_name.dart';
@@ -83,8 +84,8 @@ class _HomePageState extends State<HomePage> {
             'Palantir',
             style: GoogleFonts.raleway(
               color: const Color(0xffffffff),
-              fontWeight: FontWeight.w300,
-              fontSize: 20,
+              fontWeight: FontWeight.w200,
+              fontSize: 27,
             ),
           ),
           centerTitle: true,
@@ -105,6 +106,12 @@ class _HomePageState extends State<HomePage> {
               ),
               onPressed: () {
                 FirebaseAuth.instance.signOut();
+                Navigator.of(context)
+                    .push(
+                    MaterialPageRoute(
+                        builder: (context) => MainPage()
+                    )
+                );
               },
             )
           ],
