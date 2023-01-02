@@ -123,6 +123,8 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
   double exponent = 0.0;
   double x_coordinate = 0.0;
   double y_coordinate = 0.0;
+  //----------------------------------------------------
+  List<double> get_x_y = [];
 
   Future<void> _startScan(BuildContext context) async {
     // check if "can" startScan
@@ -279,6 +281,17 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
   }
   //-------------------------------------------------------------------------
 
+  List hypotenuseToBase(List distances){
+    // Assuming the Perpendicular value (in meters)
+    double perp = 2.8; // 9 feet approx.
+
+    for (int i=0; i<distances.length; i++){
+      distances[i] = sqrt( pow(distances[i], 2) - pow(perp, 2) );
+    }
+
+    return distances;
+  }
+
   List<dynamic> sortDistanceArray(array, n, List<routerObject> floorRouters)
   {
     List distance = [];
@@ -291,6 +304,7 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
       0.0,
       0.0,
     );
+
     for (int i=0; i<n; i++){
       for (int j=0; j<n-i-1; j++){
         if (array[j+1] < array[j]){
@@ -305,6 +319,7 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
       }
     }
     distance = array;
+    distance = hypotenuseToBase(distance);
     return [distance, floorRouters];
   }
 
@@ -348,6 +363,36 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
     return temp;
   }
 
+  List<double> contextualiseValues(double x, double y, List<collectedData> collectedPoints){
+    double inaccuracyX = 0.0;
+    double inaccuracyY = 0.0;
+    double meanCollectedX = 0.0;
+    double meanCollectedY = 0.0;
+
+    for (int i=0; i<collectedPoints.length; i++){
+      meanCollectedX += collectedPoints[i].x;
+      meanCollectedY += collectedPoints[i].y;
+    }
+    meanCollectedX /= collectedPoints.length;
+    meanCollectedY /= collectedPoints.length;
+
+    inaccuracyX = (x - meanCollectedX).abs();
+    inaccuracyY = (y - meanCollectedY).abs();
+
+    print('- Mean of Collected Data: (${meanCollectedX}, ${meanCollectedY})');
+    print('- Positioned values: (${x}, ${y})');
+    print('- Inaccuracy: (${inaccuracyX}, ${inaccuracyY}) ');
+
+    if (inaccuracyX < 10 && inaccuracyY < 10){
+      return [x, y];
+    }
+    else if (inaccuracyX < 40 && inaccuracyY < 40){
+      return [x*(0.5) + meanCollectedX*(0.5), y*(0.5) + meanCollectedY*(0.5)];
+    }
+    else {
+      return [meanCollectedX, meanCollectedY];
+    }
+  }
 
   List<int> listOfLevels = [];
   List<String> listOfBssids = [];
@@ -562,14 +607,33 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
                             },
                             print(x_coordinate),
                             print(y_coordinate),
-
                           }
                           else{
+                            this.collectedDataPoints = await getCollectedPointsData(),
                             Router_X = [(floorRouters[0].x/100)*700, (floorRouters[1].x/100)*700, (floorRouters[2].x/100)*700],
                             Router_Y = [(floorRouters[0].y/100)*1200, (floorRouters[1].y/100)*1200, (floorRouters[2].y/100)*1200],
                             print("Router: "),
                             print(Router_X),
                             print(Router_Y),
+                            
+                            for( int i = 0; i<this.collectedDataPoints.length; i++){
+                              for( int j = 0; j<collectedDataPoints[i].listOfStrengths.length; j++){
+                                for( int k = 0; k< listOfLevels.length;k++){
+                                  if(listOfBssids[k] == collectedDataPoints[i].listOfBSSIDs[j]){
+                                    if((listOfLevels[k] - collectedDataPoints[i].listOfStrengths[j]).abs() <= 5){
+                                      print("--> Collected Data Info"),
+                                      print(collectedDataPoints[i].listOfBSSIDs[j]),
+                                      print(collectedDataPoints[i].listOfStrengths[j]),
+                                      print(collectedDataPoints[i].referenceId),
+                                      counter.add(collectedDataPoints[i].referenceId),
+                                    }
+                                    else {
+                                      collectedDataPoints.remove(collectedDataPoints[i]),
+                                    }
+                                  }
+                                },
+                              }
+                            },
 
                             routerDistance = [],
                             routerDistance = getDistance(distance.length, distance),
@@ -627,7 +691,10 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
                             y_coordinate = (avg_y/1200)*100,
                             print(x_coordinate),
                             print(y_coordinate),
-
+                            
+                            get_x_y = contextualiseValues(x_coordinate, y_coordinate, collectedDataPoints),
+                            x_coordinate = get_x_y[0],
+                            y_coordinate = get_x_y[1],
                           },
 
                           Navigator.of(context).push(

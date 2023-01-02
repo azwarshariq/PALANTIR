@@ -205,22 +205,13 @@ class _HomePageState extends State<HomePage> {
                         fit: BoxFit.fitWidth
                       ),
                       borderRadius: BorderRadius.circular(30),
-/*
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey, //New
-                          blurRadius: 5.0,
-                          offset: Offset(0, -1)
-                        )
-                      ],
-*/
                     ),
                     child: Text(
                       'Buildings',
                       style: GoogleFonts.raleway(
-                        color: Color(0xFFA11C44),
-                        fontWeight: FontWeight.w200,
-                        fontSize: 20,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w300,
+                        fontSize: 22,
                       ),
                     ),
                   )
@@ -254,21 +245,13 @@ class _HomePageState extends State<HomePage> {
                           fit: BoxFit.fitWidth
                       ),
                       borderRadius: BorderRadius.circular(30),
-/*
-                      boxShadow: [
-                        BoxShadow(
-                            color: Colors.grey, //New
-                            blurRadius: 5.0,
-                            offset: Offset(0, -1))
-                      ],
-*/
                     ),
                     child: Text(
                       'Floors',
                       style: GoogleFonts.raleway(
-                        color: Color(0xFFA11C44),
-                        fontWeight: FontWeight.w200,
-                        fontSize: 20,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w300,
+                        fontSize: 22,
                       ),
                     ),
                   )
@@ -301,22 +284,14 @@ class _HomePageState extends State<HomePage> {
                           fit: BoxFit.fitWidth
                       ),
                       borderRadius: BorderRadius.circular(30),
-/*
-                      boxShadow: [
-                        BoxShadow(
-                            color: Colors.grey, //New
-                            blurRadius: 5.0,
-                            offset: Offset(0, -1))
-                      ],
-*/
                     ),
                     padding: const EdgeInsets.only(left: 0, right: 0, top: 0, bottom: 0),
                     child: Text(
                       'Routers',
                       style: GoogleFonts.raleway(
-                        color: Color(0xFFA11C44),
-                        fontWeight: FontWeight.w200,
-                        fontSize: 20,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w300,
+                        fontSize: 22,
                       ),
                     ),
                   )
