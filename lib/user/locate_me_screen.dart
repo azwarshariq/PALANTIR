@@ -278,7 +278,20 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
     return intersectingRegion;
   }
   //-------------------------------------------------------------------------
-  //function
+  void filterAccessPoints() async {
+
+    List<WiFiAccessPoint> filteredAccessPoints = [];
+
+    for (int i=0; i<routerInstances.length; i++){
+      for (int j=0; j<accessPoints.length; j++){
+        if (accessPoints[j].bssid.trim() == routerInstances[i].BSSID.trim()){
+          filteredAccessPoints.add(accessPoints[j]);
+        }
+      }
+    }
+
+    this.accessPoints = filteredAccessPoints;
+  }
   //-------------------------------------------------------------------------
 
   List hypotenuseToBase(List distances){
@@ -571,8 +584,9 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
                         _startScan(context),
                         _getScannedResults(context),
 
-                        print(accessPoints.length),
-
+                        print("Unfiltered Access Points: ${accessPoints.length}"),
+                        filterAccessPoints(),
+                        print("Filtered Access Points: ${accessPoints.length}"),
 
                         if (accessPoints.isEmpty){
                           print("Empty"),
