@@ -329,7 +329,7 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
     }
 
     distance = hypotenuseToBase(distance);
-    return [distance, floorRouters];
+    return [distance.getRange(0, 3), floorRouters.getRange(0, 3)];
   }
 
   int countOccurrencesUsingWhereMethod(List<floorObject> list, String element) {
@@ -368,10 +368,56 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
         data['y'],
       );
       temp.add(dataPoint);
-      //print(dataPoint.referenceId);
     }
     return temp;
   }
+
+/*
+  Future<dynamic> getCollectedPointsData() async {
+
+    CollectionReference firebaseData = await FirebaseFirestore.instance.collection('Data');
+    for (int i=0; i<currentFloor.collectedDataPoints; i++){
+      print(currentFloor.referenceId + " " + i.toString());
+      return FutureBuilder<DocumentSnapshot>(
+        future: firebaseData.doc(currentFloor.referenceId + " " + i.toString()).get(),
+        builder: ((context, snapshot)
+        {
+          if (snapshot.connectionState == ConnectionState.done) {
+            Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
+            final dataPoint = new collectedData(
+              currentFloor.referenceId + " " + i.toString(),
+              data['listOfBSSIDs'],
+              data['listOfFrequencies'],
+              data['listOfStrengths'],
+              data['x'],
+              data['y'],
+            );
+
+            this.collectedDataPoints.add(dataPoint);
+
+            return Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+              ],
+            );
+          }
+          else {
+            return Text(
+              'Loading',
+              style: GoogleFonts.raleway(
+                color: const Color(0xffffffff),
+                fontWeight: FontWeight.w200,
+                fontSize: 5,
+              ),
+            );
+          }
+        }
+        ),
+      );
+    }
+  }
+*/
+
 
   List<double> contextualiseValues(double x, double y, List<collectedData> collectedPoints){
     double inaccuracyX = 0.0;
@@ -490,37 +536,45 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
                           ),
                         }
 //---------------------------------------------------------------------------------------------------------------------------//
-
-                        else {
+                        else if (accessPoints.length >= 3) {
                           distance = [],
+                          // Calculating distances from Frequencies and Signal Strengths
                           for ( var i=0; i< accessPoints.length; i++ ){
                             exponent = ((27.55 - (20 * (log(accessPoints[i].frequency))/log(10)) + accessPoints[i].level.abs()) / 20),
                             distance.add(pow(10, exponent)),
                           },
 
+                          // Filling local database
                           for (int i = 0; i<accessPoints.length; i++){
                             for (int j = 0; j<routerInstances.length; j++){
                               if( accessPoints[i].bssid == routerInstances[j].BSSID ){
+                                // Routers in the current floor
                                 floorRouters.add(routerInstances[j]),
+                                // WiFi Access Point Objects list for all routers
                                 floorAccessPoints.add(accessPoints[i]),
+                                // Distance of user from every router
                                 floor_distance.add(distance[i]),
                               }
                             },
                           },
 
+                          // Printing Values
                           floorRouters.toSet().toList(),
                           for (int j = 0; j< floorRouters.length; j++){
                              print("-->"+floorRouters[j].BSSID),
                              print(floor_distance[j]),
                           },
 
+                          // Sorting the arrays of distances concurrently with the list of routers
                           sorted_distance = sortDistanceArray(floor_distance, floor_distance.length, floorRouters),
+                          // Distances sorted
                           distance =  sorted_distance[0],
+                          // Routers sorted
                           floorRouters =  sorted_distance[1],
 //---------------------------------------------------------------------------------------------------------------------------//
-
                           currentLocation = [],
                           print("2"),
+                          // Checking the floor to which each of these routers belong to
                           for(int outerLoop = 0;  outerLoop < distance.length; outerLoop++){
                             for(int innerLoop = 0;  innerLoop < floor_distance.length; innerLoop++){
                               if(floor_distance[innerLoop] == distance[outerLoop]){
@@ -541,38 +595,39 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
                           },
 //---------------------------------------------------------------------------------------------------------------------------//
 
-                          for(int i = 0; i<currentLocation.length;i++ ){
-                            print(countOccurrencesUsingWhereMethod(currentLocation, currentLocation[i].referenceId)),
-                            if(countOccurrencesUsingWhereMethod(currentLocation, currentLocation[i].referenceId) >= 2){
-                              this.currentFloor = currentLocation[i],
-                              for(int j=0; j<buildingInstances.length; j++){
-                                if(buildingInstances[j].referenceId == currentLocation[i].buildingRef){
-                                  this.currentBuilding = buildingInstances[j],
-                                }
+                        // Deciding which floor we are currently on
+                        for(int i = 0; i<currentLocation.length;i++ ){
+                          print(countOccurrencesUsingWhereMethod(currentLocation, currentLocation[i].referenceId)),
+                          if(countOccurrencesUsingWhereMethod(currentLocation, currentLocation[i].referenceId) >= 2){
+                            this.currentFloor = currentLocation[i],
+                            for(int j=0; j<buildingInstances.length; j++){
+                              if(buildingInstances[j].referenceId == currentLocation[i].buildingRef){
+                                this.currentBuilding = buildingInstances[j],
                               }
                             }
-                            else if(countOccurrencesUsingWhereMethod(currentLocation, currentLocation[i].referenceId) <= 1){
-                              this.currentFloor = currentLocation[0],
-                              for(int j=0; j<buildingInstances.length; j++){
-                                if(buildingInstances[j].referenceId == currentLocation[0].buildingRef){
-                                  this.currentBuilding = buildingInstances[j],
-                                }
+                          }
+                          else if(countOccurrencesUsingWhereMethod(currentLocation, currentLocation[i].referenceId) <= 1){
+                            this.currentFloor = currentLocation[0],
+                            for(int j=0; j<buildingInstances.length; j++){
+                              if(buildingInstances[j].referenceId == currentLocation[0].buildingRef){
+                                this.currentBuilding = buildingInstances[j],
                               }
                             }
-                          },
+                          }
+                        },
+//---------------------------------------------------------------------------------------------------------------------------//
+                        for(int i = 0 ;i<floorRouters.length;i++){
+                          print(floorRouters[i].BSSID),
+                          print(distance[i]),
+                          print(floorRouters[i].x.toString() + " , " + floorRouters[i].y.toString())
+                        },
 //---------------------------------------------------------------------------------------------------------------------------//
 
-                          for(int i = 0 ;i<floorRouters.length;i++){
-                            print(floorRouters[i].BSSID),
-                            print(distance[i]),
-                            print(floorRouters[i].x.toString() + " , " + floorRouters[i].y.toString())
-                          },
-//---------------------------------------------------------------------------------------------------------------------------//
-
+                        // Getting all collected data points for the current floor
                           this.collectedDataPoints = await getCollectedPointsData(),
-                          
+
                           if(floorRouters.length < 3){
-                            print("\nIF Block"),
+                            print("\nInsufficient number of routers"),
                             for(int i = 0; i<floorAccessPoints.length; i++){
                               listOfBssids.add(floorAccessPoints[i].bssid),
                               listOfLevels.add(floorAccessPoints[i].level),
@@ -616,7 +671,7 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
                             print(y_coordinate),
                           }
                           else if(floorRouters.length >= 3){
-                            print("\nElse Block"),
+                            print("\nRouters are 3 or more"),
                             this.collectedDataPoints = await getCollectedPointsData(),
                             Router_X = [(floorRouters[0].x/100)*700, (floorRouters[1].x/100)*700, (floorRouters[2].x/100)*700],
                             Router_Y = [(floorRouters[0].y/100)*1200, (floorRouters[1].y/100)*1200, (floorRouters[2].y/100)*1200],
