@@ -318,7 +318,16 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
         }
       }
     }
-    distance = array;
+    if (array.length > 3){
+      for(int i = 3; i< array.length; i++){
+        array.removeAt(i);
+      }
+      distance = array;
+    }
+    else if (array.length <= 3){
+      distance = array;
+    }
+
     distance = hypotenuseToBase(distance);
     return [distance, floorRouters];
   }
@@ -348,8 +357,8 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
     CollectionReference firebaseData = await FirebaseFirestore.instance.collection('Data');
     List<collectedData> temp = [];
     for (int i=0; i<currentFloor.collectedDataPoints; i++){
+      print(currentFloor.referenceId + " " + i.toString());
       DocumentSnapshot data = await firebaseData.doc(currentFloor.referenceId + " " + i.toString()).get();
-
       final dataPoint = new collectedData(
         currentFloor.referenceId + " " + i.toString(),
         data['listOfBSSIDs'],
@@ -359,6 +368,7 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
         data['y'],
       );
       temp.add(dataPoint);
+      //print(dataPoint.referenceId);
     }
     return temp;
   }
@@ -479,13 +489,13 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
                               )
                           ),
                         }
+//---------------------------------------------------------------------------------------------------------------------------//
+
                         else {
                           distance = [],
                           for ( var i=0; i< accessPoints.length; i++ ){
                             exponent = ((27.55 - (20 * (log(accessPoints[i].frequency))/log(10)) + accessPoints[i].level.abs()) / 20),
                             distance.add(pow(10, exponent)),
-                            // print(accessPoints[i].bssid),
-                            // print(distance[i]),
                           },
 
                           for (int i = 0; i<accessPoints.length; i++){
@@ -507,11 +517,8 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
                           sorted_distance = sortDistanceArray(floor_distance, floor_distance.length, floorRouters),
                           distance =  sorted_distance[0],
                           floorRouters =  sorted_distance[1],
+//---------------------------------------------------------------------------------------------------------------------------//
 
-                          //print("1"),
-                          //print(distance),
-                          //print(floorRouters[0].BSSID + " , "+ floorRouters[1].BSSID+ " , " + floorRouters[2].BSSID),
-                          print("\n"),
                           currentLocation = [],
                           print("2"),
                           for(int outerLoop = 0;  outerLoop < distance.length; outerLoop++){
@@ -532,10 +539,8 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
                               }
                             }
                           },
+//---------------------------------------------------------------------------------------------------------------------------//
 
-                          print("\n"),
-
-                          //print(currentLocation),
                           for(int i = 0; i<currentLocation.length;i++ ){
                             print(countOccurrencesUsingWhereMethod(currentLocation, currentLocation[i].referenceId)),
                             if(countOccurrencesUsingWhereMethod(currentLocation, currentLocation[i].referenceId) >= 2){
@@ -543,7 +548,6 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
                               for(int j=0; j<buildingInstances.length; j++){
                                 if(buildingInstances[j].referenceId == currentLocation[i].buildingRef){
                                   this.currentBuilding = buildingInstances[j],
-                                  //print(buildingInstances[j].referenceId),
                                 }
                               }
                             }
@@ -552,21 +556,23 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
                               for(int j=0; j<buildingInstances.length; j++){
                                 if(buildingInstances[j].referenceId == currentLocation[0].buildingRef){
                                   this.currentBuilding = buildingInstances[j],
-                                  //print(buildingInstances[j].referenceId),
                                 }
                               }
                             }
                           },
+//---------------------------------------------------------------------------------------------------------------------------//
 
                           for(int i = 0 ;i<floorRouters.length;i++){
                             print(floorRouters[i].BSSID),
                             print(distance[i]),
                             print(floorRouters[i].x.toString() + " , " + floorRouters[i].y.toString())
                           },
-                          this.collectedDataPoints = await getCollectedPointsData(),
+//---------------------------------------------------------------------------------------------------------------------------//
 
+                          this.collectedDataPoints = await getCollectedPointsData(),
+                          
                           if(floorRouters.length < 3){
-                            print("\nAccess point levels"),
+                            print("\nIF Block"),
                             for(int i = 0; i<floorAccessPoints.length; i++){
                               listOfBssids.add(floorAccessPoints[i].bssid),
                               listOfLevels.add(floorAccessPoints[i].level),
@@ -578,7 +584,7 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
                               for( int j = 0; j<collectedDataPoints[i].listOfStrengths.length; j++){
                                 for( int k = 0; k< listOfLevels.length;k++){
                                   if(listOfBssids[k] == collectedDataPoints[i].listOfBSSIDs[j]){
-                                    if((listOfLevels[k] - collectedDataPoints[i].listOfStrengths[j]).abs() <= 5){
+                                    if((listOfLevels[k] - collectedDataPoints[i].listOfStrengths[j]).abs() <= 2){
                                       print("--> Collected Data Info"),
                                       print(collectedDataPoints[i].listOfBSSIDs[j]),
                                       print(collectedDataPoints[i].listOfStrengths[j]),
@@ -589,18 +595,19 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
                                 },
                               }
                             },
-                            print("counter"),
                             print(counter),
                             for(int i = 0; i<counter.length; i++)
                               intCounter.add(countCounterOccurrences(counter, counter[i])),
-
+                            print(intCounter),
                             for(int i = 0; i<intCounter.length; i++){
-                              if(intCounter[i] > maximum){
+                              if(intCounter[i] >= maximum){
                                 maximum = i
                               }
                             },
+                            print(maximum),
                             for( int i = 0; i<this.collectedDataPoints.length; i++){
                               if (this.collectedDataPoints[i].referenceId == counter[maximum]){
+                                print(collectedDataPoints[i].referenceId),
                                 x_coordinate = collectedDataPoints[i].x,
                                 y_coordinate = collectedDataPoints[i].y,
                               }
@@ -608,14 +615,15 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
                             print(x_coordinate),
                             print(y_coordinate),
                           }
-                          else{
+                          else if(floorRouters.length >= 3){
+                            print("\nElse Block"),
                             this.collectedDataPoints = await getCollectedPointsData(),
                             Router_X = [(floorRouters[0].x/100)*700, (floorRouters[1].x/100)*700, (floorRouters[2].x/100)*700],
                             Router_Y = [(floorRouters[0].y/100)*1200, (floorRouters[1].y/100)*1200, (floorRouters[2].y/100)*1200],
                             print("Router: "),
                             print(Router_X),
                             print(Router_Y),
-                            
+
                             for( int i = 0; i<this.collectedDataPoints.length; i++){
                               for( int j = 0; j<collectedDataPoints[i].listOfStrengths.length; j++){
                                 for( int k = 0; k< listOfLevels.length;k++){
@@ -691,7 +699,7 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
                             y_coordinate = (avg_y/1200)*100,
                             print(x_coordinate),
                             print(y_coordinate),
-                            
+
                             get_x_y = contextualiseValues(x_coordinate, y_coordinate, collectedDataPoints),
                             x_coordinate = get_x_y[0],
                             y_coordinate = get_x_y[1],
