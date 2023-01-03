@@ -454,6 +454,7 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
   List<dynamic> sortDistanceArray(array, n, List<routerObject> floorRouters)
   {
     List distance = [];
+    WiFiAccessPoint tempAP = accessPoints[0];
     double temp = 0.0;
     routerObject tempRouter = new routerObject(
       "",
@@ -474,6 +475,10 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
           tempRouter = floorRouters[j];
           floorRouters[j] = floorRouters[j+1];
           floorRouters[j+1] = tempRouter;
+
+          tempAP = accessPoints[j];
+          accessPoints[j] = accessPoints[j+1];
+          accessPoints[j+1] = tempAP;
         }
       }
     }
@@ -508,10 +513,164 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
     }
   }
 
+  void filterRouters() async {
+    for (int i=0; i<floorRouters.length; i++){
+      if(floorRouters[i].floorRef != currentFloor.referenceId){
+        floorRouters.removeAt(i);
+        accessPoints.removeAt(i);
+        floorRelevantDistances.removeAt(i);
+      }
+    }
+  }
+
+  void getCurrentFloor(){
+    List<int> listOfCounts = [];
+    int index = 0;
+    // Deciding which floor we are currently on
+    for(int i = 0; i<allPossibleFloors.length;i++ ){
+      listOfCounts.add(countOccurrencesUsingWhereMethod(allPossibleFloors, allPossibleFloors[i].referenceId));
+      if( listOfCounts[i] >= 3){
+        this.currentFloor = allPossibleFloors[i];
+        for(int j=0; j<buildingInstances.length; j++){
+          if(buildingInstances[j].referenceId == allPossibleFloors[i].buildingRef){
+            this.currentBuilding = buildingInstances[j];
+          }
+        }
+      }
+      
+      else {
+        allPossibleFloors.removeAt(i);
+      }
+    }
+    index = listOfCounts.indexOf(listOfCounts.reduce(max));
+    currentFloor = allPossibleFloors[index];
+    filterRouters();
+  }
+
+  void trilateration(){
+    List<int> temp = [];
+    Router_X = [(floorRouters[0].x/100)*700, (floorRouters[1].x/100)*700, (floorRouters[2].x/100)*700];
+    Router_Y = [(floorRouters[0].y/100)*1200, (floorRouters[1].y/100)*1200, (floorRouters[2].y/100)*1200];
+    print("Router: ");
+    print(Router_X);
+    print(Router_Y);
+
+    for( int i = 0; i<collectedDataPoints.length; i++){
+      for( int j = 0; j<collectedDataPoints[i].listOfStrengths.length; j++){
+        for( int k = 0; k< accessPoints.length;k++){
+          if(accessPoints[k].bssid == collectedDataPoints[i].listOfBSSIDs[j]){
+            if((accessPoints[k].level - collectedDataPoints[i].listOfStrengths[j]).abs() <= 5){
+              print("Collected Data Info");
+              print(collectedDataPoints[i].listOfBSSIDs[j]);
+              print(collectedDataPoints[i].listOfStrengths[j]);
+              print(collectedDataPoints[i].referenceId);
+              counter.add(collectedDataPoints[i].referenceId);
+              relevantCollectedData.add(collectedDataPoints[i]);
+            }
+          }
+        }
+      }
+    }
+    collectedDataPoints = relevantCollectedData;
+    routerDistance = [];
+    routerDistance = getDistance(floorRelevantDistances.length, floorRelevantDistances);
+    //print(routerDistance),
+    //--------------------------------------------------------
+    routerPixel = [];
+    routerPixel = getPixel(floorRelevantDistances.length, routerDistance);
+    //print(routerPixel),
+    //--------------------------------------------------------
+    index = [];
+    index.add(getIntersectingPoints(0 , 1, routerPixel, 360, 360));
+    index.add(getIntersectingPoints(0 , 2, routerPixel, 360, 360));
+    index.add(getIntersectingPoints(1 , 2, routerPixel, 360, 360));
+    //print(index),
+    //--------------------------------------------------------
+    intersectingLine = [];
+    intersectingLine.add(getIntersectingPointsRange( 0 , 1, index[0][0], index[0][1], routerPixel ));
+    intersectingLine.add(getIntersectingPointsRange( 0 , 2, index[1][0], index[1][1], routerPixel ));
+    intersectingLine.add(getIntersectingPointsRange( 1 , 2, index[2][0], index[2][1], routerPixel ));
+    //print(intersectingLine),
+    //--------------------------------------------------------
+    index1 = [];
+    index1.add(getIntersectingPoints(0 , 1, intersectingLine, intersectingLine[0].length, intersectingLine[1].length));
+    index1.add(getIntersectingPoints(0 , 2, intersectingLine, intersectingLine[0].length, intersectingLine[2].length));
+    index1.add(getIntersectingPoints(1 , 2, intersectingLine, intersectingLine[1].length, intersectingLine[2].length));
+    //print(index1),
+    //--------------------------------------------------------
+    intersectingRegion = [];
+    intersectingRegion.add(getIntersectingRegion( 0 , 1, index1[0][0], index1[0][1], intersectingLine ));
+    intersectingRegion.add(getIntersectingRegion( 0 , 2, index1[1][0], index1[1][1], intersectingLine ));
+    intersectingRegion.add(getIntersectingRegion( 1 , 2, index1[2][0], index1[2][1], intersectingLine ));
+    //print(intersectingRegion),
+    //--------------------------------------------------------
+    sum_x = 0;
+    sum_y = 0;
+    count = 0;
+
+    for(var i=0;i<intersectingRegion.length;i++){
+      for(var j=0;j<intersectingRegion[i].length;j++){
+        count++;
+        sum_x = sum_x + intersectingRegion[i][j][0];
+        sum_y = sum_y + intersectingRegion[i][j][1];
+      }
+    }
+
+    avg_x = sum_x/count;
+    avg_y = sum_y/count;
+    avg_y = 1200 - avg_y;
+    print(avg_x);
+    print(avg_y);
+
+    //--------------------------------------------------------
+
+    x_coordinate = (avg_x/700)*100;
+    y_coordinate = (avg_y/1200)*100;
+    print(x_coordinate);
+    print(y_coordinate);
+
+    get_x_y = contextualiseValues(x_coordinate, y_coordinate, collectedDataPoints);
+    x_coordinate = get_x_y[0];
+    y_coordinate = get_x_y[1];
+  }
+
+  void useCollectedData(){
+    double meanCollectedX = 0.0;
+    double meanCollectedY = 0.0;
+
+    for (int i=0; i<collectedDataPoints.length; i++){
+      meanCollectedX += collectedDataPoints[i].x;
+      meanCollectedY += collectedDataPoints[i].y;
+    }
+    meanCollectedX /= collectedDataPoints.length;
+    meanCollectedY /= collectedDataPoints.length;
+
+    x_coordinate = meanCollectedX;
+    y_coordinate = meanCollectedY;
+
+    Navigator.of(context).push(
+        MaterialPageRoute(
+            builder: (context) =>
+                PositioningScreen(
+                  userInstance: userInstance,
+                  buildingInstances: buildingInstances,
+                  floorInstances: floorInstances,
+                  routerInstances: routerInstances,
+                  currentBuilding: currentBuilding,
+                  currentFloor: currentFloor,
+                  x_coordinate: x_coordinate,
+                  y_coordinate: y_coordinate,
+                )
+        )
+    );
+  }
+
   List<int> listOfLevels = [];
   List<String> listOfBssids = [];
   List<String> counter = [];
   List<int> intCounter = [];
+  List<collectedData> relevantCollectedData = [];
+
 
   @override
   Widget build(BuildContext context) {
@@ -605,86 +764,87 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
                           // Printing Values
                           floorRouters.toSet().toList(),
 
+                          print("BSSID , Access Point ,  Distance"),
+                          for (int j = 0; j < floorRouters.length; j++){
+                            print("${floorRouters[j].BSSID} , ${accessPoints[j].bssid} , ${allDistances[j]}"),
+                          },
+
                           // Sorting the arrays of distances concurrently with the list of routers
-                          sorted_distance = sortDistanceArray(
-                              allDistances, allDistances.length,
-                              floorRouters),
+                          sorted_distance = sortDistanceArray(allDistances, allDistances.length, floorRouters),
                           // Distances sorted
                           floorRelevantDistances = sorted_distance[0],
                           // Routers sorted
                           floorRouters = sorted_distance[1],
 
-                          print("BSSID , Distance"),
+                          print("Sorted BSSID , Access Point ,  Distance"),
                           for (int j = 0; j < floorRouters.length; j++){
-                            print("${floorRouters[j]
-                                .BSSID} , ${allDistances[j]}"),
-                          },
-                          print("Sorted BSSID, Sorted Distance"),
-                          for (int j = 0; j < floorRouters.length; j++){
-                            print("${floorRouters[j]
-                                .BSSID} , ${floorRelevantDistances[j]}"),
+                            print("${floorRouters[j].BSSID} , ${accessPoints[j].bssid} , ${allDistances[j]}"),
                           },
 
                           getAllFloors(),
                           print("All possible floors"),
-                          for (int j = 0; j <
-                              allPossibleFloors.length; j++){
+                          for (int j = 0; j < allPossibleFloors.length; j++){
                             print("${allPossibleFloors[j].referenceId}"),
                           },
 
+                          getCurrentFloor(),
+                          print("Current floor"),
+                          print("${currentFloor.referenceId}"),
 
-                          Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      PositioningScreen(
-                                        userInstance: userInstance,
-                                        buildingInstances: buildingInstances,
-                                        floorInstances: floorInstances,
-                                        routerInstances: routerInstances,
-                                        currentBuilding: currentBuilding,
-                                        currentFloor: currentFloor,
-                                        x_coordinate: x_coordinate,
-                                        y_coordinate: y_coordinate,
-                                      )
-                              )
-                          ),
+                          print("Filtered BSSID , Access Point ,  Distance"),
+                          for (int j = 0; j < floorRouters.length; j++){
+                            print("${floorRouters[j].BSSID} , ${accessPoints[j].bssid} , ${allDistances[j]}"),
+                          },
+
+                          if(floorRouters.length >= 3){
+                            // Getting all collected data points for the current floor
+                            this.collectedDataPoints = await getCollectedPointsData(),
+                            trilateration(),
+                            Navigator.of(context).push(
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        PositioningScreen(
+                                          userInstance: userInstance,
+                                          buildingInstances: buildingInstances,
+                                          floorInstances: floorInstances,
+                                          routerInstances: routerInstances,
+                                          currentBuilding: currentBuilding,
+                                          currentFloor: currentFloor,
+                                          x_coordinate: x_coordinate,
+                                          y_coordinate: y_coordinate,
+                                        )
+                                )
+                            ),
+                          }
+                          else{
+                            this.collectedDataPoints = await getCollectedPointsData(),
+                            useCollectedData(),
+                          }
+
+                        }
+                        else{
+                          getCurrentRouters(),
+
+                          // Printing Values
+                          floorRouters.toSet().toList(),
+
+                          print("BSSID , Access Point ,  Distance"),
+                          for (int j = 0; j < floorRouters.length; j++){
+                            print("${floorRouters[j].BSSID} , ${accessPoints[j].bssid} , ${allDistances[j]}"),
+                          },
+
+                          getAllFloors(),
+                          print("All possible floors"),
+                          for (int j = 0; j < allPossibleFloors.length; j++){
+                            print("${allPossibleFloors[j].referenceId}"),
+                          },
+
+                          getCurrentFloor(),
+                          print("Current floor"),
+                          print("${currentFloor.referenceId}"),
+
+                          useCollectedData(),
                         },
-
-
-// //---------------------------------------------------------------------------------------------------------------------------//
-
-// //---------------------------------------------------------------------------------------------------------------------------//
-//
-//                         // Deciding which floor we are currently on
-//                         for(int i = 0; i<currentLocation.length;i++ ){
-//                           print(countOccurrencesUsingWhereMethod(currentLocation, currentLocation[i].referenceId)),
-//                           if(countOccurrencesUsingWhereMethod(currentLocation, currentLocation[i].referenceId) >= 2){
-//                             this.currentFloor = currentLocation[i],
-//                             for(int j=0; j<buildingInstances.length; j++){
-//                               if(buildingInstances[j].referenceId == currentLocation[i].buildingRef){
-//                                 this.currentBuilding = buildingInstances[j],
-//                               }
-//                             }
-//                           }
-//                           else if(countOccurrencesUsingWhereMethod(currentLocation, currentLocation[i].referenceId) <= 1){
-//                             this.currentFloor = currentLocation[0],
-//                             for(int j=0; j<buildingInstances.length; j++){
-//                               if(buildingInstances[j].referenceId == currentLocation[0].buildingRef){
-//                                 this.currentBuilding = buildingInstances[j],
-//                               }
-//                             }
-//                           }
-//                         },
-// //---------------------------------------------------------------------------------------------------------------------------//
-//                         for(int i = 0 ;i<floorRouters.length;i++){
-//                           print(floorRouters[i].BSSID),
-//                           print(distance[i]),
-//                           print(floorRouters[i].x.toString() + " , " + floorRouters[i].y.toString())
-//                         },
-// //---------------------------------------------------------------------------------------------------------------------------//
-//
-//                         // Getting all collected data points for the current floor
-//                           this.collectedDataPoints = await getCollectedPointsData(),
 //
 //                           if(floorRouters.length < 3){
 //                             print("\nInsufficient number of routers"),
@@ -733,93 +893,8 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
 //                           else if(floorRouters.length >= 3){
 //                             print("\nRouters are 3 or more"),
 //                             this.collectedDataPoints = await getCollectedPointsData(),
-//                             Router_X = [(floorRouters[0].x/100)*700, (floorRouters[1].x/100)*700, (floorRouters[2].x/100)*700],
-//                             Router_Y = [(floorRouters[0].y/100)*1200, (floorRouters[1].y/100)*1200, (floorRouters[2].y/100)*1200],
-//                             print("Router: "),
-//                             print(Router_X),
-//                             print(Router_Y),
 //
-//                             for( int i = 0; i<this.collectedDataPoints.length; i++){
-//                               for( int j = 0; j<collectedDataPoints[i].listOfStrengths.length; j++){
-//                                 for( int k = 0; k< listOfLevels.length;k++){
-//                                   if(listOfBssids[k] == collectedDataPoints[i].listOfBSSIDs[j]){
-//                                     if((listOfLevels[k] - collectedDataPoints[i].listOfStrengths[j]).abs() <= 5){
-//                                       print("--> Collected Data Info"),
-//                                       print(collectedDataPoints[i].listOfBSSIDs[j]),
-//                                       print(collectedDataPoints[i].listOfStrengths[j]),
-//                                       print(collectedDataPoints[i].referenceId),
-//                                       counter.add(collectedDataPoints[i].referenceId),
-//                                     }
-//                                     else {
-//                                       collectedDataPoints.remove(collectedDataPoints[i]),
-//                                     }
-//                                   }
-//                                 },
-//                               }
-//                             },
-//
-//                             routerDistance = [],
-//                             routerDistance = getDistance(distance.length, distance),
-//                             //print(routerDistance),
-//                             //--------------------------------------------------------
-//                             routerPixel = [],
-//                             routerPixel = getPixel(distance.length, routerDistance),
-//                             //print(routerPixel),
-//                             //--------------------------------------------------------
-//                             index = [],
-//                             index.add(getIntersectingPoints(0 , 1, routerPixel, 360, 360)),
-//                             index.add(getIntersectingPoints(0 , 2, routerPixel, 360, 360)),
-//                             index.add(getIntersectingPoints(1 , 2, routerPixel, 360, 360)),
-//                             //print(index),
-//                             //--------------------------------------------------------
-//                             intersectingLine = [],
-//                             intersectingLine.add(getIntersectingPointsRange( 0 , 1, index[0][0], index[0][1], routerPixel )),
-//                             intersectingLine.add(getIntersectingPointsRange( 0 , 2, index[1][0], index[1][1], routerPixel )),
-//                             intersectingLine.add(getIntersectingPointsRange( 1 , 2, index[2][0], index[2][1], routerPixel )),
-//                             //print(intersectingLine),
-//                             //--------------------------------------------------------
-//                             index1 = [],
-//                             index1.add(getIntersectingPoints(0 , 1, intersectingLine, intersectingLine[0].length, intersectingLine[1].length)),
-//                             index1.add(getIntersectingPoints(0 , 2, intersectingLine, intersectingLine[0].length, intersectingLine[2].length)),
-//                             index1.add(getIntersectingPoints(1 , 2, intersectingLine, intersectingLine[1].length, intersectingLine[2].length)),
-//                             //print(index1),
-//                             //--------------------------------------------------------
-//                             intersectingRegion = [],
-//                             intersectingRegion.add(getIntersectingRegion( 0 , 1, index1[0][0], index1[0][1], intersectingLine )),
-//                             intersectingRegion.add(getIntersectingRegion( 0 , 2, index1[1][0], index1[1][1], intersectingLine )),
-//                             intersectingRegion.add(getIntersectingRegion( 1 , 2, index1[2][0], index1[2][1], intersectingLine )),
-//                             //print(intersectingRegion),
-//                             //--------------------------------------------------------
-//                             sum_x = 0,
-//                             sum_y = 0,
-//                             count = 0,
-//
-//                             for(var i=0;i<intersectingRegion.length;i++){
-//                               for(var j=0;j<intersectingRegion[i].length;j++){
-//                                 count++,
-//                                 sum_x = sum_x + intersectingRegion[i][j][0],
-//                                 sum_y = sum_y + intersectingRegion[i][j][1],
-//                               },
-//                             },
-//
-//                             avg_x = sum_x/count,
-//                             avg_y = sum_y/count,
-//                             avg_y = 1200 - avg_y,
-//                             print(avg_x),
-//                             print(avg_y),
-//
-//                             //--------------------------------------------------------
-//
-//                             x_coordinate = (avg_x/700)*100,
-//                             y_coordinate = (avg_y/1200)*100,
-//                             print(x_coordinate),
-//                             print(y_coordinate),
-//
-//                             get_x_y = contextualiseValues(x_coordinate, y_coordinate, collectedDataPoints),
-//                             x_coordinate = get_x_y[0],
-//                             y_coordinate = get_x_y[1],
 //                           },
-
                       },
                       child: Text(
                         "Locate Me",
