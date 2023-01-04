@@ -43,6 +43,7 @@ class GetFloors extends StatelessWidget {
 
     try{
       await FirebaseFirestore.instance.collection('Routers')
+          .where('floorRef', isEqualTo: floorId)
           .get()
           .then(
             (snapshot) => snapshot.docs.forEach(
