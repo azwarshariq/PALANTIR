@@ -70,6 +70,45 @@ class _HomePageState extends State<HomePage> {
     print(userDocReference);
   }
 
+  void sortFloorInstances(){
+    List<int> numFloors = [];
+    List<List<int>> floorNumbers = [];
+    floorObject temp;
+    for(int i = 0 ; i<buildingInstances.length; i++){
+      for(int j = 0 ; j<buildingInstances[i].numFloors; j++){
+        numFloors.add(j);
+      }
+      floorNumbers.add(numFloors);
+      numFloors = [];
+    }
+    for( int i = 0; i<buildingInstances.length; i++){
+      for( int j = 0; j<floorInstances.length; j++) {
+        if (buildingInstances[i].referenceId == floorInstances[j].buildingRef && buildingInstances[i].numFloors == floorNumbers[i].length) {
+          for(int k = 0; k<floorNumbers[i].length; k++){
+            if(floorInstances[j].floorName.contains(floorNumbers[i][k].toString())){
+              print("--------------------");
+              print(buildingInstances[i].referenceId);
+              print(floorInstances[j].floorName);
+              print(j);
+              print(k);
+              temp = floorInstances[j];
+              floorInstances[j] = floorInstances[k];
+              floorInstances[k] = temp;
+            }
+            else if (floorInstances[j].floorName.contains("Ground Floor")){
+              temp = floorInstances[0];
+              floorInstances[0] = floorInstances[j];
+              floorInstances[j] = temp;
+            }
+          }
+        }
+      }
+    }
+    for(int i = 0; i<floorInstances.length; i++){
+      print(floorInstances[i].referenceId);
+      print(floorInstances[i].buildingRef);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +119,7 @@ class _HomePageState extends State<HomePage> {
           elevation: 0.0,
           toolbarHeight: 70,
           title: Text(
-            'Palantir',
+            'Home',
             style: GoogleFonts.raleway(
               color: const Color(0xffffffff),
               fontWeight: FontWeight.w200,
@@ -221,6 +260,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                     GestureDetector(
                       onTap: () {
+                        sortFloorInstances();
                         Navigator.of(context)
                           .push(
                           HeroDialogRoute(

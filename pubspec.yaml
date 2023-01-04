@@ -105,6 +105,8 @@ flutter:
     - assets/elements/HomePage Buildings Button.png
     - assets/elements/HomePage Floors Button.png
     - assets/elements/HomePage Routers Button.png
+    - assets/elements/Pilot Mapper Container.png
+    - assets/elements/Pilot User Container.png
 
     - assets/backgrounds/White Background.png
     - assets/backgrounds/Locate Me.png

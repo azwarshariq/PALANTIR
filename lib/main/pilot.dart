@@ -24,7 +24,7 @@ class _PilotState extends State<Pilot> {
           title: Text(
             'Palantir',
             style: GoogleFonts.raleway(
-              color: const Color(0xffffffff),
+              color: const Color(0xFF204E7A),
               fontWeight: FontWeight.w200,
               fontSize: 27,
             ),
@@ -34,7 +34,7 @@ class _PilotState extends State<Pilot> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.only(bottomLeft: Radius.circular(30),bottomRight: Radius.circular(30)),
               image: DecorationImage(
-                  image: AssetImage("assets/elements/AppBar Edit.png"),
+                  image: AssetImage("assets/elements/AppBar Upload.png"),
                   fit: BoxFit.cover
               ),
             ),
@@ -43,7 +43,7 @@ class _PilotState extends State<Pilot> {
             IconButton(
               icon: Icon(
                 Icons.logout,
-                color: Colors.white,
+                color: Color(0xFF204E7A),
               ),
               onPressed: () {
                 FirebaseAuth.instance.signOut();
@@ -64,64 +64,87 @@ class _PilotState extends State<Pilot> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // Button to proceed as Mapper
-                ElevatedButton(
-                  onPressed: () => Navigator.of(context)
-                      .push(
-                      MaterialPageRoute(
-                          builder: (context) => HomePage()
-                      )
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    animationDuration: const Duration(seconds: 1),
-                    shape: RoundedRectangleBorder(
-                      //to set border radius to button
-                      borderRadius: BorderRadius.circular(20),
+                Container(
+                  height: 230,
+                  width: 320,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage("assets/elements/Pilot Mapper Container.png"),
+                        fit: BoxFit.cover
                     ),
-                    backgroundColor: Color(0xFF577EA4),
-                    shadowColor: Color(0xAA577EA4),
-                    padding: EdgeInsets.all(20),
+                    borderRadius: BorderRadius.circular(50),
                   ),
-
-                  child: Text(
-                    'Proceed As Mapper',
-                    style: GoogleFonts.raleway(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w200,
-                      fontSize: 20,
-                    ),
+                  padding: const EdgeInsets.only(left: 40, right: 40, top: 50, bottom: 40),
+                  margin: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+                  child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Proceed as Mapper",
+                        style: GoogleFonts.raleway(
+                          color: Color(0xFF204E7A),
+                          fontWeight: FontWeight.w300,
+                          fontSize: 25,
+                        ),
+                      ),
+                      SizedBox(height: 15,),
+                      FloatingActionButton(
+                        child: Icon(Icons.maps_home_work_outlined),
+                        splashColor:  Color(0xAA204E7A),
+                        heroTag: 'btn1',
+                        backgroundColor: Colors.white,
+                        foregroundColor: Color(0xFF204E7A),
+                        onPressed: () => Navigator.of(context)
+                          .push(
+                          MaterialPageRoute(
+                              builder: (context) => HomePage()
+                          )
+                        ),
+                      ),
+                    ],
                   ),
                 ),
 
                 SizedBox(height:30),
                 // Button to proceed as User
-                ElevatedButton(
-                  onPressed: () => Navigator.of(context)
-                      .push(
-                      MaterialPageRoute(
-                          builder: (context) => HomePageUser()
-                      )
-                  ),
-
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      //to set border radius to button
-                        borderRadius: BorderRadius.circular(20)
+                Container(
+                  height: 230,
+                  width: 320,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage("assets/elements/Pilot User Container.png"),
+                        fit: BoxFit.cover
                     ),
-                    backgroundColor: const Color(0xFF739DC7),
-                    shadowColor: Color(0xAA739DC7),
-                    padding: EdgeInsets.all(20),
+                    borderRadius: BorderRadius.circular(50),
                   ),
-                  child: Text(
-                    'Proceed As User',
-                    style: GoogleFonts.raleway(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w200,
-                      fontSize: 20,
-                    ),
+                  padding: const EdgeInsets.only(left: 40, right: 40, top: 50, bottom: 40),
+                  margin: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Proceed as User",
+                        style: GoogleFonts.raleway(
+                          color: Color(0xFF204E7A),
+                          fontWeight: FontWeight.w300,
+                          fontSize: 25,
+                        ),
+                      ),
+                      SizedBox(height: 15,),
+                      FloatingActionButton(
+                        child: Icon(Icons.location_on_outlined),
+                        splashColor:  Color(0xAA204E7A),
+                        heroTag: 'btn2',
+                        backgroundColor: Colors.white,
+                        foregroundColor: Color(0xFF204E7A),
+                        onPressed: () => Navigator.of(context)
+                            .push(
+                            MaterialPageRoute(
+                                builder: (context) => HomePageUser()
+                            )
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                SizedBox(height:30,),
               ],
             ),
           ),
