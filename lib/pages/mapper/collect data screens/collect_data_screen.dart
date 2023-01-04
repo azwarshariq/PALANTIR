@@ -223,14 +223,6 @@ class _CollectDataScreenState extends State<CollectDataScreen> {
                           ],
                         ),
                       ),
-/*                      Container(
-                        child: Image.asset(
-                          'assets/floorplan.jpeg',
-                          height: MediaQuery.of(context).size.height * 0.70,
-                          width: MediaQuery.of(context).size.width * 0.9,
-                          //fit: BoxFit.fitWidth,
-                        )
-                      ),*/
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.05,
                       ),
@@ -282,7 +274,28 @@ class _CollectDataScreenState extends State<CollectDataScreen> {
                         width: MediaQuery.of(context).size.width * 0.05,
                       ),
                     ]
-                  )
+                  ),
+
+                  Container(
+                    child: ((_tapPosition?.dx ?? 0) >
+                        (MediaQuery.of(context).size.width * 0.05) &&
+                        (_tapPosition?.dx ?? 0) <
+                            (MediaQuery.of(context).size.width * 0.95) &&
+                        (_tapPosition?.dy ?? 0) >
+                            (MediaQuery.of(context).padding.top +
+                                kToolbarHeight) &&
+                        (_tapPosition?.dy ?? 0) <
+                            (MediaQuery.of(context).size.height * 0.7) +
+                                (MediaQuery.of(context).padding.top +
+                                    kToolbarHeight))
+                        ? Text(
+                      'X : ${xVar.toString()}, Y : ${yVar.toString()}',
+                      style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 14),
+                    )
+                        : null,
+                  ),
                 ]
               )
             )

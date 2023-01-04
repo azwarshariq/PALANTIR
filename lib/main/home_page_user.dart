@@ -4,8 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:palantir_ips/auth/main_page.dart';
 import 'package:palantir_ips/classes/building_class.dart';
-import 'package:palantir_ips/pages/mapper/controller_screen.dart';
-import 'package:palantir_ips/read_data/get_user_name.dart';
+import 'package:palantir_ips/read_data_user/get_user_name.dart';
 import '../classes/elevators_class.dart';
 import '../classes/floor_class.dart';
 import '../classes/room_class.dart';
@@ -13,15 +12,16 @@ import '../classes/router_class.dart';
 import '../classes/stairs_class.dart';
 import '../classes/user_class.dart';
 import '../pages/mapper/edit screens/hero_dialog_route.dart';
+import '../user/controller_screen_user.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+class HomePageUser extends StatefulWidget {
+  const HomePageUser({Key? key}) : super(key: key);
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<HomePageUser> createState() => _HomePageUserState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageUserState extends State<HomePageUser> {
 
   final user = FirebaseAuth.instance.currentUser!;
 
@@ -177,7 +177,9 @@ class _HomePageState extends State<HomePage> {
                       }
                     ),
                 ),
+
                 SizedBox(height: 30,),
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -197,6 +199,7 @@ class _HomePageState extends State<HomePage> {
                           )
                         );
                       },
+
                       child: Container(
                         alignment: Alignment.center,
                         height: 100,
@@ -218,6 +221,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                       )
+
                     ),
                     GestureDetector(
                       onTap: () {
@@ -235,6 +239,7 @@ class _HomePageState extends State<HomePage> {
                           )
                         );
                       },
+
                       child: Container(
                         alignment: Alignment.center,
                         height: 100,
@@ -273,6 +278,7 @@ class _HomePageState extends State<HomePage> {
                           )
                         );
                       },
+
                       child: Container(
                         alignment: Alignment.center,
                         height: 100,
@@ -298,13 +304,15 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ],
                 ),
+
                 SizedBox(height: 40,),
+
                 // Button to proceed as Mapper
                 ElevatedButton(
                   onPressed: () => Navigator.of(context)
                     .push(
                     MaterialPageRoute(
-                        builder: (context) => Controller(
+                        builder: (context) => ControllerScreenUser(
                           userInstance: userInstance,
                           buildingInstances: buildingInstances,
                           floorInstances: floorInstances,
@@ -322,6 +330,7 @@ class _HomePageState extends State<HomePage> {
                     shadowColor: Color(0xAA577EA4),
                     padding: EdgeInsets.all(20),
                   ),
+
                   child: Text(
                     'Proceed',
                     style: GoogleFonts.raleway(

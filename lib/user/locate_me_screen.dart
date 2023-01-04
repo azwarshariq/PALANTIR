@@ -45,8 +45,6 @@ class LocateMeScreen extends StatefulWidget {
   );
 }
 
-
-
 class _LocateMeScreenState extends State<LocateMeScreen> {
 
   _LocateMeScreenState(
@@ -548,7 +546,6 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
   }
 
   void trilateration(){
-    List<int> temp = [];
     Router_X = [(floorRouters[0].x/100)*700, (floorRouters[1].x/100)*700, (floorRouters[2].x/100)*700];
     Router_Y = [(floorRouters[0].y/100)*1200, (floorRouters[1].y/100)*1200, (floorRouters[2].y/100)*1200];
     print("Router: ");
@@ -674,7 +671,6 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    int maximum = -1;
     return Scaffold(
       appBar: AppBar(
         flexibleSpace: Image(
@@ -845,56 +841,6 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
 
                           useCollectedData(),
                         },
-//
-//                           if(floorRouters.length < 3){
-//                             print("\nInsufficient number of routers"),
-//                             for(int i = 0; i<floorAccessPoints.length; i++){
-//                               listOfBssids.add(floorAccessPoints[i].bssid),
-//                               listOfLevels.add(floorAccessPoints[i].level),
-//                             },
-//                             print(listOfBssids),
-//                             print(listOfLevels),
-//
-//                             for( int i = 0; i<this.collectedDataPoints.length; i++){
-//                               for( int j = 0; j<collectedDataPoints[i].listOfStrengths.length; j++){
-//                                 for( int k = 0; k< listOfLevels.length;k++){
-//                                   if(listOfBssids[k] == collectedDataPoints[i].listOfBSSIDs[j]){
-//                                     if((listOfLevels[k] - collectedDataPoints[i].listOfStrengths[j]).abs() <= 2){
-//                                       print("--> Collected Data Info"),
-//                                       print(collectedDataPoints[i].listOfBSSIDs[j]),
-//                                       print(collectedDataPoints[i].listOfStrengths[j]),
-//                                       print(collectedDataPoints[i].referenceId),
-//                                       counter.add(collectedDataPoints[i].referenceId),
-//                                     }
-//                                   }
-//                                 },
-//                               }
-//                             },
-//                             print(counter),
-//                             for(int i = 0; i<counter.length; i++)
-//                               intCounter.add(countCounterOccurrences(counter, counter[i])),
-//                             print(intCounter),
-//                             for(int i = 0; i<intCounter.length; i++){
-//                               if(intCounter[i] >= maximum){
-//                                 maximum = i
-//                               }
-//                             },
-//                             print(maximum),
-//                             for( int i = 0; i<this.collectedDataPoints.length; i++){
-//                               if (this.collectedDataPoints[i].referenceId == counter[maximum]){
-//                                 print(collectedDataPoints[i].referenceId),
-//                                 x_coordinate = collectedDataPoints[i].x,
-//                                 y_coordinate = collectedDataPoints[i].y,
-//                               }
-//                             },
-//                             print(x_coordinate),
-//                             print(y_coordinate),
-//                           }
-//                           else if(floorRouters.length >= 3){
-//                             print("\nRouters are 3 or more"),
-//                             this.collectedDataPoints = await getCollectedPointsData(),
-//
-//                           },
                       },
                       child: Text(
                         "Locate Me",
