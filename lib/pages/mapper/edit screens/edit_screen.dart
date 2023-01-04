@@ -251,12 +251,12 @@ class _EditScreenState extends State<EditScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+
                   Row(
                     children: [
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.05,
                       ),
-                      //displayFloorplan(currentFloor: currentFloor, height1: 700, width1: 400,),
                       Stack(
                         children: [
                           Container(
@@ -326,10 +326,6 @@ class _EditScreenState extends State<EditScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.10,
-                      ),
-
                       GestureDetector(
                         onTap: () {
                           Navigator.of(context)
@@ -370,7 +366,7 @@ class _EditScreenState extends State<EditScreen> {
                       ),
 
                       SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.12,
+                        width: MediaQuery.of(context).size.width * 0.10,
                       ),
 
                       PopupMenuButton(
@@ -498,12 +494,12 @@ class _EditScreenState extends State<EditScreen> {
                       ),
 
                       SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.15,
+                        width: MediaQuery.of(context).size.width * 0.10,
                       ),
 
                       CircleAvatar(
                         //Add Button
-                        radius: 35.0,
+                        radius: 30.0,
                         backgroundColor: const Color(0xFFFFFFFF),
                         child: IconButton(
                           icon: Icon(Icons.arrow_forward),
@@ -520,6 +516,8 @@ class _EditScreenState extends State<EditScreen> {
                                   currentBuilding: this.currentBuilding,
                                   currentFloor: this.currentFloor,
                                   routerInstances: this.routerInstances,
+                                  alignment_x: 0,
+                                  alignment_y: 0,
                                 ),
                               ),
                             );
@@ -530,7 +528,7 @@ class _EditScreenState extends State<EditScreen> {
                   ),
 
                   SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.01,
+                    height: MediaQuery.of(context).size.height * 0.02,
                   ),
 
                   Container(
@@ -552,10 +550,6 @@ class _EditScreenState extends State<EditScreen> {
                           fontSize: 14),
                     )
                       : null,
-                  ),
-
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.05,
                   ),
                 ]
               )

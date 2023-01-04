@@ -19,7 +19,9 @@ class CollectDataScreen extends StatefulWidget {
     required this.userInstance,
     required this.currentBuilding,
     required this.currentFloor,
-    required this.routerInstances
+    required this.routerInstances,
+    required this.alignment_x,
+    required this.alignment_y,
   });
 
   userObject userInstance = new userObject(
@@ -45,13 +47,17 @@ class CollectDataScreen extends StatefulWidget {
   );
 
   List<routerObject> routerInstances = [];
+  double alignment_x;
+  double alignment_y;
 
   @override
   State<CollectDataScreen> createState() => _CollectDataScreenState(
     this.userInstance,
     this.currentBuilding,
     this.currentFloor,
-    this.routerInstances
+    this.routerInstances,
+    this.alignment_x,
+    this.alignment_y
   );
 }
 
@@ -75,7 +81,9 @@ class _CollectDataScreenState extends State<CollectDataScreen> {
     this.userInstance,
     this.currentBuilding,
     this.currentFloor,
-    this.routerInstances
+    this.routerInstances,
+    this.alignment_x,
+    this.alignment_y
   );
 
   userObject userInstance = new userObject(
@@ -101,6 +109,8 @@ class _CollectDataScreenState extends State<CollectDataScreen> {
   );
 
   List<routerObject> routerInstances = [];
+  double alignment_x;
+  double alignment_y;
 
   String? Url = " ";
 
@@ -185,43 +195,59 @@ class _CollectDataScreenState extends State<CollectDataScreen> {
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.05,
                       ),
-                      Container(
-                        child: Column(
-                          children: [
-                            FutureBuilder<String>(
-                              future: getURL(currentFloor.floorPlan),
-                              builder: (BuildContext context, AsyncSnapshot<String> url)
-                              {
-                                Url = url.data;
-                                var check = Url;
-                                if (check != null) {
-                                  return Image.network(
-                                    Url!,
-                                    height: MediaQuery.of(context).size.height * 0.70,
-                                    width: MediaQuery.of(context).size.width * 0.90,
-                                    fit:BoxFit.contain,
-                                  ); // Safe
-                                }
-                                else{
-                                  return Center(
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          "Loading...",
-                                          style: TextStyle(
-                                            fontSize: 17,
-                                            color: Colors.white60,
-                                          )
+                      Stack(
+                        children: [
+                          Container(
+                            child: Column(
+                              children: [
+                                FutureBuilder<String>(
+                                  future: getURL(currentFloor.floorPlan),
+                                  builder: (BuildContext context, AsyncSnapshot<String> url)
+                                  {
+                                    Url = url.data;
+                                    var check = Url;
+                                    if (check != null) {
+                                      return Image.network(
+                                        Url!,
+                                        height: MediaQuery.of(context).size.height * 0.70,
+                                        width: MediaQuery.of(context).size.width * 0.90,
+                                        fit:BoxFit.contain,
+                                      ); // Safe
+                                    }
+                                    else{
+                                      return Center(
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              "Loading...",
+                                              style: TextStyle(
+                                                fontSize: 17,
+                                                color: Colors.white60,
+                                              )
+                                            ),
+                                          ],
                                         ),
-                                      ],
-                                    ),
-                                  );
-                                }
-                              }
+                                      );
+                                    }
+                                  }
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
+                          ),
+                          Container(
+                            alignment: Alignment(alignment_x, alignment_y),
+                            height: 600,
+                            width: 350,
+                            child: CustomPaint(
+                              size: Size(
+                                  MediaQuery.of(context).size.width * 0.05,
+                                  (MediaQuery.of(context).size.width * 0.05*1.375).toDouble()
+                              ), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
+                              painter: RPSCustomPainter(),
+                            ),
+                          ),
+                        ],
                       ),
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.05,
@@ -231,10 +257,6 @@ class _CollectDataScreenState extends State<CollectDataScreen> {
 
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.03,
-                  ),
-
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.02,
                   ),
 
                   Row(
@@ -271,9 +293,13 @@ class _CollectDataScreenState extends State<CollectDataScreen> {
                         ),
                       ),
                       SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.05,
+                        width: MediaQuery.of(context).size.width * 0.02,
                       ),
                     ]
+                  ),
+
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.02,
                   ),
 
                   Container(
@@ -296,6 +322,7 @@ class _CollectDataScreenState extends State<CollectDataScreen> {
                     )
                         : null,
                   ),
+
                 ]
               )
             )
@@ -608,6 +635,18 @@ class _PopUpItemBodyAccessPointsState extends State<PopUpItemBodyAccessPoints> {
                       )
                     )
                   ),
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => CollectDataScreen(
+                        userInstance: this.userInstance,
+                        routerInstances: this.routerInstances,
+                        currentBuilding: this.currentBuilding,
+                        currentFloor: this.currentFloor,
+                        alignment_x: ((xVar*2)/100)-1,
+                        alignment_y: ((yVar*2)/100)-1,
+                      ),
+                    ),
+                  ),
                 }
               },
               child: Text(
@@ -748,6 +787,32 @@ class _AccessPointTile extends StatelessWidget {
         ),
       ),*/
     );
+  }
+}
+
+class RPSCustomPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+
+    Path path_0 = Path();
+    path_0.moveTo(size.width*0.5034688,size.height);
+    path_0.cubicTo(size.width*0.4878625,size.height*0.5641583,size.width*-0.6214906,0,size.width*0.5034688,0);
+    path_0.cubicTo(size.width*1.628428,0,size.width*0.4878625,size.height*0.5641583,size.width*0.5034688,size.height);
+    path_0.close();
+
+    Paint paint_0_fill = Paint()..style=PaintingStyle.fill;
+    paint_0_fill.color = Color(0xffA21C44).withOpacity(1.0);
+    canvas.drawPath(path_0,paint_0_fill);
+
+    Paint paint_1_fill = Paint()..style=PaintingStyle.fill;
+    paint_1_fill.color = Colors.white.withOpacity(1.0);
+    canvas.drawCircle(Offset(size.width*0.5000000,size.height*0.2500000),size.width*0.1562500,paint_1_fill);
+
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return true;
   }
 }
 

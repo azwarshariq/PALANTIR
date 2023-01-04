@@ -115,6 +115,8 @@ class _CollectRedirectFloorScreenState extends State<CollectRedirectFloorScreen>
               routerInstances: this.routerInstances,
               currentBuilding: this.currentBuilding,
               currentFloor: this.currentFloor,
+              alignment_x: 0,
+              alignment_y: 0,
             ),
           )
       );
