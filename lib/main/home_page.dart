@@ -13,6 +13,7 @@ import '../classes/router_class.dart';
 import '../classes/stairs_class.dart';
 import '../classes/user_class.dart';
 import '../pages/mapper/edit screens/hero_dialog_route.dart';
+import '../user/controller_screen_user.dart';
 import '../user/locate_me_screen.dart';
 
 class HomePage extends StatefulWidget {
@@ -348,7 +349,7 @@ class _HomePageState extends State<HomePage> {
               onPressed: () => Navigator.of(context)
                   .push(
                   MaterialPageRoute(
-                      builder: (context) => LocateMeScreen(
+                      builder: (context) => ControllerScreenUser(
                         userInstance: userInstance,
                         buildingInstances: buildingInstances,
                         floorInstances: floorInstances,
