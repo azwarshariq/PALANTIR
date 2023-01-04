@@ -46,7 +46,6 @@ class GetUserName extends StatelessWidget {
     print('User Reference: ' + documentId);
     try{
       await FirebaseFirestore.instance.collection('Buildings')
-          .where('userRef', isEqualTo: documentId)
           .get()
           .then(
             (snapshot) => snapshot.docs.forEach(

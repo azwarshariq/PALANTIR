@@ -43,6 +43,7 @@ class GetBuildings extends StatelessWidget {
 
     try{
       await FirebaseFirestore.instance.collection('Floors')
+          .where('buildingRef', isEqualTo: buildingId)
           .get()
           .then(
             (snapshot) => snapshot.docs.forEach(
