@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:palantir_ips/auth/main_page.dart';
 import 'package:palantir_ips/classes/building_class.dart';
+import 'package:palantir_ips/main/pilot.dart';
 import 'package:palantir_ips/pages/mapper/controller_screen.dart';
 import 'package:palantir_ips/read_data/get_user_name.dart';
 import '../classes/elevators_class.dart';
@@ -127,6 +128,19 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           centerTitle: true,
+          leading: GestureDetector(
+            child: Icon( Icons.arrow_back, color: Colors.white,  ),
+            onTap: () {
+              Navigator.of(context)
+                  .push(
+                  HeroDialogRoute(
+                      builder: (context) {
+                        return Pilot();
+                      }
+                  )
+              );
+            } ,
+          ) ,
           flexibleSpace: Container(
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(bottomLeft: Radius.circular(30),bottomRight: Radius.circular(30)),

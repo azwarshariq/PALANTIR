@@ -1,11 +1,13 @@
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:palantir_ips/user/controller_screen_user.dart';
 import '../classes/building_class.dart';
 import '../classes/floor_class.dart';
 import '../classes/router_class.dart';
 import '../classes/user_class.dart';
-import '../main/home_page.dart';
+import '../main/home_page_user.dart';
+import '../pages/mapper/edit screens/hero_dialog_route.dart';
 
 class PositioningScreen extends StatefulWidget {
   PositioningScreen({
@@ -124,9 +126,24 @@ class _PositioningScreenState extends State<PositioningScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor:const Color(0xffffffff),
-        iconTheme: IconThemeData(
-          color: const Color(0xffA11C44), //change your color here
-        ),
+        leading: GestureDetector(
+          child: Icon( Icons.arrow_back, color: Color(0xffA11C44),),
+          onTap: () {
+            Navigator.of(context)
+                .push(
+                HeroDialogRoute(
+                    builder: (context) {
+                      return ControllerScreenUser(
+                        userInstance: userInstance,
+                        buildingInstances: buildingInstances,
+                        floorInstances: floorInstances,
+                        routerInstances: routerInstances,
+                      );
+                    }
+                )
+            );
+          } ,
+        ) ,
         elevation: 0,
         title: Text(
             "${ currentBuilding.buildingName +" - "+ currentFloor.floorName}",
@@ -145,7 +162,7 @@ class _PositioningScreenState extends State<PositioningScreen> {
             onPressed: () => Navigator.of(context)
                 .push(
                 MaterialPageRoute(
-                  builder: (context) => HomePage(),
+                  builder: (context) => HomePageUser(),
                 )
             ),
           )

@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:palantir_ips/main/home_page.dart';
 import 'package:palantir_ips/user/locate_me_screen.dart';
 import '../../classes/building_class.dart';
 import '../../classes/floor_class.dart';
 import '../../classes/router_class.dart';
 import '../../classes/user_class.dart';
+import '../main/home_page_user.dart';
 
 class ControllerScreenUser extends StatefulWidget {
   ControllerScreenUser({Key? key, required this.userInstance,
@@ -91,7 +91,7 @@ class _ControllerScreenUserState extends State<ControllerScreenUser> {
                         onPressed: () => Navigator.of(context)
                             .push(
                             MaterialPageRoute(
-                                builder: (context) => HomePage()
+                                builder: (context) => HomePageUser()
                             )
                         ),
                       ),

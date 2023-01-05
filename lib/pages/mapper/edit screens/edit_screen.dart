@@ -320,7 +320,7 @@ class _EditScreenState extends State<EditScreen> {
                   ),
 
                   SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.03,
+                    height: MediaQuery.of(context).size.height * 0.05,
                   ),
 
                   Row(
@@ -358,7 +358,7 @@ class _EditScreenState extends State<EditScreen> {
                             ),
                             child: const Icon(
                               Icons.add,
-                              size: 56,
+                              size: 60,
                               color: Color(0xff44CDB1),
                             ),
                           ),
@@ -366,7 +366,7 @@ class _EditScreenState extends State<EditScreen> {
                       ),
 
                       SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.10,
+                        width: MediaQuery.of(context).size.width * 0.05,
                       ),
 
                       PopupMenuButton(
@@ -377,7 +377,7 @@ class _EditScreenState extends State<EditScreen> {
                             borderRadius: BorderRadius.circular(32)),
                           child: const Icon(
                             Icons.delete,
-                            size: 56,
+                            size: 60,
                             color: Color(0xff44CDB1),
                           ),
                         ),
@@ -528,7 +528,7 @@ class _EditScreenState extends State<EditScreen> {
                   ),
 
                   SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.02,
+                    height: MediaQuery.of(context).size.height * 0.03,
                   ),
 
                   Container(
@@ -538,7 +538,7 @@ class _EditScreenState extends State<EditScreen> {
                             (MediaQuery.of(context).size.width * 0.95) &&
                         (_tapPosition?.dy ?? 0) >
                             (MediaQuery.of(context).padding.top +
-                                kToolbarHeight) &&
+                                kToolbarHeight ) &&
                         (_tapPosition?.dy ?? 0) <
                             (MediaQuery.of(context).size.height * 0.7) +
                                 (MediaQuery.of(context).padding.top +
@@ -549,7 +549,15 @@ class _EditScreenState extends State<EditScreen> {
                           color: Colors.white,
                           fontSize: 14),
                     )
-                      : null,
+                      : Text(
+                      '   ',
+                      style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 14),
+                    ),
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.02,
                   ),
                 ]
               )

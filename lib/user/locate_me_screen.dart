@@ -12,7 +12,7 @@ import '../classes/building_class.dart';
 import '../classes/floor_class.dart';
 import '../classes/router_class.dart';
 import '../classes/user_class.dart';
-import '../main/home_page.dart';
+import '../main/home_page_user.dart';
 
 class LocateMeScreen extends StatefulWidget {
   LocateMeScreen({Key? key, required this.userInstance,
@@ -298,7 +298,11 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
 
     for (int i=0; i<distances.length; i++){
       distances[i] = sqrt( pow(distances[i], 2) - pow(perp, 2) );
+      if(distances[i] < 1){
+        distances[i] = 1;
+      }
     }
+
 
     return distances;
   }
@@ -324,11 +328,13 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
   }
 
   Future<List<collectedData>> getCollectedPointsData() async {
-
+    print("Building Collected Points List");
     CollectionReference firebaseData = await FirebaseFirestore.instance.collection('Data');
     List<collectedData> temp = [];
+    if (currentFloor.collectedDataPoints == 0){
+      print("Floor doesn't have any collected points");
+    }
     for (int i=0; i<currentFloor.collectedDataPoints; i++){
-      print(currentFloor.referenceId + " " + i.toString());
       DocumentSnapshot data = await firebaseData.doc(currentFloor.referenceId + " " + i.toString()).get();
       final dataPoint = new collectedData(
         currentFloor.referenceId + " " + i.toString(),
@@ -339,17 +345,17 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
         data['y'],
       );
       temp.add(dataPoint);
+      print(dataPoint.referenceId);
     }
     return temp;
   }
-
 /*
-  Future<dynamic> getCollectedPointsData() async {
+
+  Future<List<collectedData>> getCollectedPointsData() async {
 
     CollectionReference firebaseData = await FirebaseFirestore.instance.collection('Data');
     for (int i=0; i<currentFloor.collectedDataPoints; i++){
-      print(currentFloor.referenceId + " " + i.toString());
-      return FutureBuilder<DocumentSnapshot>(
+      FutureBuilder<DocumentSnapshot>(
         future: firebaseData.doc(currentFloor.referenceId + " " + i.toString()).get(),
         builder: ((context, snapshot)
         {
@@ -363,8 +369,8 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
               data['x'],
               data['y'],
             );
-
-            this.collectedDataPoints.add(dataPoint);
+            print(dataPoint.referenceId);
+            collectedDataPoints.add(dataPoint);
 
             return Row(
               mainAxisSize: MainAxisSize.min,
@@ -386,6 +392,8 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
         ),
       );
     }
+    print("Found ${collectedDataPoints.length} data points");
+    return collectedDataPoints;
   }
 */
 
@@ -430,7 +438,7 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
     }
   }
 
-  void getCurrentRouters(){
+  void getCurrentRoutersByDistance(){
     floorRouters = [];
     floorAccessPoints = [];
     floorRelevantDistances = [];
@@ -444,6 +452,22 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
           floorAccessPoints.add(accessPoints[i]);
           // Distance of user from every router
           floorRelevantDistances.add(allDistances[i]);
+        }
+      }
+    }
+  }
+
+  void getCurrentRouters(){
+    floorRouters = [];
+    floorAccessPoints = [];
+    // Filling local database
+    for (int i = 0; i<accessPoints.length; i++){
+      for (int j = 0; j<routerInstances.length; j++){
+        if( accessPoints[i].bssid == routerInstances[j].BSSID ){
+          // Routers in the current floor
+          floorRouters.add(routerInstances[j]);
+          // WiFi Access Point Objects list for all routers
+          floorAccessPoints.add(accessPoints[i]);
         }
       }
     }
@@ -509,6 +533,7 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
         }
       }
     }
+    print("Number of floors ${allPossibleFloors.length}");
   }
 
   void filterRouters() async {
@@ -527,7 +552,8 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
     // Deciding which floor we are currently on
     for(int i = 0; i<allPossibleFloors.length;i++ ){
       listOfCounts.add(countOccurrencesUsingWhereMethod(allPossibleFloors, allPossibleFloors[i].referenceId));
-      if( listOfCounts[i] >= 3){
+      if( listOfCounts[i] > 0){
+        print("List of Counts: ${listOfCounts[i]}");
         this.currentFloor = allPossibleFloors[i];
         for(int j=0; j<buildingInstances.length; j++){
           if(buildingInstances[j].referenceId == allPossibleFloors[i].buildingRef){
@@ -539,6 +565,7 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
       else {
         allPossibleFloors.removeAt(i);
       }
+
     }
     index = listOfCounts.indexOf(listOfCounts.reduce(max));
     currentFloor = allPossibleFloors[index];
@@ -626,21 +653,29 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
     print(x_coordinate);
     print(y_coordinate);
 
-    get_x_y = contextualiseValues(x_coordinate, y_coordinate, collectedDataPoints);
-    x_coordinate = get_x_y[0];
-    y_coordinate = get_x_y[1];
+    if(x_coordinate.isNaN || y_coordinate.isNaN){
+      useCollectedData();
+    }
+    else {
+      get_x_y = contextualiseValues(x_coordinate, y_coordinate, collectedDataPoints);
+      x_coordinate = get_x_y[0];
+      y_coordinate = get_x_y[1];
+    }
   }
 
   void useCollectedData(){
     double meanCollectedX = 0.0;
     double meanCollectedY = 0.0;
 
+    print("Collected Data Points Length: ${collectedDataPoints.length}");
     for (int i=0; i<collectedDataPoints.length; i++){
       meanCollectedX += collectedDataPoints[i].x;
       meanCollectedY += collectedDataPoints[i].y;
     }
     meanCollectedX /= collectedDataPoints.length;
     meanCollectedY /= collectedDataPoints.length;
+
+    print('- Positioned using Collected Data: (${meanCollectedX}, ${meanCollectedY})');
 
     x_coordinate = meanCollectedX;
     y_coordinate = meanCollectedY;
@@ -695,7 +730,7 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
             onPressed: () => Navigator.of(context)
                 .push(
                 MaterialPageRoute(
-                  builder: (context) => HomePage(),
+                  builder: (context) => HomePageUser(),
                 )
             ),
           )
@@ -736,6 +771,7 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
                         padding: EdgeInsets.all(20),
                       ),
                       onPressed: () async => {
+
                         _startScan(context),
                         _getScannedResults(context),
 
@@ -744,18 +780,20 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
                         print("Filtered Access Points: ${accessPoints.length}"),
 
                         if (accessPoints.isEmpty){
-                          print("Empty"),
+                          print("Access Point Length: ${accessPoints.length}"),
                           ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                   content: Text(
-                                      'Building Successfully Added')
+                                      'No access points found!'
+                                  )
                               )
                           ),
                         }
 //---------------------------------------------------------------------------------------------------------------------------//
                         else if (accessPoints.length >= 3){
+                          print("Access Points more than or equal to 3"),
                           calculateDistances(),
-                          getCurrentRouters(),
+                          getCurrentRoutersByDistance(),
 
                           // Printing Values
                           floorRouters.toSet().toList(),
@@ -796,7 +834,7 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
                             // Getting all collected data points for the current floor
                             this.collectedDataPoints = await getCollectedPointsData(),
                             trilateration(),
-                            Navigator.of(context).push(
+                            Navigator.of(context).pushReplacement(
                                 MaterialPageRoute(
                                     builder: (context) =>
                                         PositioningScreen(
@@ -819,8 +857,9 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
 
                         }
                         else{
-                          getCurrentRouters(),
-
+                          print("Access Points less than 3"),
+                          calculateDistances(),
+                          getCurrentRoutersByDistance(),
                           // Printing Values
                           floorRouters.toSet().toList(),
 
@@ -839,7 +878,9 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
                           print("Current floor"),
                           print("${currentFloor.referenceId}"),
 
+                          this.collectedDataPoints = await getCollectedPointsData(),
                           useCollectedData(),
+
                         },
                       },
                       child: Text(
