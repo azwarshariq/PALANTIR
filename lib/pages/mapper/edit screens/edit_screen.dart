@@ -228,7 +228,7 @@ class _EditScreenState extends State<EditScreen> {
                 color: const Color(0xffffffff),
               ),
               onPressed: () => Navigator.of(context)
-                  .push(
+                  .pop(
                   MaterialPageRoute(
                     builder: (context) => HomePage(),
                   )
@@ -965,9 +965,14 @@ class _PopUpItemBodyState extends State<PopUpItemBody> {
                         if (xVar == 0 || yVar == 0)
                           {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
+                              SnackBar(
                                 content: Text(
-                                  'Please tap on screen to select x and y coordinates!'
+                                  'Please tap on screen to select x and y coordinates!',
+                                  style: GoogleFonts.raleway(
+                                    color: Color(0xFFFFFFFF),
+                                    fontWeight: FontWeight.w300,
+                                    fontSize: 15,
+                                  ),
                                 )
                               )
                             ),
@@ -979,9 +984,14 @@ class _PopUpItemBodyState extends State<PopUpItemBody> {
                                 if (routerName == "")
                                   {
                                     ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
+                                      SnackBar(
                                         content: Text(
-                                          'Please enter router ID'
+                                          'Please enter router ID',
+                                          style: GoogleFonts.raleway(
+                                            color: Color(0xFFFFFFFF),
+                                            fontWeight: FontWeight.w300,
+                                            fontSize: 15,
+                                          ),
                                         )
                                       )
                                     ),
@@ -989,8 +999,14 @@ class _PopUpItemBodyState extends State<PopUpItemBody> {
                                 else if (mac == "")
                                   {
                                     ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        content: Text('Please enter MAC address')
+                                      SnackBar(
+                                        content: Text('Please enter MAC address',
+                                          style: GoogleFonts.raleway(
+                                            color: Color(0xFFFFFFFF),
+                                            fontWeight: FontWeight.w300,
+                                            fontSize: 15,
+                                          ),
+                                        )
                                       )
                                     ),
                                   }
@@ -1003,9 +1019,15 @@ class _PopUpItemBodyState extends State<PopUpItemBody> {
                                           {
                                             check = true,
                                             ScaffoldMessenger.of(context).showSnackBar(
-                                              const SnackBar(
+                                              SnackBar(
                                                 content: Text(
-                                                  'MAC Address already exists')
+                                                  'MAC Address already exists',
+                                                  style: GoogleFonts.raleway(
+                                                    color: Color(0xFFFFFFFF),
+                                                    fontWeight: FontWeight.w300,
+                                                    fontSize: 15,
+                                                  ),
+                                                )
                                               )
                                             ),
                                           }
@@ -1013,9 +1035,15 @@ class _PopUpItemBodyState extends State<PopUpItemBody> {
                                           {
                                             check = true,
                                             ScaffoldMessenger.of(context).showSnackBar(
-                                              const SnackBar(
+                                              SnackBar(
                                                 content: Text(
-                                                  'Router ID already exists')
+                                                  'Router ID already exists',
+                                                  style: GoogleFonts.raleway(
+                                                    color: Color(0xFFFFFFFF),
+                                                    fontWeight: FontWeight.w300,
+                                                    fontSize: 15,
+                                                  ),
+                                                )
                                               )
                                             ),
                                           }
@@ -1024,9 +1052,15 @@ class _PopUpItemBodyState extends State<PopUpItemBody> {
                                       {
                                         Navigator.pop(context),
                                         ScaffoldMessenger.of(context).showSnackBar(
-                                            const SnackBar(
+                                            SnackBar(
                                                 content:
-                                                Text('Router Successfully Added')
+                                                Text('Router Successfully Added',
+                                                  style: GoogleFonts.raleway(
+                                                    color: Color(0xFFFFFFFF),
+                                                    fontWeight: FontWeight.w300,
+                                                    fontSize: 15,
+                                                  ),
+                                                )
                                             )
                                         ),
 
@@ -1040,7 +1074,7 @@ class _PopUpItemBodyState extends State<PopUpItemBody> {
                                         mac = "",
                                         routerName = "",
 
-                                        Navigator.of(context).push(
+                                        Navigator.of(context).pop(
                                           MaterialPageRoute(
                                             builder: (context) => EditScreen(
                                               userInstance: this.userInstance,
@@ -1063,8 +1097,14 @@ class _PopUpItemBodyState extends State<PopUpItemBody> {
                                 if (roomID == "")
                                   {
                                     ScaffoldMessenger.of(context).showSnackBar(
-                                        const SnackBar(
-                                            content: Text('Please enter room ID')
+                                        SnackBar(
+                                            content: Text('Please enter room ID',
+                                              style: GoogleFonts.raleway(
+                                                color: Color(0xFFFFFFFF),
+                                                fontWeight: FontWeight.w300,
+                                                fontSize: 15,
+                                              ),
+                                            )
                                         )
                                     ),
                                   }
@@ -1077,9 +1117,15 @@ class _PopUpItemBodyState extends State<PopUpItemBody> {
                                           {
                                             check = true,
                                             ScaffoldMessenger.of(context).showSnackBar(
-                                                const SnackBar(
+                                                SnackBar(
                                                     content: Text(
-                                                        'Room ID already exists')
+                                                      'Room ID already exists',
+                                                      style: GoogleFonts.raleway(
+                                                        color: Color(0xFFFFFFFF),
+                                                        fontWeight: FontWeight.w300,
+                                                        fontSize: 15,
+                                                      ),
+                                                    )
                                                 )
                                             ),
                                           }
@@ -1088,9 +1134,15 @@ class _PopUpItemBodyState extends State<PopUpItemBody> {
                                       {
                                         Navigator.pop(context),
                                         ScaffoldMessenger.of(context).showSnackBar(
-                                            const SnackBar(
+                                            SnackBar(
                                                 content:
-                                                Text('Room Successfully Added')
+                                                Text('Room Successfully Added',
+                                                  style: GoogleFonts.raleway(
+                                                    color: Color(0xFFFFFFFF),
+                                                    fontWeight: FontWeight.w300,
+                                                    fontSize: 15,
+                                                  ),
+                                                )
                                             )
                                         ),
                                         print(xVar),
@@ -1109,8 +1161,14 @@ class _PopUpItemBodyState extends State<PopUpItemBody> {
                                 if (stairsID == "")
                                   {
                                     ScaffoldMessenger.of(context).showSnackBar(
-                                        const SnackBar(
-                                            content: Text('Please enter stairs ID')
+                                        SnackBar(
+                                            content: Text('Please enter stairs ID',
+                                              style: GoogleFonts.raleway(
+                                                color: Color(0xFFFFFFFF),
+                                                fontWeight: FontWeight.w300,
+                                                fontSize: 15,
+                                              ),
+                                            )
                                         )
                                     ),
                                   }
@@ -1123,9 +1181,15 @@ class _PopUpItemBodyState extends State<PopUpItemBody> {
                                           {
                                             check = true,
                                             ScaffoldMessenger.of(context).showSnackBar(
-                                                const SnackBar(
+                                                SnackBar(
                                                     content: Text(
-                                                        'Stairs ID already exists')
+                                                      'Stairs ID already exists',
+                                                      style: GoogleFonts.raleway(
+                                                        color: Color(0xFFFFFFFF),
+                                                        fontWeight: FontWeight.w300,
+                                                        fontSize: 15,
+                                                      ),
+                                                    )
                                                 )
                                             ),
                                           }
@@ -1134,9 +1198,17 @@ class _PopUpItemBodyState extends State<PopUpItemBody> {
                                       {
                                         Navigator.pop(context),
                                         ScaffoldMessenger.of(context).showSnackBar(
-                                            const SnackBar(
+                                            SnackBar(
                                                 content:
-                                                Text('Stairs Successfully Added'))),
+                                                Text('Stairs Successfully Added',
+                                                  style: GoogleFonts.raleway(
+                                                    color: Color(0xFFFFFFFF),
+                                                    fontWeight: FontWeight.w300,
+                                                    fontSize: 15,
+                                                  ),
+                                                )
+                                            )
+                                        ),
                                         print(xVar),
                                         print(yVar),
                                         addStairsData(stairsID, xVar, yVar),
@@ -1151,8 +1223,14 @@ class _PopUpItemBodyState extends State<PopUpItemBody> {
                                 if (elevatorID == "")
                                   {
                                     ScaffoldMessenger.of(context).showSnackBar(
-                                        const SnackBar(
-                                            content: Text('Please enter elevator ID')
+                                        SnackBar(
+                                            content: Text('Please enter elevator ID',
+                                              style: GoogleFonts.raleway(
+                                                color: Color(0xFFFFFFFF),
+                                                fontWeight: FontWeight.w300,
+                                                fontSize: 15,
+                                              ),
+                                            )
                                         )
                                     ),
                                   }
@@ -1165,9 +1243,15 @@ class _PopUpItemBodyState extends State<PopUpItemBody> {
                                           {
                                             check = true,
                                             ScaffoldMessenger.of(context).showSnackBar(
-                                                const SnackBar(
+                                                SnackBar(
                                                     content: Text(
-                                                        'Elevator ID already exists')
+                                                      'Elevator ID already exists',
+                                                      style: GoogleFonts.raleway(
+                                                        color: Color(0xFFFFFFFF),
+                                                        fontWeight: FontWeight.w300,
+                                                        fontSize: 15,
+                                                      ),
+                                                    )
                                                 )
                                             ),
                                           }
@@ -1176,9 +1260,15 @@ class _PopUpItemBodyState extends State<PopUpItemBody> {
                                       {
                                         Navigator.pop(context),
                                         ScaffoldMessenger.of(context).showSnackBar(
-                                            const SnackBar(
+                                            SnackBar(
                                                 content:
-                                                Text('Elevator Successfully Added')
+                                                Text('Elevator Successfully Added',
+                                                  style: GoogleFonts.raleway(
+                                                    color: Color(0xFFFFFFFF),
+                                                    fontWeight: FontWeight.w300,
+                                                    fontSize: 15,
+                                                  ),
+                                                )
                                             )
                                         ),
                                         print(xVar),
@@ -1359,8 +1449,17 @@ class _PopUpItemBodyRouterState extends State<PopUpItemBodyRouter> {
                     listOfBSSIDs.remove(listOfBSSIDs[index]);
                     Navigator.pop(context, '/');
 
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                        content: Text('Router Successfully Deleted!')));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Router Successfully Deleted!',
+                        style: GoogleFonts.raleway(
+                          color: Color(0xFFFFFFFF),
+                          fontWeight: FontWeight.w300,
+                          fontSize: 15,
+                        ),
+                      )
+                    )
+                    );
                   },
                   child: Material(
                     color: Color.fromARGB(198, 255, 255, 255),
@@ -1521,8 +1620,17 @@ class _PopUpItemBodyRoomState extends State<PopUpItemBodyRoom> {
                     listOfRooms.remove(listOfRooms[index]);
                     Navigator.pop(context, '/');
 
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                        content: Text('Room Successfully Deleted!')));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Room Successfully Deleted!',
+                        style: GoogleFonts.raleway(
+                          color: Color(0xFFFFFFFF),
+                          fontWeight: FontWeight.w300,
+                          fontSize: 15,
+                        ),
+                      )
+                    )
+                    );
                   },
                   child: Material(
                     color: Color.fromARGB(198, 255, 255, 255),
@@ -1683,8 +1791,17 @@ class _PopUpItemBodyStairsState extends State<PopUpItemBodyStairs> {
                     listOfStairs.remove(listOfStairs[index]);
                     Navigator.pop(context, '/');
 
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                        content: Text('Stairs Successfully Deleted!')));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Stairs Successfully Deleted!',
+                          style: GoogleFonts.raleway(
+                            color: Color(0xFFFFFFFF),
+                            fontWeight: FontWeight.w300,
+                            fontSize: 15,
+                          ),
+                        )
+                      )
+                    );
                   },
                   child: Material(
                     color: Color.fromARGB(198, 255, 255, 255),
@@ -1846,8 +1963,14 @@ class _PopUpItemBodyElevatorState extends State<PopUpItemBodyElevator> {
                     Navigator.pop(context, '/');
 
                     ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Elevator Successfully Deleted!')
+                        SnackBar(
+                          content: Text('Elevator Successfully Deleted!',
+                            style: GoogleFonts.raleway(
+                              color: Color(0xFFFFFFFF),
+                              fontWeight: FontWeight.w300,
+                              fontSize: 15,
+                            ),
+                          )
                         )
                     );
                   },

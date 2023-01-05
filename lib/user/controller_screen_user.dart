@@ -115,17 +115,19 @@ class _ControllerScreenUserState extends State<ControllerScreenUser> {
                               padding: const EdgeInsets.all(20),
                               shadowColor: Color(0xFFCD4F69),
                             ),
-                            onPressed: () => Navigator.of(context)
-                                .push(
+                            onPressed: () => {
+                              Navigator.of(context)
+                              .push(
                                 MaterialPageRoute(
-                                    builder: (context) => LocateMeScreen(
-                                      userInstance: userInstance,
-                                      buildingInstances: buildingInstances,
-                                      floorInstances: floorInstances,
-                                      routerInstances: routerInstances,
-                                    )
+                                  builder: (context) => LocateMeScreen(
+                                    userInstance: userInstance,
+                                    buildingInstances: buildingInstances,
+                                    floorInstances: floorInstances,
+                                    routerInstances: routerInstances,
+                                  )
                                 )
-                            ),
+                              ),
+                            },
                             //code to execute when this button is pressed.
 
                             child: Text(

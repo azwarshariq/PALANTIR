@@ -92,7 +92,7 @@ class _ControllerState extends State<Controller> {
                             Icons.arrow_back,
                           ),
                           onPressed: () => Navigator.of(context)
-                            .push(
+                            .pop(
                             MaterialPageRoute(
                                 builder: (context) => HomePage()
                             )

@@ -224,11 +224,12 @@ class _AddBuildingState extends State<AddBuilding> {
               color: const Color(0xff325E89),
             ),
             onPressed: () => Navigator.of(context)
-                .push(
+                .pop(
                 MaterialPageRoute(
                   builder: (context) => HomePage(),
                 )
             ),
+
           )
         ],
 
@@ -339,9 +340,15 @@ class _AddBuildingState extends State<AddBuilding> {
                       onPressed: () => {
                         addBuildingInfo(),
                         ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                                content: Text(
-                                    'Building Successfully Added')
+                            SnackBar(
+                              content: Text(
+                                'Building Successfully Added',
+                                style: GoogleFonts.raleway(
+                                  color: Color(0xFFFFFFFF),
+                                  fontWeight: FontWeight.w300,
+                                  fontSize: 15,
+                                ),
+                              )
                             )
                         ),
                       }

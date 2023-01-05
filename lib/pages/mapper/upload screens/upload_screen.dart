@@ -147,7 +147,7 @@ class _MyUploadScreenState extends State<UploadScreen> {
               color: const Color(0xff325E89),
             ),
             onPressed: () => Navigator.of(context)
-                .push(
+                .pop(
                 MaterialPageRoute(
                   builder: (context) => HomePage(),
                 )
@@ -252,9 +252,14 @@ class _MyUploadScreenState extends State<UploadScreen> {
                       if (file == null) {
                         // ignore: use_build_context_synchronously
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
+                          SnackBar(
                             content: Text(
-                              'No file selected!'
+                              'No file selected!',
+                              style: GoogleFonts.raleway(
+                                color: Color(0xFFFFFFFF),
+                                fontWeight: FontWeight.w300,
+                                fontSize: 15,
+                              ),
                             )
                           )
                         );

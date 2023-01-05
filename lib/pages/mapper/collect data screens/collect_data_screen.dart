@@ -167,7 +167,7 @@ class _CollectDataScreenState extends State<CollectDataScreen> {
                 color: const Color(0xffffffff),
               ),
               onPressed: () => Navigator.of(context)
-                  .push(
+                  .pop(
                   MaterialPageRoute(
                     builder: (context) => HomePage(),
                   )
@@ -618,9 +618,9 @@ class _PopUpItemBodyAccessPointsState extends State<PopUpItemBodyAccessPoints> {
                         content: Text(
                           'Please tap on screen to select x and y coordinates!',
                           style: GoogleFonts.raleway(
-                            color: Colors.white60,
+                            color: Colors.white,
                             fontWeight: FontWeight.w300,
-                            fontSize: 20,
+                            fontSize: 15,
                           ),
                         )
                       )
@@ -635,14 +635,14 @@ class _PopUpItemBodyAccessPointsState extends State<PopUpItemBodyAccessPoints> {
                       Text(
                         'Data Successfully Uploaded!',
                         style: GoogleFonts.raleway(
-                          color: Colors.white60,
+                          color: Colors.white,
                           fontWeight: FontWeight.w300,
-                          fontSize: 20,
+                          fontSize: 15,
                         ),
                       )
                     )
                   ),
-                  Navigator.of(context).push(
+                  Navigator.of(context).pop(
                     MaterialPageRoute(
                       builder: (context) => CollectDataScreen(
                         userInstance: this.userInstance,
@@ -823,11 +823,19 @@ class RPSCustomPainter extends CustomPainter {
   }
 }
 
-
 void kShowSnackBar(BuildContext context, String message) {
   if (kDebugMode) print(message);
   ScaffoldMessenger.of(context)
     ..hideCurrentSnackBar()
-    ..showSnackBar(SnackBar(content: Text(message)));
+      ..showSnackBar(SnackBar(content:
+        Text(message,
+          style: GoogleFonts.raleway(
+            color: Color(0xFFFFFFFF),
+            fontWeight: FontWeight.w300,
+            fontSize: 15,
+          ),
+        )
+      )
+    );
 }
 

@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:palantir_ips/classes/collected_data_class.dart';
+import 'package:palantir_ips/user/controller_screen_user.dart';
 import 'package:palantir_ips/user/positioning_screen.dart';
 import 'package:wifi_scan/wifi_scan.dart';
 import 'package:vector_math/vector_math.dart';
@@ -13,6 +14,7 @@ import '../classes/floor_class.dart';
 import '../classes/router_class.dart';
 import '../classes/user_class.dart';
 import '../main/home_page_user.dart';
+import '../pages/mapper/edit screens/hero_dialog_route.dart';
 
 class LocateMeScreen extends StatefulWidget {
   LocateMeScreen({Key? key, required this.userInstance,
@@ -136,7 +138,7 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
 
     // call startScan API
     final result = await WiFiScan.instance.startScan();
-    if (mounted) kShowSnackBar(context, "startScan: $result");
+    if (mounted) kShowSnackBar(context, "Scanning - $result");
     // reset access points.
     setState(() => accessPoints = <WiFiAccessPoint>[]);
   }
@@ -721,6 +723,23 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
             fontSize: 20,
           ),
         ),
+        leading: GestureDetector(
+          child: Icon( Icons.arrow_back, color: Color(0xFFFFFFFF),  ),
+          onTap: () {
+            Navigator.of(context)
+                .push(
+                HeroDialogRoute(
+                    builder: (context) {
+                      return ControllerScreenUser(
+                          userInstance: userInstance,
+                          buildingInstances: buildingInstances,
+                          floorInstances: floorInstances,
+                          routerInstances: routerInstances);
+                    }
+                )
+            );
+          } ,
+        ) ,
         actions: <Widget>[
           IconButton(
             icon: Icon(
@@ -751,14 +770,36 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
         child: Builder(
           builder: (context) => Padding(
             padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 450,),
-                Row(
-                  children: [
-                    SizedBox(width: 110,),
+            child: Center(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(height: 430,),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        animationDuration: const Duration(seconds: 1),
+                        shape: RoundedRectangleBorder(
+                          //to set border radius to button
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        backgroundColor: Color(0xFFFFFFFF),
+                        shadowColor: Color(0xFFA11C44),
+                        padding: EdgeInsets.all(20),
+                      ),
+                      onPressed: () async => {
+                        _startScan(context),
+                        _getScannedResults(context),
+                      },
+                      child: Text(
+                        "Scan",
+                        style: GoogleFonts.raleway(
+                          color: Color(0xffA11C44),
+                          fontWeight: FontWeight.w400,
+                          fontSize: 20,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 20,),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         animationDuration: const Duration(seconds: 1),
@@ -772,8 +813,8 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
                       ),
                       onPressed: () async => {
 
-                        _startScan(context),
-                        _getScannedResults(context),
+                        // _startScan(context),
+                        // _getScannedResults(context),
 
                         print("Unfiltered Access Points: ${accessPoints.length}"),
                         filterAccessPoints(),
@@ -782,11 +823,17 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
                         if (accessPoints.isEmpty){
                           print("Access Point Length: ${accessPoints.length}"),
                           ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                  content: Text(
-                                      'No access points found!'
-                                  )
+                            SnackBar(
+                            content:
+                              Text(
+                                'No access points found, please try again!',
+                                style: GoogleFonts.raleway(
+                                  color: Color(0xFFFFFFFF),
+                                  fontWeight: FontWeight.w300,
+                                  fontSize: 15,
+                                ),
                               )
+                            )
                           ),
                         }
 //---------------------------------------------------------------------------------------------------------------------------//
@@ -892,9 +939,8 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
                         ),
                       ),
                     ),
-                  ],
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
@@ -907,5 +953,12 @@ void kShowSnackBar(BuildContext context, String message) {
   if (kDebugMode) print(message);
   ScaffoldMessenger.of(context)
     ..hideCurrentSnackBar()
-    ..showSnackBar(SnackBar(content: Text(message)));
+    ..showSnackBar(SnackBar(content:
+    Text(
+      message,
+      style: GoogleFonts.raleway(
+      color: Color(0xFFFFFFFF),
+      fontWeight: FontWeight.w300,
+      fontSize: 15,
+    ),)));
 }
