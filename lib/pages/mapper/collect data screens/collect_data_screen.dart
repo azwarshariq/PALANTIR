@@ -13,6 +13,8 @@ import '../../../classes/router_class.dart';
 import '../../../classes/user_class.dart';
 import '../edit screens/hero_dialog_route.dart';
 
+int customPainterCheck = 0;
+
 class CollectDataScreen extends StatefulWidget {
   CollectDataScreen({
     super.key,
@@ -208,24 +210,48 @@ class _CollectDataScreenState extends State<CollectDataScreen> {
                                     var check = Url;
                                     if (check != null) {
                                       return Image.network(
-                                        Url!,
-                                        height: MediaQuery.of(context).size.height * 0.70,
-                                        width: MediaQuery.of(context).size.width * 0.90,
-                                        fit:BoxFit.contain,
+                                          Url!,
+                                          height: MediaQuery.of(context).size.height * 0.70,
+                                          width: MediaQuery.of(context).size.width * 0.90,
+                                          fit:BoxFit.contain, frameBuilder:
+                                          (context, child, frame, wasSynchronouslyLoaded){
+                                        return child;
+                                      }, loadingBuilder:(context, child, loadingProgress){
+                                        if(loadingProgress == null){
+                                          return child;
+                                        }else {
+                                          return Center(
+                                              child:Row(
+                                                children: [
+                                                  SizedBox(
+                                                    width: MediaQuery.of(context).size.width*0.45,
+                                                    height: MediaQuery.of(context).size.height*0.7,
+                                                  ),
+                                                  CircularProgressIndicator(
+                                                    backgroundColor: Colors.black26,
+                                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                                      Colors.white,
+                                                    ),
+                                                    value: loadingProgress.expectedTotalBytes != null
+                                                        ? loadingProgress.cumulativeBytesLoaded/loadingProgress.expectedTotalBytes!
+                                                        : null,
+                                                  ),
+
+                                                ],
+                                              )
+
+                                          );
+                                        }
+                                      }
                                       ); // Safe
+
                                     }
                                     else{
                                       return Center(
                                         child: Column(
                                           crossAxisAlignment: CrossAxisAlignment.center,
                                           children: [
-                                            Text(
-                                              "Loading...",
-                                              style: TextStyle(
-                                                fontSize: 17,
-                                                color: Colors.white60,
-                                              )
-                                            ),
+                                            SizedBox( height: MediaQuery.of(context).size.height )
                                           ],
                                         ),
                                       );
@@ -235,6 +261,8 @@ class _CollectDataScreenState extends State<CollectDataScreen> {
                               ],
                             ),
                           ),
+                          Container(
+                          child: customPainterCheck == 1 ?
                           Container(
                             alignment: Alignment(alignment_x, alignment_y),
                             height: 600,
@@ -246,6 +274,8 @@ class _CollectDataScreenState extends State<CollectDataScreen> {
                               ), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
                               painter: RPSCustomPainter(),
                             ),
+                          )
+                          : new Container(),
                           ),
                         ],
                       ),
@@ -318,7 +348,7 @@ class _CollectDataScreenState extends State<CollectDataScreen> {
                       'X : ${xVar.toString()}, Y : ${yVar.toString()}',
                       style: const TextStyle(
                           color: Colors.white,
-                          fontSize: 14),
+                          fontSize: 14)
                     )
                         : Text(
                       '   ',
@@ -642,6 +672,7 @@ class _PopUpItemBodyAccessPointsState extends State<PopUpItemBodyAccessPoints> {
                       )
                     )
                   ),
+                  customPainterCheck = 1,
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) => CollectDataScreen(

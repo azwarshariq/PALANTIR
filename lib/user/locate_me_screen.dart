@@ -16,6 +16,8 @@ import '../classes/user_class.dart';
 import '../main/home_page_user.dart';
 import '../pages/mapper/edit screens/hero_dialog_route.dart';
 
+bool _loadingDone = false;
+
 class LocateMeScreen extends StatefulWidget {
   LocateMeScreen({Key? key, required this.userInstance,
     required this.buildingInstances,
@@ -330,14 +332,17 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
   }
 
   Future<List<collectedData>> getCollectedPointsData() async {
+    {
     print("Building Collected Points List");
-    CollectionReference firebaseData = await FirebaseFirestore.instance.collection('Data');
+    CollectionReference firebaseData = await FirebaseFirestore.instance
+        .collection('Data');
     List<collectedData> temp = [];
-    if (currentFloor.collectedDataPoints == 0){
+    if (currentFloor.collectedDataPoints == 0) {
       print("Floor doesn't have any collected points");
     }
-    for (int i=0; i<currentFloor.collectedDataPoints; i++){
-      DocumentSnapshot data = await firebaseData.doc(currentFloor.referenceId + " " + i.toString()).get();
+    for (int i = 0; i < currentFloor.collectedDataPoints; i++) {
+      DocumentSnapshot data = await firebaseData.doc(
+          currentFloor.referenceId + " " + i.toString()).get();
       final dataPoint = new collectedData(
         currentFloor.referenceId + " " + i.toString(),
         data['listOfBSSIDs'],
@@ -350,6 +355,7 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
     }
     print("Found ${temp.length} data points");
     return temp;
+  }
   }
 /*
 
@@ -820,7 +826,9 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
                       ),
                     ),
                     SizedBox(height: 20,),
-                    ElevatedButton(
+
+                  _loadingDone==false ?
+                  ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         animationDuration: const Duration(seconds: 1),
                         shape: RoundedRectangleBorder(
@@ -831,7 +839,7 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
                         shadowColor: Color(0xFFA11C44),
                         padding: EdgeInsets.all(20),
                       ),
-                      onPressed: () async => {
+                        onPressed: () async => {
 
                         // _startScan(context),
                         // _getScannedResults(context),
@@ -855,9 +863,12 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
                               )
                             )
                           ),
+                          setState(() => _loadingDone = false),
                         }
 //---------------------------------------------------------------------------------------------------------------------------//
-                        else if (accessPoints.length >= 3){
+
+                        else if (accessPoints.length >= 3 && _loadingDone == false){
+                            setState(() => _loadingDone = true),
                           print("Access Points more than or equal to 3"),
                           calculateDistances(),
                           getCurrentRoutersByDistance(),
@@ -923,7 +934,8 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
                           }
 
                         }
-                        else{
+                        else {
+                          setState(() => _loadingDone = true),
                           print("Access Points less than 3"),
                           calculateDistances(),
                           getCurrentRoutersByDistance(),
@@ -949,6 +961,8 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
                           useCollectedData(),
 
                         },
+
+                        //setState(() => _loadingDone = true),
                       },
                       child: Text(
                         "Locate Me",
@@ -958,7 +972,8 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
                           fontSize: 20,
                         ),
                       ),
-                    ),
+                    ):
+                        CircularProgressIndicator(),
                 ],
               ),
             ),

@@ -140,24 +140,38 @@ class GetUserName extends StatelessWidget {
                   );
                 }
                 else {
-                  return Text(
-                    '-',
-                    style: GoogleFonts.raleway(
-                      color: const Color(0xffffffff),
-                      fontWeight: FontWeight.w200,
-                      fontSize: 20,
-                    ),
+                  return Row (
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.10,
+                      ),
+                      CircularProgressIndicator(
+                          backgroundColor: Colors.black26,
+                          valueColor: AlwaysStoppedAnimation<Color>(Colors.white)
+                      ),
+                      SizedBox(
+                          width:MediaQuery.of(context).size.width * 0.10
+                      ),
+                    ],
                   );
                 }
               }
               else {
-                return Text(
-                  'Loading...',
-                  style: GoogleFonts.raleway(
-                    color: const Color(0xffffffff),
-                    fontWeight: FontWeight.w200,
-                    fontSize: 20,
-                  ),
+                return Row (
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.10,
+                    ),
+                    CircularProgressIndicator(
+                        backgroundColor: Colors.black26,
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white)
+                    ),
+                    SizedBox(
+                        width:MediaQuery.of(context).size.width * 0.10
+                    ),
+                  ],
                 );
               }
             }

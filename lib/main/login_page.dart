@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:palantir_ips/main/forgot_pw_page.dart';
 
+int ProgressIndicatorCheck = 0;
 class LoginPage extends StatefulWidget {
   final VoidCallback showRegisterPage;
   const LoginPage({Key? key, required this.showRegisterPage}) : super(key: key);
@@ -24,19 +25,75 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future signIn() async {
-    
-    showDialog(
-      context: context,
-      builder: (context) {
-        return Center(
-          child: CircularProgressIndicator(
-            color: const Color(0xff02BB95),
-            backgroundColor: const Color(0x00ffffff),
+    if(_emailController.text.trim() == "" || _passwordController.text.trim() == ""){
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content:Text(
+            'Enter Missing Values!',
+            style: GoogleFonts.raleway(
+              color: Colors.transparent,
+              fontWeight: FontWeight.w200,
+              fontSize: 15,
+            ),
           )
-        );
+        )
+      );
+    }
+    else if(ProgressIndicatorCheck == 1){
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'No User For This Email',
+            style: GoogleFonts.raleway(
+              color: Colors.transparent,
+              fontWeight: FontWeight.w200,
+              fontSize: 2150,
+            ),
+          )
+        )
+      );
+    }
+    else if(ProgressIndicatorCheck == 2){
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Incorrect Password',
+            style: GoogleFonts.raleway(
+              color: Colors.transparent,
+              fontWeight: FontWeight.w200,
+              fontSize: 15,
+            ),
+          )
+        )
+      );
+    }
+    else {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return Center(
+            child: CircularProgressIndicator(
+              color: const Color(0xff02BB95),
+              backgroundColor: const Color(0x00ffffff),
+            )
+          );
+        }
+      );
+    }
+
+/*
+    try {
+    } on FirebaseAuthException catch (e){
+      print('Failed with error code: ${e.code}'); print(e.message);
+      if(e.code == 'user-not-found'){
+        ProgressIndicatorCheck = 1;
       }
-    );
-    
+      else if(e.code == 'wrong-password'){
+        ProgressIndicatorCheck = 2;
+      }
+    }
+*/
+
     await FirebaseAuth.instance.signInWithEmailAndPassword(
       email: _emailController.text.trim(),
       password: _passwordController.text.trim(),
