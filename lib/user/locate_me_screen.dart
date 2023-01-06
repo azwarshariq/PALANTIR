@@ -973,7 +973,12 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
                         ),
                       ),
                     ):
-                        CircularProgressIndicator(),
+                    CircularProgressIndicator(
+                      backgroundColor: Color(0xFF282828),
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        Color(0xFFFFFFFF),
+                      ),
+                    ),
                 ],
               ),
             ),

@@ -355,17 +355,21 @@ class _HomePageState extends State<HomePage> {
                 SizedBox(height: 40,),
                 // Button to proceed as Mapper
                 ElevatedButton(
-                  onPressed: () => Navigator.of(context)
-                    .push(
-                    MaterialPageRoute(
-                        builder: (context) => Controller(
-                          userInstance: userInstance,
-                          buildingInstances: buildingInstances,
-                          floorInstances: floorInstances,
-                          routerInstances: routerInstances,
+                  onPressed: () {
+                    sortFloorInstances();
+                    Navigator.of(context)
+                        .push(
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                Controller(
+                                  userInstance: userInstance,
+                                  buildingInstances: buildingInstances,
+                                  floorInstances: floorInstances,
+                                  routerInstances: routerInstances,
+                                )
                         )
-                    )
-                  ),
+                    );
+                  },
                   style: ElevatedButton.styleFrom(
                     animationDuration: const Duration(seconds: 1),
                     shape: RoundedRectangleBorder(
