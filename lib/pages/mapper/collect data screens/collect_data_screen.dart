@@ -316,7 +316,7 @@ class _CollectDataScreenState extends State<CollectDataScreen> {
                             ),
                             child: const Icon(
                               Icons.add,
-                              size: 56,
+                              size: 60,
                               color: Color(0xff44CDB1),
                             ),
                           ),

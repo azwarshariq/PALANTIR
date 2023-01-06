@@ -346,7 +346,7 @@ class _EditScreenState extends State<EditScreen> {
                   ),
 
                   SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.03,
+                    height: MediaQuery.of(context).size.height * 0.05,
                   ),
 
                   Row(
@@ -554,7 +554,7 @@ class _EditScreenState extends State<EditScreen> {
                   ),
 
                   SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.02,
+                    height: MediaQuery.of(context).size.height * 0.03,
                   ),
 
                   Container(
@@ -575,7 +575,15 @@ class _EditScreenState extends State<EditScreen> {
                           color: Colors.white,
                           fontSize: 14),
                     )
-                      : null,
+                      : Text(
+                      '   ',
+                      style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 14),
+                    ),
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.03,
                   ),
                 ]
               )
