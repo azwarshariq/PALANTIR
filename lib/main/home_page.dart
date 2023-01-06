@@ -132,7 +132,7 @@ class _HomePageState extends State<HomePage> {
             child: Icon( Icons.arrow_back, color: Colors.white,  ),
             onTap: () {
               Navigator.of(context)
-                  .pop(
+                  .push(
                   HeroDialogRoute(
                       builder: (context) {
                         return Pilot();

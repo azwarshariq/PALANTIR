@@ -44,7 +44,7 @@ class _ControllerScreenUserState extends State<ControllerScreenUser> {
       this.userInstance,
       this.buildingInstances,
       this.floorInstances,
-      this.routerInstances
+      this.routerInstances,
       );
 
   userObject userInstance = new userObject(

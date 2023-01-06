@@ -167,7 +167,7 @@ class _CollectDataScreenState extends State<CollectDataScreen> {
                 color: const Color(0xffffffff),
               ),
               onPressed: () => Navigator.of(context)
-                  .pop(
+                  .push(
                   MaterialPageRoute(
                     builder: (context) => HomePage(),
                   )
@@ -642,7 +642,7 @@ class _PopUpItemBodyAccessPointsState extends State<PopUpItemBodyAccessPoints> {
                       )
                     )
                   ),
-                  Navigator.of(context).pop(
+                  Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) => CollectDataScreen(
                         userInstance: this.userInstance,

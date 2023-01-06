@@ -24,7 +24,6 @@ class GetBuildings extends StatelessWidget {
 
   List<routerObject> routerInstances = [];
 
-
   GetBuildings(
       {
         required this.buildingId,
@@ -112,6 +111,7 @@ class GetBuildings extends StatelessWidget {
                             shrinkWrap: true,
                             itemCount: floorDocReference.length,
                             itemBuilder: (context, index) {
+
                               return Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: ListTile(

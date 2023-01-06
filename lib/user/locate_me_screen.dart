@@ -300,7 +300,7 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
 
     for (int i=0; i<distances.length; i++){
       distances[i] = sqrt( pow(distances[i], 2) - pow(perp, 2) );
-      if(distances[i] < 1){
+      if(distances[i].isNaN){
         distances[i] = 1;
       }
     }
@@ -347,8 +347,8 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
         data['y'],
       );
       temp.add(dataPoint);
-      print(dataPoint.referenceId);
     }
+    print("Found ${temp.length} data points");
     return temp;
   }
 /*
@@ -423,7 +423,7 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
     if (inaccuracyX < 10 && inaccuracyY < 10){
       return [x, y];
     }
-    else if (inaccuracyX < 40 && inaccuracyY < 40){
+    else if (inaccuracyX < 25 && inaccuracyY < 25){
       return [x*(0.5) + meanCollectedX*(0.5), y*(0.5) + meanCollectedY*(0.5)];
     }
     else {
@@ -585,19 +585,19 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
       for( int j = 0; j<collectedDataPoints[i].listOfStrengths.length; j++){
         for( int k = 0; k< accessPoints.length;k++){
           if(accessPoints[k].bssid == collectedDataPoints[i].listOfBSSIDs[j]){
-            if((accessPoints[k].level - collectedDataPoints[i].listOfStrengths[j]).abs() <= 5){
+            if((accessPoints[k].level - collectedDataPoints[i].listOfStrengths[j]).abs() <= 1){
               print("Collected Data Info");
               print(collectedDataPoints[i].listOfBSSIDs[j]);
               print(collectedDataPoints[i].listOfStrengths[j]);
               print(collectedDataPoints[i].referenceId);
               counter.add(collectedDataPoints[i].referenceId);
-              relevantCollectedData.add(collectedDataPoints[i]);
+              relevantCollectedDataByDistance.add(collectedDataPoints[i]);
             }
           }
         }
       }
     }
-    collectedDataPoints = relevantCollectedData;
+    collectedDataPoints = relevantCollectedDataByDistance;
     routerDistance = [];
     routerDistance = getDistance(floorRelevantDistances.length, floorRelevantDistances);
     //print(routerDistance),
@@ -669,6 +669,24 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
     double meanCollectedX = 0.0;
     double meanCollectedY = 0.0;
 
+    for( int i = 0; i<collectedDataPoints.length; i++){
+      for( int j = 0; j<collectedDataPoints[i].listOfStrengths.length; j++){
+        for( int k = 0; k< accessPoints.length;k++){
+          if(accessPoints[k].bssid == collectedDataPoints[i].listOfBSSIDs[j]){
+            if((accessPoints[k].level - collectedDataPoints[i].listOfStrengths[j]).abs() <= 1){
+              print("Collected Data Info In useCollectedData()");
+              print(collectedDataPoints[i].listOfBSSIDs[j]);
+              print(collectedDataPoints[i].listOfStrengths[j]);
+              print(collectedDataPoints[i].referenceId);
+              counterCollectedData.add(collectedDataPoints[i].referenceId);
+              relevantCollectedData.add(collectedDataPoints[i]);
+            }
+          }
+        }
+      }
+    }
+    collectedDataPoints = relevantCollectedData;
+
     print("Collected Data Points Length: ${collectedDataPoints.length}");
     for (int i=0; i<collectedDataPoints.length; i++){
       meanCollectedX += collectedDataPoints[i].x;
@@ -702,7 +720,9 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
   List<int> listOfLevels = [];
   List<String> listOfBssids = [];
   List<String> counter = [];
+  List<String> counterCollectedData = [];
   List<int> intCounter = [];
+  List<collectedData> relevantCollectedDataByDistance = [];
   List<collectedData> relevantCollectedData = [];
 
 
@@ -821,7 +841,7 @@ class _LocateMeScreenState extends State<LocateMeScreen> {
                         print("Filtered Access Points: ${accessPoints.length}"),
 
                         if (accessPoints.isEmpty){
-                          print("Access Point Length: ${accessPoints.length}"),
+                          print("No Access Points Found"),
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                             content:

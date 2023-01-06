@@ -228,7 +228,7 @@ class _EditScreenState extends State<EditScreen> {
                 color: const Color(0xffffffff),
               ),
               onPressed: () => Navigator.of(context)
-                  .pop(
+                  .push(
                   MaterialPageRoute(
                     builder: (context) => HomePage(),
                   )

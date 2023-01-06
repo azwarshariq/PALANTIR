@@ -71,6 +71,55 @@ class _HomePageUserState extends State<HomePageUser> {
     print(userDocReference);
   }
 
+/*
+  Future<List<collectedData>> getCollectedPointsData() async {
+
+    CollectionReference firebaseData = await FirebaseFirestore.instance.collection('Data');
+    for (int j=0; j<floorInstances.length; j++){
+      for (int i=0; i<floorInstances[i].collectedDataPoints; i++){
+        FutureBuilder<DocumentSnapshot>(
+          future: firebaseData.doc(floorInstances[i].referenceId + " " + i.toString()).get(),
+          builder: ((context, snapshot)
+          {
+            if (snapshot.connectionState == ConnectionState.done) {
+              Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
+              final dataPoint = new collectedData(
+                floorInstances[i].referenceId + " " + i.toString(),
+                data['listOfBSSIDs'],
+                data['listOfFrequencies'],
+                data['listOfStrengths'],
+                data['x'],
+                data['y'],
+              );
+              print(dataPoint.referenceId);
+              collectedDataPoints.add(dataPoint);
+
+              return Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                ],
+              );
+            }
+            else {
+              return Text(
+                'Loading',
+                style: GoogleFonts.raleway(
+                  color: const Color(0xffffffff),
+                  fontWeight: FontWeight.w200,
+                  fontSize: 5,
+                ),
+              );
+            }
+          }
+          ),
+        );
+      }
+    }
+    print("Found ${collectedDataPoints.length} data points");
+    return collectedDataPoints;
+  }
+*/
+
   void sortFloorInstances(){
     List<int> numFloors = [];
     List<List<int>> floorNumbers = [];
@@ -113,6 +162,7 @@ class _HomePageUserState extends State<HomePageUser> {
 
   @override
   Widget build(BuildContext context) {
+
     return Container(
       child: Scaffold(
         appBar: AppBar(
@@ -132,7 +182,7 @@ class _HomePageUserState extends State<HomePageUser> {
             child: Icon( Icons.arrow_back, color: Colors.white,  ),
             onTap: () {
               Navigator.of(context)
-                  .pop(
+                  .push(
                   HeroDialogRoute(
                       builder: (context) {
                         return Pilot();
@@ -361,19 +411,21 @@ class _HomePageUserState extends State<HomePageUser> {
 
                 SizedBox(height: 40,),
 
-                // Button to proceed as Mapper
+                // Button to proceed as User
                 ElevatedButton(
-                  onPressed: () => Navigator.of(context)
-                    .push(
-                    MaterialPageRoute(
-                        builder: (context) => ControllerScreenUser(
-                          userInstance: userInstance,
-                          buildingInstances: buildingInstances,
-                          floorInstances: floorInstances,
-                          routerInstances: routerInstances,
+                  onPressed: () {
+                    Navigator.of(context)
+                        .push(
+                        MaterialPageRoute(
+                            builder: (context) => ControllerScreenUser(
+                              userInstance: userInstance,
+                              buildingInstances: buildingInstances,
+                              floorInstances: floorInstances,
+                              routerInstances: routerInstances,
+                            )
                         )
-                    )
-                  ),
+                    );
+                  },
                   style: ElevatedButton.styleFrom(
                     animationDuration: const Duration(seconds: 1),
                     shape: RoundedRectangleBorder(

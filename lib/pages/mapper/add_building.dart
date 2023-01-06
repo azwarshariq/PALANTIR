@@ -224,7 +224,7 @@ class _AddBuildingState extends State<AddBuilding> {
               color: const Color(0xff325E89),
             ),
             onPressed: () => Navigator.of(context)
-                .pop(
+                .push(
                 MaterialPageRoute(
                   builder: (context) => HomePage(),
                 )

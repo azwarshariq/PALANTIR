@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../classes/collected_data_class.dart';
 import '../classes/router_class.dart';
 import '../classes/building_class.dart';
 import '../classes/floor_class.dart';
@@ -32,6 +33,32 @@ class GetRouters extends StatelessWidget {
       required this.routerInstances
     }
   );
+
+  Future<List<collectedData>> getCollectedPointsData() async {
+    print("Building Collected Points List");
+    CollectionReference firebaseData = await FirebaseFirestore.instance.collection('Data');
+    List<collectedData> temp = [];
+    for (int j=0; j<floorInstances.length; j++){
+      if (floorInstances[j].collectedDataPoints == 0){
+        print("Floor doesn't have any collected points");
+      }
+      for (int i=0; i<floorInstances[j].collectedDataPoints; i++){
+        DocumentSnapshot data = await firebaseData.doc(floorInstances[j].referenceId + " " + i.toString()).get();
+        print("-> ${data.reference}");
+        final dataPoint = new collectedData(
+          floorInstances[j].referenceId + " " + i.toString(),
+          data['listOfBSSIDs'],
+          data['listOfFrequencies'],
+          data['listOfStrengths'],
+          data['x'],
+          data['y'],
+        );
+        temp.add(dataPoint);
+      }
+    }
+    print("Found ${temp.length} data points");
+    return temp;
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:palantir_ips/pages/mapper/collect%20data%20screens/collect_data_screen.dart';
 import 'package:palantir_ips/pages/mapper/storage_service.dart';
 import 'package:palantir_ips/pages/mapper/upload%20screens/upload_screen.dart';
-
 import '../../../classes/building_class.dart';
 import '../../../classes/floor_class.dart';
 import '../../../classes/router_class.dart';
